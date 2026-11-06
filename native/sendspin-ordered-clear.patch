@@ -1,0 +1,129 @@
+diff --git a/include/sendspin/player_role.h b/include/sendspin/player_role.h
+--- a/include/sendspin/player_role.h
++++ b/include/sendspin/player_role.h
+@@ -1,4 +1,5 @@
+ // Copyright 2026 Sendspin Contributors
++// Locally modified for Kinegra ShieldAmp, 2026-11-03: ordered-clear callback and flushed-output capability.
+ //
+ // Licensed under the Apache License, Version 2.0 (the "License");
+ // you may not use this file except in compliance with the License.
+@@ -93,6 +94,15 @@
+     /// @brief Called when a new audio stream starts
+     virtual void on_stream_start() {}
+
++    /// @brief A seek/clear boundary on the sync thread, before subsequent audio writes.
++    /// Flush the sink and any staged audio before returning. Must be thread-safe.
++    virtual void on_stream_clear() {}
++
++    /// @brief Whether on_stream_clear() drops all previously handed-off frames.
++    /// True resets playback accounting and re-primes after the ordered clear.
++    /// The default preserves sinks which continue draining their old output.
++    virtual bool flushes_audio_on_stream_clear() const { return false; }
++
+     /// @brief Called when the audio stream ends
+     ///
+     /// Also fires when a server/activate takes the player role out of the session's active roles,
+diff --git a/src/sync_task.cpp b/src/sync_task.cpp
+--- a/src/sync_task.cpp
++++ b/src/sync_task.cpp
+@@ -1,4 +1,5 @@
+ // Copyright 2026 Sendspin Contributors
++// Locally modified for Kinegra ShieldAmp, 2026-11-03: ordered sink clearing, discarded-output accounting and re-priming.
+ //
+ // Licensed under the Apache License, Version 2.0 (the "License");
+ // you may not use this file except in compliance with the License.
+@@ -240,6 +241,13 @@
+ }
+
+ SyncTaskState SyncTask::handle_load_chunk(SyncContext& sync_context) {
++    // A clear marker may be decoded before the outer command flag is seen.
++    // A flushing sink resets priming at that boundary even if LOAD_CHUNK is
++    // still the selected state. Return through the regular priming path.
++    if (sync_context.initial_decode && this->player_impl_->listener != nullptr &&
++        this->player_impl_->listener->flushes_audio_on_stream_clear()) {
++        return SyncTaskState::INITIAL_SYNC;
++    }
+     if (!this->player_impl_->client->is_time_synced()) {
+         // Wait for the time filter to receive its first measurement before processing audio chunks.
+         // Without a valid time offset, server timestamps can't be correctly converted to client
+@@ -807,6 +815,20 @@
+     if (sync_context.decode_buffer != nullptr) {
+         sync_context.decode_buffer->decrease_buffer_length(sync_context.decode_buffer->available());
+     }
++    // Flush application-side staging at the ordered sync-thread boundary.
++    if (this->player_impl_->listener != nullptr) {
++        this->player_impl_->listener->on_stream_clear();
++        if (this->player_impl_->listener->flushes_audio_on_stream_clear()) {
++            // The sink's ordered clear discarded every old output frame. None
++            // may remain on our predicted timeline or be reported as played.
++            // The clear callback returns only after the consumer acknowledged
++            // its new generation, before any post-clear write can occur.
++            this->playback_progress_slot_.reset();
++            sync_context.buffered_frames = 0;
++            sync_context.new_audio_client_playtime = 0;
++            sync_context.initial_decode = true;
++        }
++    }
+     this->event_flags_.clear(EventGroupBits::COMMAND_STREAM_CLEAR);
+ }
+
+diff --git a/tests/test_player_role.cpp b/tests/test_player_role.cpp
+--- a/tests/test_player_role.cpp
++++ b/tests/test_player_role.cpp
+@@ -1,4 +1,5 @@
+ // Copyright 2026 Sendspin Contributors
++// Locally modified for Kinegra ShieldAmp, 2026-11-03: ordered-clear and flushed-output accounting regression coverage.
+ //
+ // Licensed under the Apache License, Version 2.0 (the "License");
+ // you may not use this file except in compliance with the License.
+@@ -623,6 +624,50 @@
+ // count, so it may refill the whole buffer before the sync task discards the audio queued ahead
+ // of the boundary. The boundary releases that audio's charge at once, so the refill is kept, and
+ // the sync task's later return of the old items releases nothing twice.
++TEST(PlayerInboundHandOff, ClearNotifiesSinkAtSyncBoundary) {
++    struct Sink : PlayerRoleListener {
++        int clears = 0;
++        size_t on_audio_write(uint8_t*, size_t length, uint32_t) override { return length; }
++        void on_stream_clear() override { ++clears; }
++    } sink;
++    auto impl = make_impl();
++    impl->listener = &sink;
++    impl->handle_stream_clear();
++    EXPECT_EQ(sink.clears, 0);
++    SyncContext context;
++    impl->sync_task->discard_to_clear_marker(context);
++    EXPECT_EQ(sink.clears, 1);
++    impl->listener = nullptr;
++}
++
++TEST(PlayerInboundHandOff, FlushingClearResetsOnlyDiscardedPlaybackAccounting) {
++    struct Sink : PlayerRoleListener {
++        bool flushes = false;
++        size_t on_audio_write(uint8_t*, size_t length, uint32_t) override { return length; }
++        bool flushes_audio_on_stream_clear() const override { return flushes; }
++    } sink;
++    auto impl = make_impl();
++    impl->listener = &sink;
++    SyncContext context;
++    context.buffered_frames = 4800;
++    context.new_audio_client_playtime = 123456;
++    context.initial_decode = false;
++    impl->sync_task->apply_stream_clear(context);
++    EXPECT_EQ(context.buffered_frames, 4800u);
++    EXPECT_EQ(context.new_audio_client_playtime, 123456);
++    EXPECT_FALSE(context.initial_decode);
++    sink.flushes = true;
++    impl->sync_task->notify_audio_played(512, 234567);
++    impl->sync_task->apply_stream_clear(context);
++    EXPECT_EQ(context.buffered_frames, 0u);
++    EXPECT_EQ(context.new_audio_client_playtime, 0);
++    EXPECT_TRUE(context.initial_decode);
++    PlaybackProgress discarded;
++    EXPECT_FALSE(impl->sync_task->playback_progress_slot_.take(discarded));
++    EXPECT_EQ(impl->sync_task->handle_load_chunk(context), SyncTaskState::INITIAL_SYNC);
++    impl->listener = nullptr;
++}
++
+ TEST(PlayerInboundHandOff, AStreamBoundaryFreesTheQuotaForTheRefillBehindIt) {
+     enum class Boundary { NONE, CLEAR, END };
+     struct Row {

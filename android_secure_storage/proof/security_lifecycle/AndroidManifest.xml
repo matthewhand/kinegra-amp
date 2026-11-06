@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="local.shieldamp.securityproof20261103" android:versionCode="1" android:versionName="2026.11.03-synthetic-proof">
+    <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
+    <application android:label="Synthetic credential proof" android:allowBackup="false" android:debuggable="false" android:usesCleartextTraffic="false" android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+        <activity android:name="au.local.shieldamp.SecurityLifecycleProofActivity" android:exported="true" android:excludeFromRecents="true" android:noHistory="true" />
+    </application>
+</manifest>

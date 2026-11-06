@@ -1,0 +1,17 @@
+extends SceneTree
+func _init():call_deferred("run")
+func run():
+    var avatar=load("res://scripts/AvatarRenderer.gd").new()
+    var pose=load("res://scripts/PoseVisual.gd").new()
+    get_root().add_child(avatar)
+    get_root().add_child(pose)
+    yield(create_timer(0.5),"timeout")
+    pose._demo_pose()
+    avatar.set_active(true)
+    avatar.set_pose(pose.points)
+    yield(create_timer(0.4),"timeout")
+    var img=avatar.viewport_3d.get_texture().get_data()
+    img.flip_y()
+    img.save_png("/tmp/shieldamp-avatar-original-test.png")
+    print("AVATAR_VISUAL_CAPTURE_DONE")
+    quit()

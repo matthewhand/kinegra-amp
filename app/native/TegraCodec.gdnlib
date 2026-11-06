@@ -1,0 +1,14 @@
+[general]
+singleton=false
+load_once=true
+symbol_prefix="godot_"
+reloadable=false
+
+[entry]
+X11.64="res://native/bin/libtegra_godot_x11.so"
+Server.64="res://native/bin/libtegra_godot_x11.so"
+Android.arm64-v8a="res://native/bin/libtegra_godot_arm64.so"
+
+[dependencies]
+X11.64=[]
+Android.arm64-v8a=[]

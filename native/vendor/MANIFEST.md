@@ -1,0 +1,52 @@
+# Vendored source manifest
+
+Two source files obtained via HTTPS from pinned official upstream commits.
+
+- minimp3.h; official lieff/minimp3 commit ea99364f61c14656440e8d77e9c233ccf3124633
+  License: CC0/public domain in source header.
+- stb_vorbis.c; official nothings/stb commit 003501f6d7a8668ce8b6d875e34dd97ad0d5d5b5
+  License: MIT/Unlicense/public domain in source and STB-LICENSE.txt.
+- Used existing NDK r26d (revision 26.3.11579264) already on Ubuntu-Max.
+  No SDK installation or paid inference.
+57e437c5c1f0e8b243885d3929c8973b5e6c778451e0100ab4251d19915cb3ad  native/vendor/minimp3.h
+4c7cb2ff1f7011e9d67950446b7eb9ca044f2e464d76bfbb0b84dd2e23e65636  native/vendor/stb_vorbis.c
+bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63  native/vendor/STB-LICENSE.txt
+
+## Godot 3.6 GDNative headers
+
+Official upstream https://github.com/godotengine/godot-headers,
+tag `godot-3.6-stable`, pinned object/commit
+`9aea2a115dfc6b5b403fd62882f9b872bf5948c1` (HTTPS codeload archive).
+MIT license retained in godot-headers/LICENSE.md. Only C ABI header directories,
+generated API structure, upstream README and license are tracked; upstream API
+JSON/image files are not needed for this C adapter. The ABI was exercised against
+actual Godot 3.6.3 on Ubuntu-Max, not a Java stub.
+
+Header SHA256 (relative to native/vendor/godot-headers):
+aacf3847fc2bbecde16690f211fb4ac42fe1d58b77c2763f4c1e3ce5c78da04d  android/godot_android.h
+8d4b7c2253c03ecba123fd6a64358c010389d7aefd0cdcca282f7de31841a8e3  arvr/godot_arvr.h
+218e8183324e6449cdd6bdaa345e4b383d3d3d934a317ace740026d4096bf46a  gdnative/aabb.h
+62fc979886372782f50408a8693f0f52a06dfe19e219a79dfc5ff7ecf46d7163  gdnative/array.h
+98be1e264d90d04d95aef4a16e3fd5a5899a4b45310aa28a2e6957eac9fb99c9  gdnative/basis.h
+b7f246e0aa4a8feff74873bca70368eb25a1f2f8a6d97e916faadcb760394a8a  gdnative/color.h
+33dcd0c2812a8cef1e42b5f6d0ecb688c01e9e18f799d7e94f3a4bb97382ac1c  gdnative/dictionary.h
+f9a8cb5a0494ab9b1959116b541bd98b22a1246328c5b3f9f059b0e9f7ce6326  gdnative/gdnative.h
+d615d079d9f51831f5ed6aab489f189ccf5d20b4de20a3a5d900fca7578ad793  gdnative/node_path.h
+d11e3a17c2239abe6d10c9adef2c96f5cac0ea528874035685584b3e4dd3ef03  gdnative/plane.h
+60e0fabc9d155b8a4973df1591b7475e42b0ab11d70572aeddd1011684ba9da8  gdnative/pool_arrays.h
+579f4402f409f4fac763fb1b67d886bf17e48e76068add03f986eeffaa99a36e  gdnative/quat.h
+237fdbdaabcbff9877201ef3cf6c2009317fcde85cddf6766323bf39203ef3ef  gdnative/rect2.h
+86d1466b2a414531ae41904950dd93579921b70f43772506b393fbf7ee77143c  gdnative/rid.h
+372982ecb437f02a4d8c57ca1ad573a8954d6378246278dc64d2cd16b61008d6  gdnative/string.h
+40a2646947233d2be2351a7b257ae0a30ec8cc59106a033d6aef09e027284904  gdnative/string_name.h
+f05dce74697aa51efd129c56f3c185c5eba33cbd69ac4834f26ba9211ed4a7b1  gdnative/transform.h
+c628ebda7757933604c2a2d7e836f96f154fa01e2c3347b177119e36f73cdfe4  gdnative/transform2d.h
+ef96930af9ad781bcc7f7174c42aeac7afcec912108fa5d0aa927330e79ec1cf  gdnative/variant.h
+c9f21b82919e6157fe632c18774a927aa40060c31371760c7712a4e70a0337cd  gdnative/vector2.h
+aaa8ba79ca5e2720410c733035c7ea93f880b09bb6c2437468fd4284f9c5fbb9  gdnative/vector3.h
+e12a20f3a3805e59e93bde02fbf8b014fa7ca96c55a5d98b8f378720137d9308  gdnative_api_struct.gen.h
+6a584ecedc376319405b2d73afc332a97912bc334f98d44d0ef1a134fced954b  nativescript/godot_nativescript.h
+3461401efcb23a77b1dc511d7a18b6139c5c02fbc8606abf214e97cfab65963c  net/godot_net.h
+565813a694775f91c61c65e981ba1c7e1bba42be546be9631955da75d67528a1  net/godot_webrtc.h
+dce71841f74b7c8ea0bc0407806681da571ef3cae59d339a7da7d975d1e85988  pluginscript/godot_pluginscript.h
+ed3e2511afda63629810e8fe5f55838f0205b579faa96eb3b694f48b2f63b338  videodecoder/godot_videodecoder.h

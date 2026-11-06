@@ -1,0 +1,3 @@
+# Neon horizon v1
+
+Original image generated for this private Shield app family on 25 October 2026 using the built-in OpenAI image generation tool. No reference images or third-party character assets were supplied. Exact prompt, file hash and texture limits are recorded in manifest.json. The .bin file contains the unchanged generated PNG so Android exports retain source bytes. Load once, use filter-only NPOT texture, release the owning scene on exit; an absent or invalid asset falls back to the procedural background. This record does not grant redistribution rights for any unrelated bundled music or existing assets.

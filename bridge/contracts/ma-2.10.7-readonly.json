@@ -1,0 +1,757 @@
+{
+  "observed_date": "2026-10-25",
+  "ma_version_observed": "2.10.7",
+  "source": [
+    "MA server /api-docs/commands.json",
+    "MA server /api-docs/schemas.json"
+  ],
+  "source_sha256": {
+    "commands": "dfad4ac3641b6f3fe8c3c183977143772adc88d20bcb2e4f59efd935f9c3d590",
+    "schemas": "85a37a6381825213b62dd950c10a338fdff5fa595416d63f67cc66dab725ed46"
+  },
+  "commands": [
+    {
+      "command": "music/playlists/get",
+      "category": "Music",
+      "summary": "Return (full) details for a single media item.",
+      "description": "Return (full) details for a single media item.\n\nTries to find the item in the library first, falling back to\nfetching directly from the provider if not found.",
+      "parameters": [
+        {
+          "name": "item_id",
+          "type": "string",
+          "required": true,
+          "description": "The provider item id to fetch."
+        },
+        {
+          "name": "provider_instance_id_or_domain",
+          "type": "string",
+          "required": true,
+          "description": "The provider instance id or domain to fetch the item from."
+        },
+        {
+          "name": "allow_update_metadata",
+          "type": "boolean",
+          "required": false,
+          "description": "Schedule a metadata refresh on access. Set to False when fetching items in bulk (e.g. provider sync)."
+        }
+      ],
+      "return_type": "Playlist",
+      "authenticated": true,
+      "required_scope": "library.read"
+    },
+    {
+      "command": "music/playlists/library_items",
+      "category": "Music",
+      "summary": "Get the library items for this mediatype.",
+      "description": "Get the library items for this mediatype.",
+      "parameters": [
+        {
+          "name": "favorite",
+          "type": "boolean",
+          "required": false,
+          "description": "Filter by favorite status."
+        },
+        {
+          "name": "search",
+          "type": "string",
+          "required": false,
+          "description": "Filter by search query."
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "required": false,
+          "description": "Maximum number of items to return."
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "required": false,
+          "description": "Number of items to skip."
+        },
+        {
+          "name": "order_by",
+          "type": "string",
+          "required": false,
+          "description": "Order by field (e.g. 'sort_name', 'timestamp_added')."
+        },
+        {
+          "name": "provider",
+          "type": "string | Array of string",
+          "required": false,
+          "description": "Filter by provider instance ID (single string or list)."
+        },
+        {
+          "name": "genre",
+          "type": "integer | Array of integer",
+          "required": false,
+          "description": "Filter by genre id(s)."
+        },
+        {
+          "name": "played_only",
+          "type": "boolean",
+          "required": false,
+          "description": "Only include items that have been played (last_played > 0)."
+        },
+        {
+          "name": "summary",
+          "type": "boolean",
+          "required": false,
+          "description": "When True (default), return slim summary items containing only the fields needed for a list view. Set to False to get fully hydrated items."
+        },
+        {
+          "name": "collapse_collections",
+          "type": "boolean",
+          "required": false,
+          "description": "Collapse available collections. Items in a collection won't be returned individually."
+        },
+        {
+          "name": "reachable_via",
+          "type": "Array of string",
+          "required": false,
+          "description": "Restrict results to items with a provider mapping reachable through one of these provider instance ids (OR semantics), regardless of whether that mapping is itself in that provider's own library. This is independent of `provider`, which instead requires the *matched* mapping to be in-library. None applies no filter; an explicit empty list, or a list with no currently loaded/allowed instance, returns no items."
+        },
+        {
+          "name": "kwargs",
+          "type": "Any",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "Optional user_id or username of the user to execute this command on behalf of. Requires the users.impersonate scope when targeting another user."
+        }
+      ],
+      "return_type": "Array of ~ItemCls | Array of (~ItemCls | MediaCollection[~ItemCls])",
+      "authenticated": true,
+      "required_scope": "library.read"
+    },
+    {
+      "command": "music/playlists/playlist_tracks",
+      "category": "Music",
+      "summary": "Return playlist tracks for the given provider playlist id.",
+      "description": "Return playlist tracks for the given provider playlist id.",
+      "parameters": [
+        {
+          "name": "item_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "provider_instance_id_or_domain",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "force_refresh",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "allow_dynamic_tracks",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "return_type": "AsyncGenerator[Track | Radio | PodcastEpisode | Audiobook | SoundEffect]",
+      "authenticated": true,
+      "required_scope": "library.read"
+    },
+    {
+      "command": "music/tracks/get",
+      "category": "Music",
+      "summary": "Return (full) details for a single media item.",
+      "description": "Return (full) details for a single media item.",
+      "parameters": [
+        {
+          "name": "item_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "provider_instance_id_or_domain",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "allow_update_metadata",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "recursive",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "album_uri",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "return_type": "Track",
+      "authenticated": true,
+      "required_scope": "library.read"
+    },
+    {
+      "command": "music/tracks/library_items",
+      "category": "Music",
+      "summary": "Get in-database tracks.",
+      "description": "Get in-database tracks.",
+      "parameters": [
+        {
+          "name": "favorite",
+          "type": "boolean",
+          "required": false,
+          "description": "Filter by favorite status."
+        },
+        {
+          "name": "search",
+          "type": "string",
+          "required": false,
+          "description": "Filter by search query."
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "required": false,
+          "description": "Maximum number of items to return."
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "required": false,
+          "description": "Number of items to skip."
+        },
+        {
+          "name": "order_by",
+          "type": "string",
+          "required": false,
+          "description": "Order by field (e.g. 'sort_name', 'timestamp_added')."
+        },
+        {
+          "name": "provider",
+          "type": "string | Array of string",
+          "required": false,
+          "description": "Filter by provider instance ID (single string or list)."
+        },
+        {
+          "name": "genre",
+          "type": "integer | Array of integer",
+          "required": false,
+          "description": "Filter by genre id(s)."
+        },
+        {
+          "name": "played_only",
+          "type": "boolean",
+          "required": false,
+          "description": "Filter to only played tracks."
+        },
+        {
+          "name": "explicit",
+          "type": "boolean",
+          "required": false,
+          "description": "Filter by explicit content (True=only explicit, False=no explicit, None=all)."
+        },
+        {
+          "name": "summary",
+          "type": "boolean",
+          "required": false,
+          "description": "When True (default), return slim summary items containing only the fields needed for a list view. Set to False to get fully hydrated items."
+        },
+        {
+          "name": "reachable_via",
+          "type": "Array of string",
+          "required": false,
+          "description": "Restrict results to items with a provider mapping reachable through one of these provider instance ids (OR semantics). See `MediaControllerBase.library_items` for the full semantics."
+        },
+        {
+          "name": "kwargs",
+          "type": "Any",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "Optional user_id or username of the user to execute this command on behalf of. Requires the users.impersonate scope when targeting another user."
+        }
+      ],
+      "return_type": "Array of Track",
+      "authenticated": true,
+      "required_scope": "library.read"
+    },
+    {
+      "command": "player_queues/all",
+      "category": "Player Queues",
+      "summary": "Return all registered PlayerQueues.",
+      "description": "Return all registered PlayerQueues.",
+      "parameters": [],
+      "return_type": "Array of PlayerQueue",
+      "authenticated": true,
+      "required_scope": "queues.read"
+    },
+    {
+      "command": "players/all",
+      "category": "Players",
+      "summary": "Return PlayerState for all registered players.",
+      "description": "Return PlayerState for all registered players.",
+      "parameters": [
+        {
+          "name": "return_unavailable",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "return_disabled",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "provider_filter",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "return_protocol_players",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "return_type": "Array of Player",
+      "authenticated": true,
+      "required_scope": "players.read"
+    }
+  ],
+  "schemas": {
+    "Track": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string",
+          "default": ""
+        },
+        "sort_name": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "uri": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "external_ids": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalID"
+            }
+          }
+        },
+        "is_playable": {
+          "type": "boolean",
+          "default": true
+        },
+        "media_type": {
+          "$ref": "#/components/schemas/MediaType",
+          "default": "track"
+        },
+        "provider_mappings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/ProviderMapping"
+          }
+        },
+        "metadata": {
+          "$ref": "#/components/schemas/MediaItemMetadata"
+        },
+        "favorite": {
+          "type": "boolean",
+          "default": false
+        },
+        "position": {
+          "type": "integer",
+          "nullable": true,
+          "default": null
+        },
+        "date_added": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "default": null
+        },
+        "duration": {
+          "type": "integer",
+          "default": 0
+        },
+        "artists": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Artist"
+              },
+              {
+                "$ref": "#/components/schemas/ItemMapping"
+              }
+            ]
+          }
+        },
+        "last_played": {
+          "type": "integer",
+          "default": 0
+        },
+        "album": {
+          "$ref": "#/components/schemas/Album",
+          "nullable": true,
+          "default": null
+        },
+        "disc_number": {
+          "type": "integer",
+          "default": 0
+        },
+        "track_number": {
+          "type": "integer",
+          "default": 0
+        },
+        "audio_metadata": {
+          "$ref": "#/components/schemas/AudioMetadata",
+          "nullable": true,
+          "default": null
+        }
+      },
+      "required": [
+        "item_id",
+        "provider",
+        "name",
+        "provider_mappings"
+      ]
+    },
+    "Playlist": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string",
+          "default": ""
+        },
+        "sort_name": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "uri": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "external_ids": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalID"
+            }
+          }
+        },
+        "is_playable": {
+          "type": "boolean",
+          "default": true
+        },
+        "media_type": {
+          "$ref": "#/components/schemas/MediaType",
+          "default": "playlist"
+        },
+        "provider_mappings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/ProviderMapping"
+          }
+        },
+        "metadata": {
+          "$ref": "#/components/schemas/MediaItemMetadata"
+        },
+        "favorite": {
+          "type": "boolean",
+          "default": false
+        },
+        "position": {
+          "type": "integer",
+          "nullable": true,
+          "default": null
+        },
+        "date_added": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "default": null
+        },
+        "translation_key": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "translation_params": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "nullable": true,
+          "default": null
+        },
+        "owner": {
+          "type": "string",
+          "default": ""
+        },
+        "is_editable": {
+          "type": "boolean",
+          "default": false
+        },
+        "is_dynamic": {
+          "type": "boolean",
+          "default": false
+        },
+        "supported_mediatypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/MediaType"
+          }
+        }
+      },
+      "required": [
+        "item_id",
+        "provider",
+        "name",
+        "provider_mappings"
+      ]
+    },
+    "PlayerMedia": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "type": "string"
+        },
+        "media_type": {
+          "$ref": "#/components/schemas/MediaType",
+          "default": "unknown"
+        },
+        "title": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "artist": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "album": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "album_artist": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "image_url": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "palette": {
+          "$ref": "#/components/schemas/MediaItemPalette",
+          "nullable": true,
+          "default": null
+        },
+        "duration": {
+          "type": "integer",
+          "nullable": true,
+          "default": null
+        },
+        "stream_duration": {
+          "type": "integer",
+          "nullable": true,
+          "default": null
+        },
+        "source_id": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "queue_item_id": {
+          "type": "string",
+          "nullable": true,
+          "default": null
+        },
+        "custom_data": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/components/schemas/Any"
+          },
+          "nullable": true,
+          "default": null
+        },
+        "elapsed_time": {
+          "type": "integer",
+          "nullable": true,
+          "default": null
+        },
+        "elapsed_time_last_updated": {
+          "type": "number",
+          "nullable": true,
+          "default": null
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    },
+    "StreamDetails": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "audio_format": {
+          "$ref": "#/components/schemas/AudioFormat"
+        },
+        "media_type": {
+          "$ref": "#/components/schemas/MediaType",
+          "default": "track"
+        },
+        "stream_type": {
+          "$ref": "#/components/schemas/StreamType",
+          "default": "custom"
+        },
+        "duration": {
+          "type": "integer",
+          "nullable": true,
+          "default": null
+        },
+        "size": {
+          "type": "integer",
+          "nullable": true,
+          "default": null
+        },
+        "stream_metadata": {
+          "$ref": "#/components/schemas/StreamMetadata",
+          "nullable": true,
+          "default": null
+        },
+        "audio_processing": {
+          "$ref": "#/components/schemas/AudioProcessingChain",
+          "nullable": true,
+          "default": null
+        },
+        "loudness": {
+          "type": "number",
+          "nullable": true,
+          "default": null
+        },
+        "loudness_album": {
+          "type": "number",
+          "nullable": true,
+          "default": null
+        },
+        "prefer_album_loudness": {
+          "type": "boolean",
+          "default": false
+        },
+        "volume_normalization_mode": {
+          "$ref": "#/components/schemas/VolumeNormalizationMode",
+          "nullable": true,
+          "default": null
+        },
+        "volume_normalization_gain_correct": {
+          "type": "number",
+          "nullable": true,
+          "default": null
+        },
+        "target_loudness": {
+          "type": "number",
+          "nullable": true,
+          "default": null
+        }
+      },
+      "required": [
+        "provider",
+        "item_id",
+        "audio_format"
+      ]
+    },
+    "AudioFormat": {
+      "type": "object",
+      "properties": {
+        "content_type": {
+          "$ref": "#/components/schemas/ContentType",
+          "default": "?"
+        },
+        "codec_type": {
+          "$ref": "#/components/schemas/ContentType",
+          "default": "?"
+        },
+        "sample_rate": {
+          "type": "integer",
+          "default": 44100
+        },
+        "bit_depth": {
+          "type": "integer",
+          "default": 16
+        },
+        "channels": {
+          "type": "integer",
+          "default": 2
+        },
+        "output_format_str": {
+          "type": "string",
+          "default": ""
+        },
+        "bit_rate": {
+          "type": "integer",
+          "nullable": true,
+          "default": null
+        }
+      }
+    }
+  }
+}

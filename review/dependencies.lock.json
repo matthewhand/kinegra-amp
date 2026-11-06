@@ -1,0 +1,274 @@
+{
+  "scope": "Public source build dependency pins; external libraries and toolchains are not bundled. Opus disabled in the Android SDK build.",
+  "external": [
+    {
+      "name": "sendspin-cpp",
+      "repository": "https://github.com/Sendspin/sendspin-cpp",
+      "revision": "985fba57afb0462b520ab9ce974d1860858ed685",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75",
+      "license_url": "https://raw.githubusercontent.com/Sendspin/sendspin-cpp/985fba57afb0462b520ab9ce974d1860858ed685/LICENSE",
+      "role": "external-native",
+      "bundled_in_review": false
+    },
+    {
+      "name": "ArduinoJson",
+      "repository": "https://github.com/bblanchon/ArduinoJson",
+      "revision": "32520135092970120a5ac165cf45f48e658c421d",
+      "license": "MIT",
+      "license_path": "LICENSE.txt",
+      "license_sha256": "ebba0906d6c8b3daa8a1b59acb2d3a416485dd77fc10f6dd4c9ed2cbe467ee2d",
+      "license_url": "https://raw.githubusercontent.com/bblanchon/ArduinoJson/32520135092970120a5ac165cf45f48e658c421d/LICENSE.txt",
+      "role": "external-native",
+      "bundled_in_review": false
+    },
+    {
+      "name": "IXWebSocket",
+      "repository": "https://github.com/machinezone/IXWebSocket",
+      "revision": "64fae7676bd8fe31f7cb4bcde7a6841892dad65e",
+      "license": "BSD-3-Clause",
+      "license_path": "LICENSE.txt",
+      "license_sha256": "9cc46d4265f18ab959b75c44102285dc04bb04ea2bb696b1858f5c38f7ebaca0",
+      "license_url": "https://raw.githubusercontent.com/machinezone/IXWebSocket/64fae7676bd8fe31f7cb4bcde7a6841892dad65e/LICENSE.txt",
+      "role": "external-native",
+      "bundled_in_review": false
+    },
+    {
+      "name": "micro-flac",
+      "repository": "https://github.com/esphome-libs/micro-flac",
+      "revision": "f9c27d4d0166021db977d7fc37d205b21d81e9f2",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75",
+      "license_url": "https://raw.githubusercontent.com/esphome-libs/micro-flac/f9c27d4d0166021db977d7fc37d205b21d81e9f2/LICENSE",
+      "role": "external-native",
+      "bundled_in_review": false
+    },
+    {
+      "name": "micro-ogg-demuxer",
+      "repository": "https://github.com/esphome-libs/micro-ogg-demuxer",
+      "revision": "ee95ec6f6b633789ec31e0e44877f6cc7fe7cf67",
+      "license": "Apache-2.0",
+      "license_path": "LICENSE",
+      "license_sha256": "9d32abddf41d631e572f7b418ee1c3a22d6d87b934f7d45a026bcbf742e87dc5",
+      "license_url": "https://raw.githubusercontent.com/esphome-libs/micro-ogg-demuxer/ee95ec6f6b633789ec31e0e44877f6cc7fe7cf67/LICENSE",
+      "role": "external-native",
+      "bundled_in_review": false
+    },
+    {
+      "name": "noise-c",
+      "repository": "https://github.com/esphome-libs/noise-c",
+      "revision": "a1e08809a1b8f65cd91765ba7d68a6d00648ad61",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "f2c0cc36aa63c383fd1669b63eff210ee8cabb304dd818a9f442d93906eff587",
+      "license_url": "https://raw.githubusercontent.com/esphome-libs/noise-c/a1e08809a1b8f65cd91765ba7d68a6d00648ad61/LICENSE",
+      "role": "external-native",
+      "bundled_in_review": false,
+      "local_patches": [
+        "native/noise-pattern-bounds.patch"
+      ],
+      "local_patch_note": "Exact pinned export; object-sized pattern scans, no cryptographic or protocol changes."
+    },
+    {
+      "name": "FTXUI",
+      "repository": "https://github.com/ArthurSonzogni/FTXUI",
+      "revision": "cdf28903a7781f97ba94d30b79c3a4b0c97ccce7",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_sha256": "0224d97639ad37047d719a5ed5c0acc98de1c58ae63be0c27183dcad1328fc61",
+      "license_url": "https://raw.githubusercontent.com/ArthurSonzogni/FTXUI/cdf28903a7781f97ba94d30b79c3a4b0c97ccce7/LICENSE",
+      "role": "optional-cli",
+      "bundled_in_review": false
+    }
+  ],
+  "verified_vendored_source": {
+    "verified_upstream_blobs": [
+      {
+        "path": "native/vendor/minimp3.h",
+        "sha256": "57e437c5c1f0e8b243885d3929c8973b5e6c778451e0100ab4251d19915cb3ad",
+        "upstream": "https://raw.githubusercontent.com/lieff/minimp3/ea99364f61c14656440e8d77e9c233ccf3124633/minimp3.h"
+      },
+      {
+        "path": "native/vendor/stb_vorbis.c",
+        "sha256": "4c7cb2ff1f7011e9d67950446b7eb9ca044f2e464d76bfbb0b84dd2e23e65636",
+        "upstream": "https://raw.githubusercontent.com/nothings/stb/003501f6d7a8668ce8b6d875e34dd97ad0d5d5b5/stb_vorbis.c"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative_api_struct.gen.h",
+        "sha256": "e12a20f3a3805e59e93bde02fbf8b014fa7ca96c55a5d98b8f378720137d9308",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative_api_struct.gen.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/LICENSE.md",
+        "sha256": "cb62d01ef85fc223c2e7018b4e90ec607bc78f10cecfda600919953dcbe229a5",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/LICENSE.md"
+      },
+      {
+        "path": "native/vendor/godot-headers/README.md",
+        "sha256": "ba6adf2560589acc0c4d087d1dd729ad150198c3b3562e9f780341306c1edd9a",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/README.md",
+        "upstream_sha256": "785036514bb7b99028ce1192234232ec73292b180d6de44978cefe8b2ad8e753",
+        "local_modification": "Documentation only: use versioned Godot 3.6 compiling manual in place of retired latest URL. Header source unchanged."
+      },
+      {
+        "path": "native/vendor/godot-headers/nativescript/godot_nativescript.h",
+        "sha256": "6a584ecedc376319405b2d73afc332a97912bc334f98d44d0ef1a134fced954b",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/nativescript/godot_nativescript.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/pluginscript/godot_pluginscript.h",
+        "sha256": "dce71841f74b7c8ea0bc0407806681da571ef3cae59d339a7da7d975d1e85988",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/pluginscript/godot_pluginscript.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/net/godot_webrtc.h",
+        "sha256": "565813a694775f91c61c65e981ba1c7e1bba42be546be9631955da75d67528a1",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/net/godot_webrtc.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/net/godot_net.h",
+        "sha256": "3461401efcb23a77b1dc511d7a18b6139c5c02fbc8606abf214e97cfab65963c",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/net/godot_net.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/vector3.h",
+        "sha256": "aaa8ba79ca5e2720410c733035c7ea93f880b09bb6c2437468fd4284f9c5fbb9",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/vector3.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/color.h",
+        "sha256": "b7f246e0aa4a8feff74873bca70368eb25a1f2f8a6d97e916faadcb760394a8a",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/color.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/quat.h",
+        "sha256": "579f4402f409f4fac763fb1b67d886bf17e48e76068add03f986eeffaa99a36e",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/quat.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/plane.h",
+        "sha256": "d11e3a17c2239abe6d10c9adef2c96f5cac0ea528874035685584b3e4dd3ef03",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/plane.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/transform.h",
+        "sha256": "f05dce74697aa51efd129c56f3c185c5eba33cbd69ac4834f26ba9211ed4a7b1",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/transform.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/aabb.h",
+        "sha256": "218e8183324e6449cdd6bdaa345e4b383d3d3d934a317ace740026d4096bf46a",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/aabb.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/variant.h",
+        "sha256": "ef96930af9ad781bcc7f7174c42aeac7afcec912108fa5d0aa927330e79ec1cf",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/variant.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/rid.h",
+        "sha256": "86d1466b2a414531ae41904950dd93579921b70f43772506b393fbf7ee77143c",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/rid.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/rect2.h",
+        "sha256": "237fdbdaabcbff9877201ef3cf6c2009317fcde85cddf6766323bf39203ef3ef",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/rect2.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/string.h",
+        "sha256": "372982ecb437f02a4d8c57ca1ad573a8954d6378246278dc64d2cd16b61008d6",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/string.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/dictionary.h",
+        "sha256": "33dcd0c2812a8cef1e42b5f6d0ecb688c01e9e18f799d7e94f3a4bb97382ac1c",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/dictionary.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/array.h",
+        "sha256": "62fc979886372782f50408a8693f0f52a06dfe19e219a79dfc5ff7ecf46d7163",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/array.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/basis.h",
+        "sha256": "98be1e264d90d04d95aef4a16e3fd5a5899a4b45310aa28a2e6957eac9fb99c9",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/basis.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/pool_arrays.h",
+        "sha256": "60e0fabc9d155b8a4973df1591b7475e42b0ab11d70572aeddd1011684ba9da8",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/pool_arrays.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/string_name.h",
+        "sha256": "40a2646947233d2be2351a7b257ae0a30ec8cc59106a033d6aef09e027284904",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/string_name.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/transform2d.h",
+        "sha256": "c628ebda7757933604c2a2d7e836f96f154fa01e2c3347b177119e36f73cdfe4",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/transform2d.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/node_path.h",
+        "sha256": "d615d079d9f51831f5ed6aab489f189ccf5d20b4de20a3a5d900fca7578ad793",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/node_path.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/gdnative.h",
+        "sha256": "f9a8cb5a0494ab9b1959116b541bd98b22a1246328c5b3f9f059b0e9f7ce6326",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/gdnative.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/gdnative/vector2.h",
+        "sha256": "c9f21b82919e6157fe632c18774a927aa40060c31371760c7712a4e70a0337cd",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/gdnative/vector2.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/videodecoder/godot_videodecoder.h",
+        "sha256": "ed3e2511afda63629810e8fe5f55838f0205b579faa96eb3b694f48b2f63b338",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/videodecoder/godot_videodecoder.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/arvr/godot_arvr.h",
+        "sha256": "8d4b7c2253c03ecba123fd6a64358c010389d7aefd0cdcca282f7de31841a8e3",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/arvr/godot_arvr.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/android/godot_android.h",
+        "sha256": "aacf3847fc2bbecde16690f211fb4ac42fe1d58b77c2763f4c1e3ce5c78da04d",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/android/godot_android.h"
+      },
+      {
+        "path": "native/vendor/godot-headers/images/faq/dllibrary_create_new_resource.png",
+        "sha256": "7bebefcc013838a288cde377b0084fc02fc8fda3e35d2d00deb1b54bb638c884",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/images/faq/dllibrary_create_new_resource.png"
+      },
+      {
+        "path": "native/vendor/godot-headers/images/faq/dllibrary_create_new_dllibrary.png",
+        "sha256": "cd33274f4f424e2c6c04dc87a5eb6a0a66c2fcd265eef4e3703e87f021b34d51",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/images/faq/dllibrary_create_new_dllibrary.png"
+      },
+      {
+        "path": "native/vendor/godot-headers/images/faq/dllibrary_save_as_resource.png",
+        "sha256": "1cf37592f710d37577e16715902b0bdd133c5bf209be5d7a661fa23a3d18096a",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/images/faq/dllibrary_save_as_resource.png"
+      },
+      {
+        "path": "native/vendor/godot-headers/images/faq/create_dlscript.png",
+        "sha256": "40d01a2d666068a1d5b752359cb1d4c0edee04309b9dcb32934647cddb94e6d7",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/images/faq/create_dlscript.png"
+      },
+      {
+        "path": "native/vendor/godot-headers/images/faq/set_script_dllibrary.png",
+        "sha256": "cac5d1215e86c26bdcf0a38bc8e90520bc86ad2cc6125ae124aa4676f0b7766e",
+        "upstream": "https://raw.githubusercontent.com/godotengine/godot-headers/9aea2a115dfc6b5b403fd62882f9b872bf5948c1/images/faq/set_script_dllibrary.png"
+      }
+    ],
+    "font_sha256": "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280",
+    "font_matches_unmodified_system_dejavu": true
+  }
+}

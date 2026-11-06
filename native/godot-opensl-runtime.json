@@ -1,0 +1,19 @@
+{
+  "upstream": "https://github.com/godotengine/godot/releases/tag/3.6.3-stable",
+  "archive_sha256": "3d44858051deb0db1c1fe4ee82b0c4cf64ab65bb5ab6f1c2c4816f27c7c7117e",
+  "patch_sha256": "303b832195a3bca09390f9f68e59f1cbdda980b292fe9282dcd99b14e7b3afa2",
+  "ndk": "26.3.11579264",
+  "scons": "4.8.1",
+  "scons_flags": [
+    "-j24",
+    "platform=android",
+    "target=release",
+    "tools=no",
+    "android_arch=arm64v8",
+    "ndk_platform=android-26",
+    "debug_symbols=no"
+  ],
+  "arm64_sha256": "6a80758e52d6c0c74f2f7677724aec4c87a8e9224e9872978071b15930d6f2a6",
+  "purpose": "Destroy OpenSL player/recorder and output mix before engine, then release buffers. Child destruction joins callbacks before the audio driver mutex is destroyed.",
+  "elf_load_alignment": 16384
+}

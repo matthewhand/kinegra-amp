@@ -1,0 +1,5 @@
+
+third_party/notices/* -whitespace
+app/assets/notices/* -whitespace
+native/*.patch -whitespace
+review/licenses/* -whitespace

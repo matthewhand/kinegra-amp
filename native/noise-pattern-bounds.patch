@@ -1,0 +1,92 @@
+--- a/src/protocol/patterns.c
++++ b/src/protocol/patterns.c
+@@ -20,6 +20,10 @@
+  * DEALINGS IN THE SOFTWARE.
+  */
+ 
++/* Kinegra ShieldAmp modification, 2026-11-03: retain each static pattern
++ * object size when expanding it, so bounded token scans never exceed that
++ * object. Token sequences, modifiers and cryptographic operations are unchanged.
++ */
+ #include "protocol/internal.h"
+ #include <string.h>
+ 
+@@ -452,26 +456,36 @@
+  * The remaining bytes are the token for the pattern, terminated by
+  * NOISE_TOKEN_END.
+  */
++static const uint8_t *noise_pattern_lookup_sized(int id, size_t *size)
++{
++#define NOISE_PATTERN_CASE(name) \
++    case NOISE_PATTERN_##name: *size = sizeof(noise_pattern_##name); \
++        return noise_pattern_##name
++    switch (id) {
++    NOISE_PATTERN_CASE(N);
++    NOISE_PATTERN_CASE(K);
++    NOISE_PATTERN_CASE(X);
++    NOISE_PATTERN_CASE(NN);
++    NOISE_PATTERN_CASE(NK);
++    NOISE_PATTERN_CASE(NX);
++    NOISE_PATTERN_CASE(XN);
++    NOISE_PATTERN_CASE(XK);
++    NOISE_PATTERN_CASE(XX);
++    NOISE_PATTERN_CASE(KN);
++    NOISE_PATTERN_CASE(KK);
++    NOISE_PATTERN_CASE(KX);
++    NOISE_PATTERN_CASE(IN);
++    NOISE_PATTERN_CASE(IK);
++    NOISE_PATTERN_CASE(IX);
++    default: *size = 0; return 0;
++    }
++#undef NOISE_PATTERN_CASE
++}
++
+ const uint8_t *noise_pattern_lookup(int id)
+ {
+-    switch (id) {
+-    case NOISE_PATTERN_N:               return noise_pattern_N;
+-    case NOISE_PATTERN_K:               return noise_pattern_K;
+-    case NOISE_PATTERN_X:               return noise_pattern_X;
+-    case NOISE_PATTERN_NN:              return noise_pattern_NN;
+-    case NOISE_PATTERN_NK:              return noise_pattern_NK;
+-    case NOISE_PATTERN_NX:              return noise_pattern_NX;
+-    case NOISE_PATTERN_XN:              return noise_pattern_XN;
+-    case NOISE_PATTERN_XK:              return noise_pattern_XK;
+-    case NOISE_PATTERN_XX:              return noise_pattern_XX;
+-    case NOISE_PATTERN_KN:              return noise_pattern_KN;
+-    case NOISE_PATTERN_KK:              return noise_pattern_KK;
+-    case NOISE_PATTERN_KX:              return noise_pattern_KX;
+-    case NOISE_PATTERN_IN:              return noise_pattern_IN;
+-    case NOISE_PATTERN_IK:              return noise_pattern_IK;
+-    case NOISE_PATTERN_IX:              return noise_pattern_IX;
+-    default:                            return 0;
+-    }
++    size_t size;
++    return noise_pattern_lookup_sized(id, &size);
+ }
+ 
+ /**
+@@ -676,20 +690,21 @@
+     const uint8_t *base_pattern;
+     const uint8_t *pattern_end;
+     size_t pattern_len;
++    size_t base_pattern_size;
+     NoisePatternFlags_t flags;
+     uint8_t temp[NOISE_MAX_TOKENS];
+     size_t index;
+     int err;
+ 
+     /* Look up the base pattern */
+-    base_pattern = noise_pattern_lookup(pattern_id);
++    base_pattern = noise_pattern_lookup_sized(pattern_id, &base_pattern_size);
+     if (!base_pattern)
+         return NOISE_ERROR_UNKNOWN_NAME;
+ 
+     /* Copy the base pattern into the return buffer */
+     pattern_end = (const uint8_t *)memchr
+         (base_pattern + 2, NOISE_TOKEN_END,
+-         NOISE_MAX_TOKENS - NOISE_PATTERN_HEADER_LEN);
++         base_pattern_size - NOISE_PATTERN_HEADER_LEN);
+     if (!pattern_end)
+         return NOISE_ERROR_INVALID_LENGTH;
+     pattern_len = pattern_end + 1 - base_pattern;

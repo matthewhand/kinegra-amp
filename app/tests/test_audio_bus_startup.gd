@@ -1,0 +1,40 @@
+extends SceneTree
+var failures=[]
+func check(ok,label):
+    print("AUDIO_BUS_"+("PASS_" if ok else "FAIL_")+label)
+    if not ok:failures.append(label)
+func _init():call_deferred("run")
+func run():
+    var original=AudioServer.generate_bus_layout()
+    var layout=AudioBusLayout.new()
+    layout.set("bus/0/name","Master")
+    layout.set("bus/0/volume_db",-3.0)
+    layout.set("bus/1/name","Existing")
+    layout.set("bus/1/send","Master")
+    layout.set("bus/1/mute",true)
+    var existing_effect=AudioEffectAmplify.new()
+    existing_effect.volume_db=-6.0
+    layout.set("bus/1/effect/0/effect",existing_effect)
+    layout.set("bus/1/effect/0/enabled",false)
+    AudioServer.set_bus_layout(layout)
+    var app=load("res://scripts/Main.gd").new()
+    app._build_audio_bus()
+    check(AudioServer.get_bus_count()==3 and AudioServer.get_bus_name(0)=="Master" and AudioServer.get_bus_name(1)=="Existing" and AudioServer.get_bus_name(2)=="Milkdrop","new_analysis_bus_preserves_existing_order")
+    check(AudioServer.get_bus_volume_db(0)==-3.0 and AudioServer.is_bus_mute(1) and AudioServer.get_bus_send(1)=="Master","existing_bus_routing_and_gain_preserved")
+    check(AudioServer.get_bus_effect_count(1)==1 and AudioServer.get_bus_effect(1,0)==existing_effect and not AudioServer.is_bus_effect_enabled(1,0) and existing_effect.volume_db==-6.0,"existing_effect_identity_and_settings_preserved")
+    check(app.spectrum is AudioEffectSpectrumAnalyzerInstance and AudioServer.get_bus_send(2)=="Master","analysis_effect_ready_on_expected_bus")
+    var spectrum=app.spectrum
+    app._build_audio_bus()
+    check(AudioServer.get_bus_count()==3 and AudioServer.get_bus_effect_count(2)==1 and app.spectrum==spectrum,"repeat_initialization_reuses_bus_and_effect")
+    # An existing named bus without the analyzer retains its own effects.
+    var missing=AudioBusLayout.new()
+    missing.set("bus/0/name","Master")
+    missing.set("bus/1/name","Milkdrop")
+    missing.set("bus/1/effect/0/effect",existing_effect)
+    missing.set("bus/1/effect/0/enabled",false)
+    AudioServer.set_bus_layout(missing)
+    app._build_audio_bus()
+    check(AudioServer.get_bus_count()==2 and AudioServer.get_bus_effect_count(1)==2 and AudioServer.get_bus_effect(1,0)==existing_effect and not AudioServer.is_bus_effect_enabled(1,0) and app.spectrum is AudioEffectSpectrumAnalyzerInstance,"existing_analysis_bus_keeps_prior_effects")
+    app.free()
+    AudioServer.set_bus_layout(original)
+    print("AUDIO_BUS_FAILURES=",failures.size());quit(0 if failures.empty() else 1)

@@ -1,0 +1,40 @@
+# Build products, generated dependencies and import caches
+/build/
+/releases/
+/app/android/
+/app/native/bin/
+/app/.import/
+/app/.godot/
+/app/.mono/
+/native/build/
+.gradle/
+__pycache__/
+*.py[cod]
+*.log
+*.apk
+*.aar
+*.so
+*.a
+
+# Local settings and signing material
+.agent/
+.state/
+.secrets/
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.p12
+*.pem
+*.pk8
+public-build-inputs.json
+*.local.json
+local.properties
+
+# Disposable captures and generated audio; cleared documentation art is tracked
+/captures/
+/outputs/
+/app/tests/fixtures/
+/app/assets/music/*
+!/app/assets/music/README.md

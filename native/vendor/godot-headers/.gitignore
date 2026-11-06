@@ -1,0 +1,12 @@
+*
+!.gitignore
+!*.h
+!LICENSE.md
+!README.md
+!/gdnative/
+!/android/
+!/arvr/
+!/nativescript/
+!/net/
+!/pluginscript/
+!/videodecoder/

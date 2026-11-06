@@ -1,0 +1,48 @@
+extends SceneTree
+var failures=[]
+func check(ok, label):
+    if not ok:
+        failures.append(label)
+        printerr("SAMPLE_FAIL ",label)
+func _init():
+    call_deferred("run")
+func run():
+    var store=load("res://scripts/BundledSampleStore.gd").new()
+    store.directory="user://sample_test_"+str(OS.get_ticks_msec())
+    var music=load("res://scripts/OfflineMusic.gd").new()
+    get_root().add_child(music)
+    check(store.initialize(music.SOURCES),"extract originals")
+    check(store.availability()==[true,true,true,true],"four files available")
+    check(store.load_track(0)!=null and store.load_track(0).get_length()>1,"extracted Ogg decodes")
+    music.sample_store=store
+    music.playlists.set_availability(store.availability())
+    check(music.cue_track(0),"cue remains silent")
+    check(not music.is_playing(),"no autoplay")
+    check(music.remove_bundled_track(0),"remove selected")
+    check(not store.available(0) and not 0 in music.playlists.indices(),"removed from mix")
+    check(store.initialize(music.SOURCES) and not store.available(0),"restart does not restore removed")
+    check(not music.cue_track(0),"removed track cannot be cued")
+    check(music.restore_bundled_tracks() and store.available(0),"explicit restore works")
+    check(not music.is_playing(),"restore remains silent")
+    for i in range(4):
+        check(music.remove_bundled_track(i),"remove track "+str(i))
+    check(music.playlists.indices().empty() and not music.play(),"empty library fails safely")
+    check(music.restore_bundled_tracks() and music.playlists.indices().size()==4,"restore all")
+    check(music.remove_bundled_track(0) and music.remove_bundled_track(1),"remove for partial restore")
+    var obstruction=File.new()
+    check(obstruction.open(store.track_path(1),File.WRITE)==OK,"create unreadable fixture")
+    obstruction.store_string("bad fixture")
+    obstruction.close()
+    check(not music.restore_bundled_tracks(),"partial restore reports failure")
+    check(store.available(0) and music.playlists.available_tracks[0],"partially restored track remains selectable")
+    check(not store.available(1) and not music.playlists.available_tracks[1],"invalid track stays unavailable")
+    check(not music.is_playing(),"failed restore remains silent")
+    Directory.new().remove(store.track_path(1))
+    check(music.restore_bundled_tracks(),"retry completes restore")
+    var dir=Directory.new()
+    for i in range(4): dir.remove(store.track_path(i))
+    dir.remove(store.directory.plus_file("installed-v1"))
+    dir.remove(store.directory)
+    music.queue_free()
+    print("SAMPLE_LIBRARY_FAILURES=",failures)
+    quit(0 if failures.empty() else 1)

@@ -1,0 +1,3220 @@
+COORDINATE androidx.activity:activity:1.8.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.activity</groupId>
+  <artifactId>activity</artifactId>
+  <version>1.8.1</version>
+  <packaging>aar</packaging>
+  <name>Activity</name>
+  <description>Provides the base Activity subclass and the relevant hooks to build a composable structure on top.</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/activity#1.8.1</url>
+  <inceptionYear>2018</inceptionYear>
+  <organization>
+    <name>The Android Open Source Project</name>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.activity</groupId>
+        <artifactId>activity-compose</artifactId>
+        <version>1.8.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.activity</groupId>
+        <artifactId>activity-ktx</artifactId>
+        <version>1.8.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.collection</groupId>
+      <artifactId>collection</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.core</groupId>
+      <artifactId>core</artifactId>
+      <version>1.8.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-runtime</artifactId>
+      <version>2.6.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-viewmodel</artifactId>
+      <version>2.6.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-viewmodel-savedstate</artifactId>
+      <version>2.6.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.profileinstaller</groupId>
+      <artifactId>profileinstaller</artifactId>
+      <version>1.3.0</version>
+      <scope>runtime</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.savedstate</groupId>
+      <artifactId>savedstate</artifactId>
+      <version>1.2.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.tracing</groupId>
+      <artifactId>tracing</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.22</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.annotation:annotation-experimental:1.4.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.annotation</groupId>
+  <artifactId>annotation-experimental</artifactId>
+  <version>1.4.0</version>
+  <packaging>aar</packaging>
+  <name>Experimental annotation</name>
+  <description>Java annotation for use on unstable Android API surfaces. When used in conjunction with the Experimental annotation lint checks, this annotation provides functional parity with Kotlin's Experimental annotation.</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/annotation#1.4.0</url>
+  <inceptionYear>2019</inceptionYear>
+  <organization>
+    <name>The Android Open Source Project</name>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.7.10</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.annotation:annotation:1.2.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.annotation</groupId>
+  <artifactId>annotation</artifactId>
+  <version>1.2.0</version>
+  <name>Android Support Library Annotations</name>
+  <description>The Support Library is a static library that you can add to your Android application in order to use APIs that are either not available for older platform versions or utility APIs that aren't a part of the framework APIs.</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/annotation#1.2.0</url>
+  <inceptionYear>2013</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+</project>
+
+
+COORDINATE androidx.arch.core:core-common:2.2.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.arch.core</groupId>
+  <artifactId>core-common</artifactId>
+  <version>2.2.0</version>
+  <name>Android Arch-Common</name>
+  <description>Android Arch-Common</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/arch-core#2.2.0</url>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.arch.core:core-runtime:2.2.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.arch.core</groupId>
+  <artifactId>core-runtime</artifactId>
+  <version>2.2.0</version>
+  <packaging>aar</packaging>
+  <name>Android Arch-Runtime</name>
+  <description>Android Arch-Runtime</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/arch-core#2.2.0</url>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.arch.core</groupId>
+      <artifactId>core-common</artifactId>
+      <version>[2.2.0]</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.collection:collection:1.1.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.collection</groupId>
+  <artifactId>collection</artifactId>
+  <version>1.1.0</version>
+  <name>Android Support Library collections</name>
+  <description>Standalone efficient collections.</description>
+  <url>http://developer.android.com/tools/extras/support-library.html</url>
+  <inceptionYear>2018</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>http://source.android.com</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE androidx.concurrent:concurrent-futures:1.1.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.concurrent</groupId>
+  <artifactId>concurrent-futures</artifactId>
+  <version>1.1.0</version>
+  <name>AndroidX Futures</name>
+  <description>Androidx implementation of Guava's ListenableFuture</description>
+  <url>https://developer.android.com/topic/libraries/architecture/index.html</url>
+  <inceptionYear>2018</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>http://source.android.com</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>listenablefuture</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE androidx.core:core-ktx:1.2.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.core</groupId>
+  <artifactId>core-ktx</artifactId>
+  <version>1.2.0</version>
+  <packaging>aar</packaging>
+  <name>Core Kotlin Extensions</name>
+  <description>Kotlin extensions for 'core' artifact</description>
+  <url>https://developer.android.com/jetpack/androidx</url>
+  <inceptionYear>2018</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>http://source.android.com</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.3.41</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.core</groupId>
+      <artifactId>core</artifactId>
+      <version>1.2.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE androidx.core:core:1.8.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.core</groupId>
+  <artifactId>core</artifactId>
+  <version>1.8.0</version>
+  <packaging>aar</packaging>
+  <name>Android Support Library compat</name>
+  <description>The Support Library is a static library that you can add to your Android application in order to use APIs that are either not available for older platform versions or utility APIs that aren't a part of the framework APIs. Compatible on devices running API 14 or later.</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/core#1.8.0</url>
+  <inceptionYear>2015</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.2.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation-experimental</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.collection</groupId>
+      <artifactId>collection</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.concurrent</groupId>
+      <artifactId>concurrent-futures</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-runtime</artifactId>
+      <version>2.3.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.versionedparcelable</groupId>
+      <artifactId>versionedparcelable</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.core:core:1.8.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.core</groupId>
+  <artifactId>core</artifactId>
+  <version>1.8.0</version>
+  <packaging>aar</packaging>
+  <name>Android Support Library compat</name>
+  <description>The Support Library is a static library that you can add to your Android application in order to use APIs that are either not available for older platform versions or utility APIs that aren't a part of the framework APIs. Compatible on devices running API 14 or later.</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/core#1.8.0</url>
+  <inceptionYear>2015</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.2.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation-experimental</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.collection</groupId>
+      <artifactId>collection</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.concurrent</groupId>
+      <artifactId>concurrent-futures</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-runtime</artifactId>
+      <version>2.3.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.versionedparcelable</groupId>
+      <artifactId>versionedparcelable</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.customview:customview:1.0.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.customview</groupId>
+  <artifactId>customview</artifactId>
+  <version>1.0.0</version>
+  <packaging>aar</packaging>
+  <name>Android Support Library Custom View</name>
+  <description>The Support Library is a static library that you can add to your Android application in order to use APIs that are either not available for older platform versions or utility APIs that aren't a part of the framework APIs. Compatible on devices running API 14 or later.</description>
+  <url>http://developer.android.com/tools/extras/support-library.html</url>
+  <inceptionYear>2018</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>http://source.android.com</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.core</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0</version>
+      <type>aar</type>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE androidx.fragment:fragment:1.8.6
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.fragment</groupId>
+  <artifactId>fragment</artifactId>
+  <version>1.8.6</version>
+  <packaging>aar</packaging>
+  <name>fragment</name>
+  <description>The Support Library is a static library that you can add to your Android application in order to use APIs that are either not available for older platform versions or utility APIs that aren't a part of the framework APIs. Compatible on devices running API 14 or later.</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/fragment#1.8.6</url>
+  <inceptionYear>2011</inceptionYear>
+  <organization>
+    <name>The Android Open Source Project</name>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.fragment</groupId>
+        <artifactId>fragment-compose</artifactId>
+        <version>1.8.6</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.fragment</groupId>
+        <artifactId>fragment-ktx</artifactId>
+        <version>1.8.6</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.fragment</groupId>
+        <artifactId>fragment-testing</artifactId>
+        <version>1.8.6</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.fragment</groupId>
+        <artifactId>fragment-testing-manifest</artifactId>
+        <version>1.8.6</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.activity</groupId>
+      <artifactId>activity</artifactId>
+      <version>1.8.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation-experimental</artifactId>
+      <version>1.4.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.collection</groupId>
+      <artifactId>collection</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.core</groupId>
+      <artifactId>core-ktx</artifactId>
+      <version>1.2.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-livedata-core</artifactId>
+      <version>2.6.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-runtime</artifactId>
+      <version>2.6.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-viewmodel</artifactId>
+      <version>2.6.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-viewmodel-savedstate</artifactId>
+      <version>2.6.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.loader</groupId>
+      <artifactId>loader</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.profileinstaller</groupId>
+      <artifactId>profileinstaller</artifactId>
+      <version>1.3.1</version>
+      <scope>runtime</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.savedstate</groupId>
+      <artifactId>savedstate</artifactId>
+      <version>1.2.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.viewpager</groupId>
+      <artifactId>viewpager</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.22</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.lifecycle:lifecycle-common:2.6.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.lifecycle</groupId>
+  <artifactId>lifecycle-common</artifactId>
+  <version>2.6.1</version>
+  <name>Android Lifecycle-Common</name>
+  <description>Android Lifecycle-Common</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/lifecycle#2.6.1</url>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common-java8</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-compiler</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-truth</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-process</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-testing</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-service</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-savedstate</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.10</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-coroutines-android</artifactId>
+      <version>1.6.4</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>kotlin-stdlib-jdk8</artifactId>
+          <groupId>org.jetbrains.kotlin</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>kotlin-stdlib-jdk7</artifactId>
+          <groupId>org.jetbrains.kotlin</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.lifecycle:lifecycle-livedata-core:2.6.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.lifecycle</groupId>
+  <artifactId>lifecycle-livedata-core</artifactId>
+  <version>2.6.1</version>
+  <packaging>aar</packaging>
+  <name>Android Lifecycle LiveData Core</name>
+  <description>Android Lifecycle LiveData Core</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/lifecycle#2.6.1</url>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common-java8</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-compiler</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-truth</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-process</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-testing</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-service</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-savedstate</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.arch.core</groupId>
+      <artifactId>core-common</artifactId>
+      <version>2.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.arch.core</groupId>
+      <artifactId>core-runtime</artifactId>
+      <version>2.1.0</version>
+      <scope>runtime</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-common</artifactId>
+      <version>[2.6.1]</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.10</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.lifecycle:lifecycle-livedata:2.6.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.lifecycle</groupId>
+  <artifactId>lifecycle-livedata</artifactId>
+  <version>2.6.1</version>
+  <packaging>aar</packaging>
+  <name>Android Lifecycle LiveData</name>
+  <description>Android Lifecycle LiveData</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/lifecycle#2.6.1</url>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common-java8</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-compiler</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-truth</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-process</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-testing</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-service</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-savedstate</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.arch.core</groupId>
+      <artifactId>core-common</artifactId>
+      <version>2.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.arch.core</groupId>
+      <artifactId>core-runtime</artifactId>
+      <version>2.1.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-livedata-core</artifactId>
+      <version>[2.6.1]</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.10</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.lifecycle:lifecycle-runtime:2.6.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.lifecycle</groupId>
+  <artifactId>lifecycle-runtime</artifactId>
+  <version>2.6.1</version>
+  <packaging>aar</packaging>
+  <name>Android Lifecycle Runtime</name>
+  <description>Android Lifecycle Runtime</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/lifecycle#2.6.1</url>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common-java8</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-compiler</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-truth</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-process</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-testing</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-service</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-savedstate</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.arch.core</groupId>
+      <artifactId>core-common</artifactId>
+      <version>2.2.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.arch.core</groupId>
+      <artifactId>core-runtime</artifactId>
+      <version>2.2.0</version>
+      <scope>runtime</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-common</artifactId>
+      <version>[2.6.1]</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.profileinstaller</groupId>
+      <artifactId>profileinstaller</artifactId>
+      <version>1.3.0</version>
+      <scope>runtime</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.10</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.lifecycle</groupId>
+  <artifactId>lifecycle-viewmodel-savedstate</artifactId>
+  <version>2.6.1</version>
+  <packaging>aar</packaging>
+  <name>Android Lifecycle ViewModel with SavedState</name>
+  <description>Android Lifecycle ViewModel</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/lifecycle#2.6.1</url>
+  <inceptionYear>2018</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common-java8</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-compiler</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-truth</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-process</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-testing</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-service</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.core</groupId>
+      <artifactId>core-ktx</artifactId>
+      <version>1.2.0</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-livedata-core</artifactId>
+      <version>[2.6.1]</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-viewmodel</artifactId>
+      <version>[2.6.1]</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>androidx.savedstate</groupId>
+      <artifactId>savedstate</artifactId>
+      <version>1.2.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.10</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-coroutines-android</artifactId>
+      <version>1.6.4</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.lifecycle:lifecycle-viewmodel:2.6.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.lifecycle</groupId>
+  <artifactId>lifecycle-viewmodel</artifactId>
+  <version>2.6.1</version>
+  <packaging>aar</packaging>
+  <name>Android Lifecycle ViewModel</name>
+  <description>Android Lifecycle ViewModel</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/lifecycle#2.6.1</url>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common-java8</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-compiler</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-truth</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-process</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-testing</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-service</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-savedstate</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.10</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.lifecycle:lifecycle-viewmodel:2.6.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.lifecycle</groupId>
+  <artifactId>lifecycle-viewmodel</artifactId>
+  <version>2.6.1</version>
+  <packaging>aar</packaging>
+  <name>Android Lifecycle ViewModel</name>
+  <description>Android Lifecycle ViewModel</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/lifecycle#2.6.1</url>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-common-java8</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-compiler</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-core-truth</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-livedata-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-process</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-reactivestreams-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-ktx-lint</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-runtime-testing</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-service</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-compose-samples</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-ktx</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>androidx.lifecycle</groupId>
+        <artifactId>lifecycle-viewmodel-savedstate</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.10</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.loader:loader:1.0.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.loader</groupId>
+  <artifactId>loader</artifactId>
+  <version>1.0.0</version>
+  <packaging>aar</packaging>
+  <name>Android Support Library loader</name>
+  <description>The Support Library is a static library that you can add to your Android application in order to use APIs that are either not available for older platform versions or utility APIs that aren't a part of the framework APIs. Compatible on devices running API 14 or later.</description>
+  <url>http://developer.android.com/tools/extras/support-library.html</url>
+  <inceptionYear>2011</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>http://source.android.com</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.core</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0</version>
+      <type>aar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-livedata</artifactId>
+      <version>2.0.0</version>
+      <type>aar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-viewmodel</artifactId>
+      <version>2.0.0</version>
+      <type>aar</type>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE androidx.profileinstaller:profileinstaller:1.3.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.profileinstaller</groupId>
+  <artifactId>profileinstaller</artifactId>
+  <version>1.3.1</version>
+  <packaging>aar</packaging>
+  <name>androidx.profileinstaller:profileinstaller</name>
+  <description>Allows libraries to prepopulate ahead of time compilation traces to be read by ART</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/profileinstaller#1.3.1</url>
+  <inceptionYear>2021</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.2.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.concurrent</groupId>
+      <artifactId>concurrent-futures</artifactId>
+      <version>1.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.startup</groupId>
+      <artifactId>startup-runtime</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>listenablefuture</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.savedstate:savedstate:1.2.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.savedstate</groupId>
+  <artifactId>savedstate</artifactId>
+  <version>1.2.1</version>
+  <packaging>aar</packaging>
+  <name>Saved State</name>
+  <description>Android Lifecycle Saved State</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/savedstate#1.2.1</url>
+  <inceptionYear>2018</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>androidx.savedstate</groupId>
+        <artifactId>savedstate-ktx</artifactId>
+        <version>1.2.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.arch.core</groupId>
+      <artifactId>core-common</artifactId>
+      <version>2.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.lifecycle</groupId>
+      <artifactId>lifecycle-common</artifactId>
+      <version>2.6.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.10</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+COORDINATE androidx.startup:startup-runtime:1.1.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.startup</groupId>
+  <artifactId>startup-runtime</artifactId>
+  <version>1.1.1</version>
+  <packaging>aar</packaging>
+  <name>Android App Startup Runtime</name>
+  <description>Android App Startup Runtime</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/startup#1.1.1</url>
+  <inceptionYear>2020</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.tracing</groupId>
+      <artifactId>tracing</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+      <type>aar</type>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE androidx.tracing:tracing:1.0.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.tracing</groupId>
+  <artifactId>tracing</artifactId>
+  <version>1.0.0</version>
+  <packaging>aar</packaging>
+  <name>Android Tracing</name>
+  <description>Android Tracing</description>
+  <url>https://developer.android.com/jetpack/androidx/releases/tracing#1.0.0</url>
+  <inceptionYear>2020</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>https://cs.android.com/androidx/platform/frameworks/support</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE androidx.versionedparcelable:versionedparcelable:1.1.1
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.versionedparcelable</groupId>
+  <artifactId>versionedparcelable</artifactId>
+  <version>1.1.1</version>
+  <packaging>aar</packaging>
+  <name>VersionedParcelable</name>
+  <description>Provides a stable but relatively compact binary serialization format that can be passed across processes or persisted safely.</description>
+  <url>http://developer.android.com/tools/extras/support-library.html</url>
+  <inceptionYear>2018</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>http://source.android.com</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.collection</groupId>
+      <artifactId>collection</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE androidx.viewpager:viewpager:1.0.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>androidx.viewpager</groupId>
+  <artifactId>viewpager</artifactId>
+  <version>1.0.0</version>
+  <packaging>aar</packaging>
+  <name>Android Support Library View Pager</name>
+  <description>The Support Library is a static library that you can add to your Android application in order to use APIs that are either not available for older platform versions or utility APIs that aren't a part of the framework APIs. Compatible on devices running API 14 or later.</description>
+  <url>http://developer.android.com/tools/extras/support-library.html</url>
+  <inceptionYear>2018</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>The Android Open Source Project</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://android.googlesource.com/platform/frameworks/support</connection>
+    <url>http://source.android.com</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>androidx.annotation</groupId>
+      <artifactId>annotation</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.core</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0</version>
+      <type>aar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>androidx.customview</groupId>
+      <artifactId>customview</artifactId>
+      <version>1.0.0</version>
+      <type>aar</type>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+LICENSE PARENT com.google.guava:guava-parent:26.0-android
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>9</version>
+  </parent>
+  <groupId>com.google.guava</groupId>
+  <artifactId>guava-parent</artifactId>
+  <version>26.0-android</version>
+  <packaging>pom</packaging>
+  <name>Guava Maven Parent</name>
+  <url>https://github.com/google/guava</url>
+  <properties>
+    <!-- Override this with -Dtest.include="**/SomeTest.java" on the CLI -->
+    <test.include>%regex[.*.class]</test.include>
+    <truth.version>0.41</truth.version>
+    <animal.sniffer.version>1.14</animal.sniffer.version>
+    <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
+  </properties>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/google/guava/issues</url>
+  </issueManagement>
+  <inceptionYear>2010</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <prerequisites>
+    <maven>3.0.3</maven>
+  </prerequisites>
+  <scm>
+    <connection>scm:git:https://github.com/google/guava.git</connection>
+    <developerConnection>scm:git:git@github.com:google/guava.git</developerConnection>
+    <url>https://github.com/google/guava</url>
+  </scm>
+  <developers>
+    <developer>
+      <id>kevinb9n</id>
+      <name>Kevin Bourrillion</name>
+      <email>kevinb@google.com</email>
+      <organization>Google</organization>
+      <organizationUrl>http://www.google.com</organizationUrl>
+      <roles>
+        <role>owner</role>
+        <role>developer</role>
+      </roles>
+      <timezone>-8</timezone>
+    </developer>
+  </developers>
+  <ciManagement>
+    <system>Travis CI</system>
+    <url>https://travis-ci.org/google/guava</url>
+  </ciManagement>
+  <modules>
+    <module>guava</module>
+    <module>guava-testlib</module>
+    <module>guava-tests</module>
+  </modules>
+  <build>
+    <!-- Handle where Guava deviates from Maven defaults -->
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>test</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin.version}</version>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.6.1</version>
+          <configuration>
+            <source>1.7</source>
+            <target>1.7</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+          <configuration>
+            <excludes>
+              <exclude>**/ForceGuavaCompilation*</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.1.2</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <phase>post-integration-test</phase>
+              <goals><goal>jar</goal></goals>
+            </execution>
+          </executions>
+          <configuration>
+            <excludes>
+              <exclude>**/ForceGuavaCompilation*</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>animal-sniffer-maven-plugin</artifactId>
+          <version>${animal.sniffer.version}</version>
+          <configuration>
+            <signature>
+              <groupId>org.codehaus.mojo.signature</groupId>
+              <artifactId>java16-sun</artifactId>
+              <version>1.10</version>
+            </signature>
+            <ignores>
+              <!-- Unsafe isn't part of the documented Java 6 API, but it is available.
+                   And in cases where it's not, we have fallbacks. -->
+              <ignore>sun.misc.Unsafe</ignore>
+            </ignores>
+          </configuration>
+          <executions>
+            <execution>
+              <id>check-java-version-compatibility</id>
+              <phase>test</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven-javadoc-plugin.version}</version>
+          <configuration>
+            <quiet>true</quiet>
+            <notimestamp>true</notimestamp>
+            <encoding>UTF-8</encoding>
+            <docencoding>UTF-8</docencoding>
+            <charset>UTF-8</charset>
+            <additionalOptions>
+              <additionalOption>-XDignore.symbol.file</additionalOption>
+              <additionalOption>-Xdoclint:-html</additionalOption>
+            </additionalOptions>
+            <linksource>true</linksource>
+          </configuration>
+          <executions>
+            <execution>
+              <id>attach-docs</id>
+              <phase>post-integration-test</phase>
+              <goals><goal>jar</goal></goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.10</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.6</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.7.2</version>
+          <configuration>
+            <includes>
+              <include>${test.include}</include>
+            </includes>
+            <!-- By having our own entries here, we also override the default exclusion filter, which excludes all nested classes. -->
+            <excludes>
+              <!-- https://github.com/google/guava/issues/2840 -->
+              <exclude>%regex[.*PackageSanityTests.*.class]</exclude>
+              <!-- FeatureUtilTest.*ExampleDerivedInterfaceTester, com.google.common.io.*Tester, incidentally FeatureSpecificTestSuiteBuilderTest.MyAbstractTester (but we don't care either way because it's not meant to run on its own but works OK if it does)... but not NullPointerTesterTest, etc. -->
+              <exclude>%regex[.*Tester.class]</exclude>
+              <!-- Anonymous TestCase subclasses in GeneratedMonitorTest -->
+              <exclude>%regex[.*[$]\d+.class]</exclude>
+            </excludes>
+            <redirectTestOutputToFile>true</redirectTestOutputToFile>
+            <runOrder>alphabetical</runOrder>
+            <!-- Set max heap for tests. -->
+            <!-- Catch dependencies on the default locale by setting it to hi-IN. -->
+            <argLine>-Xmx1536M -Duser.language=hi -Duser.country=IN</argLine>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <distributionManagement>
+    <site>
+      <id>guava-site</id>
+      <name>Guava Documentation Site</name>
+      <url>scp://dummy.server/dontinstall/usestaging</url>
+    </site>
+  </distributionManagement>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>3.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-compat-qual</artifactId>
+        <version>2.5.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.errorprone</groupId>
+        <artifactId>error_prone_annotations</artifactId>
+        <version>2.1.3</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.j2objc</groupId>
+        <artifactId>j2objc-annotations</artifactId>
+        <version>1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymock</artifactId>
+        <version>3.0</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>2.19.0</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.jimfs</groupId>
+        <artifactId>jimfs</artifactId>
+        <version>1.1</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.truth</groupId>
+        <artifactId>truth</artifactId>
+        <version>${truth.version}</version>
+        <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <!-- use the guava we're building. -->
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>com.google.caliper</groupId>
+        <artifactId>caliper</artifactId>
+        <version>1.0-beta-2</version>
+        <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <!-- use the guava we're building. -->
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>
+
+
+COORDINATE com.google.guava:listenablefuture:1.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava-parent</artifactId>
+    <version>26.0-android</version>
+  </parent>
+  <artifactId>listenablefuture</artifactId>
+  <version>1.0</version>
+  <name>Guava ListenableFuture only</name>
+  <description>
+    Contains Guava's com.google.common.util.concurrent.ListenableFuture class,
+    without any of its other classes -- but is also available in a second
+    "version" that omits the class to avoid conflicts with the copy in Guava
+    itself. The idea is:
+
+    - If users want only ListenableFuture, they depend on listenablefuture-1.0.
+
+    - If users want all of Guava, they depend on guava, which, as of Guava
+    27.0, depends on
+    listenablefuture-9999.0-empty-to-avoid-conflict-with-guava. The 9999.0-...
+    version number is enough for some build systems (notably, Gradle) to select
+    that empty artifact over the "real" listenablefuture-1.0 -- avoiding a
+    conflict with the copy of ListenableFuture in guava itself. If users are
+    using an older version of Guava or a build system other than Gradle, they
+    may see class conflicts. If so, they can solve them by manually excluding
+    the listenablefuture artifact or manually forcing their build systems to
+    use 9999.0-....
+  </description>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-docs</id>
+          </execution>
+          <execution>
+            <id>generate-javadoc-site-report</id>
+            <phase>site</phase>
+            <goals><goal>javadoc</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+
+
+COORDINATE org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jetbrains.kotlin</groupId>
+  <artifactId>kotlin-stdlib-jdk7</artifactId>
+  <version>1.8.0</version>
+  <name>Kotlin Stdlib Jdk7</name>
+  <description>Kotlin Standard Library JDK 7 extension</description>
+  <url>https://kotlinlang.org/</url>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Kotlin Team</name>
+      <organization>JetBrains</organization>
+      <organizationUrl>https://www.jetbrains.com</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://github.com/JetBrains/kotlin.git</connection>
+    <developerConnection>scm:git:https://github.com/JetBrains/kotlin.git</developerConnection>
+    <url>https://github.com/JetBrains/kotlin</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jetbrains.kotlin</groupId>
+  <artifactId>kotlin-stdlib-jdk8</artifactId>
+  <version>1.8.0</version>
+  <name>Kotlin Stdlib Jdk8</name>
+  <description>Kotlin Standard Library JDK 8 extension</description>
+  <url>https://kotlinlang.org/</url>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Kotlin Team</name>
+      <organization>JetBrains</organization>
+      <organizationUrl>https://www.jetbrains.com</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://github.com/JetBrains/kotlin.git</connection>
+    <developerConnection>scm:git:https://github.com/JetBrains/kotlin.git</developerConnection>
+    <url>https://github.com/JetBrains/kotlin</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.8.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-jdk7</artifactId>
+      <version>1.8.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE org.jetbrains.kotlin:kotlin-stdlib:2.1.21
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jetbrains.kotlin</groupId>
+  <artifactId>kotlin-stdlib</artifactId>
+  <version>2.1.21</version>
+  <name>Kotlin Stdlib</name>
+  <description>Kotlin Standard Library</description>
+  <url>https://kotlinlang.org/</url>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Kotlin Team</name>
+      <organization>JetBrains</organization>
+      <organizationUrl>https://www.jetbrains.com</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://github.com/JetBrains/kotlin.git</connection>
+    <developerConnection>scm:git:https://github.com/JetBrains/kotlin.git</developerConnection>
+    <url>https://github.com/JetBrains/kotlin</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-common</artifactId>
+        <version>2.1.21</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk7</artifactId>
+        <version>1.8.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk8</artifactId>
+        <version>1.8.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>13.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jetbrains.kotlinx</groupId>
+  <artifactId>kotlinx-coroutines-android</artifactId>
+  <version>1.6.4</version>
+  <name>kotlinx-coroutines-android</name>
+  <description>Coroutines support libraries for Kotlin</description>
+  <url>https://github.com/Kotlin/kotlinx.coroutines</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>JetBrains</id>
+      <name>JetBrains Team</name>
+      <organization>JetBrains</organization>
+      <organizationUrl>https://www.jetbrains.com</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <url>https://github.com/Kotlin/kotlinx.coroutines</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jetbrains.kotlinx</groupId>
+        <artifactId>kotlinx-coroutines-bom</artifactId>
+        <version>1.6.4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-coroutines-core-jvm</artifactId>
+      <version>1.6.4</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <version>1.6.21</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jetbrains.kotlinx</groupId>
+  <artifactId>kotlinx-coroutines-core-jvm</artifactId>
+  <version>1.6.4</version>
+  <name>kotlinx-coroutines-core</name>
+  <description>Coroutines support libraries for Kotlin</description>
+  <url>https://github.com/Kotlin/kotlinx.coroutines</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>JetBrains</id>
+      <name>JetBrains Team</name>
+      <organization>JetBrains</organization>
+      <organizationUrl>https://www.jetbrains.com</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <url>https://github.com/Kotlin/kotlinx.coroutines</url>
+  </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jetbrains.kotlinx</groupId>
+        <artifactId>kotlinx-coroutines-bom</artifactId>
+        <version>1.6.4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <version>1.6.21</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-common</artifactId>
+      <version>1.6.21</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
+
+
+COORDINATE org.jetbrains:annotations:13.0
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.jetbrains</groupId>
+    <artifactId>annotations</artifactId>
+    <version>13.0</version>
+    <packaging>jar</packaging>
+
+    <name>IntelliJ IDEA Annotations</name>
+    <description>A set of annotations used for code inspection support and code documentation.</description>
+    <url>http://www.jetbrains.org</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/JetBrains/intellij-community</url>
+        <connection>scm:git:https://github.com/JetBrains/intellij-community.git</connection>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>JetBrains</id>
+            <name>JetBrains Team</name>
+            <organization>JetBrains</organization>
+            <organizationUrl>http://www.jetbrains.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <delete dir="${basedir}/src/main/java" />
+                                <mkdir dir="${basedir}/src/main/java" />
+                                <copy todir="${basedir}/src/main/java">
+                                    <fileset dir="${basedir}/../../../community/platform/annotations/src" />
+                                </copy>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.4</version>
+                <configuration>
+                    <keyname>66770193</keyname>
+                    <homedir>${basedir}/.gnupg</homedir>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>
+

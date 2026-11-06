@@ -1,0 +1,22 @@
+{
+  "godot": "/opt/godot/Godot_v3.6.3-stable_x11.64",
+  "godot_aar": "/opt/godot/godot-lib.3.6.3.stable.release.aar",
+  "godot_debug_aar": "/opt/godot/godot-lib.3.6.3.stable.debug.aar",
+  "godot_templates": "/opt/godot/templates/3.6.3.stable",
+  "android_template": "/opt/godot/android-source",
+  "android_sdk": "/opt/android-sdk",
+  "ndk": "/opt/android-ndk-r26d",
+  "jdk": "/opt/jdk-17",
+  "gradle": "/opt/gradle-8.11.1/bin/gradle",
+  "gradle_user_home": "/opt/build-cache/gradle",
+  "sendspin_checkout": "/opt/source/sendspin-cpp",
+  "android_build_tools": "36.1.0",
+  "android_platform": "36",
+  "dependency_sources": {
+    "ArduinoJson": "/opt/source/ArduinoJson",
+    "IXWebSocket": "/opt/source/IXWebSocket",
+    "micro-flac": "/opt/source/micro-flac",
+    "noise-c": "/opt/source/noise-c"
+  },
+  "godot_engine_library": "/opt/build/audio-engine/source/godot-3.6.3-stable/platform/android/java/lib/libs/release/arm64-v8a/libgodot_android.so"
+}

@@ -1,0 +1,9 @@
+[config]
+name="ShieldAmpTokenStore"
+binary_type="local"
+binary="ShieldAmpTokenStore.aar"
+
+[dependencies]
+local=[]
+remote=[]
+custom_maven_repos=[]

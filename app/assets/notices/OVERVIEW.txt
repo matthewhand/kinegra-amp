@@ -1,0 +1,19 @@
+Kinegra Amp — licenses and notices
+
+Project code, documentation, original artwork and hero media: MIT.
+No music, private cover artwork or inference model is bundled.
+
+This release uses Godot3.6.3/GLES2, the published OpenSL shutdown fix,
+the original Godot Android Java API and native C++ runtime, Sendspin,
+the minimp3/stb codecs and the unmodified DejaVuSans font.
+
+Full Godot and Android NDK notices are retained conservatively, together
+with pinned native dependency licenses, Noise-C subcomponent headers,
+and the actual resolved Android runtime dependency POM/embedded notices.
+RUNTIME-INVENTORY.json maps the exact native payload hashes and Gradle
+artifacts. Runtime dependency resolution fails if its reviewed lock changes.
+
+Use the component selector and Previous/Next Page to read long notices.
+The complete notice bundle is also included with the source distribution.
+
+Source: https://github.com/matthewhand/kinegra-shieldamp

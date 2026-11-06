@@ -1,0 +1,66 @@
+--- a/platform/android/audio_driver_opensl.cpp
++++ b/platform/android/audio_driver_opensl.cpp
+@@ -320 +320,23 @@
+-	(*sl)->Destroy(sl);
++	// Destroy child objects first: engine destruction is refused while a player
++	// is live. Destroy waits for callbacks; never hold the mix mutex here.
++	if (player) {
++		if (playItf) (*playItf)->SetPlayState(playItf, SL_PLAYSTATE_STOPPED);
++		(*player)->Destroy(player);
++		player = nullptr;
++		playItf = nullptr;
++		bufferQueueItf = nullptr;
++	}
++	if (recorder) {
++		if (recordItf) (*recordItf)->SetRecordState(recordItf, SL_RECORDSTATE_STOPPED);
++		(*recorder)->Destroy(recorder);
++		recorder = nullptr;
++		recordItf = nullptr;
++		recordBufferQueueItf = nullptr;
++	}
++	active = false;
++	if (OutputMix) { (*OutputMix)->Destroy(OutputMix); OutputMix = nullptr; }
++	if (sl) { (*sl)->Destroy(sl); sl = nullptr; }
++	for (int i = 0; i < BUFFER_COUNT; i++) {
++		if (buffers[i]) { memdelete_arr(buffers[i]); buffers[i] = nullptr; }
++	}
++	if (mixdown_buffer) { memdelete_arr(mixdown_buffer); mixdown_buffer = nullptr; }
+--- a/platform/android/audio_driver_opensl.h
++++ b/platform/android/audio_driver_opensl.h
+@@ -50,4 +50,4 @@
+-	uint32_t buffer_size;
+-	int16_t *buffers[BUFFER_COUNT];
+-	int32_t *mixdown_buffer;
+-	int last_free;
++	uint32_t buffer_size = 0;
++	int16_t *buffers[BUFFER_COUNT] = {};
++	int32_t *mixdown_buffer = nullptr;
++	int last_free = 0;
+@@ -57,9 +57,9 @@
+-	SLPlayItf playItf;
+-	SLRecordItf recordItf;
+-	SLObjectItf sl;
+-	SLEngineItf EngineItf;
+-	SLObjectItf OutputMix;
+-	SLObjectItf player;
+-	SLObjectItf recorder;
+-	SLAndroidSimpleBufferQueueItf bufferQueueItf;
+-	SLAndroidSimpleBufferQueueItf recordBufferQueueItf;
++	SLPlayItf playItf = nullptr;
++	SLRecordItf recordItf = nullptr;
++	SLObjectItf sl = nullptr;
++	SLEngineItf EngineItf = nullptr;
++	SLObjectItf OutputMix = nullptr;
++	SLObjectItf player = nullptr;
++	SLObjectItf recorder = nullptr;
++	SLAndroidSimpleBufferQueueItf bufferQueueItf = nullptr;
++	SLAndroidSimpleBufferQueueItf recordBufferQueueItf = nullptr;
+--- a/platform/android/detect.py
++++ b/platform/android/detect.py
+@@ -46 +46 @@
+-    return "29.0.14206865"
++    return "26.3.11579264"
+@@ -200,0 +201,3 @@
++    # NDK r26 needs explicit alignment for Android 16 KiB page support.
++    env.Append(LINKFLAGS=["-Wl,-z,max-page-size=16384"])
++

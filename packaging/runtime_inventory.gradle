@@ -1,0 +1,14 @@
+import groovy.json.JsonOutput
+gradle.projectsEvaluated {
+    rootProject.tasks.register('kinegraRuntimeInventory') {
+        doLast {
+            def conf = rootProject.configurations.findByName('releaseRuntimeClasspath')
+            if (conf == null) throw new GradleException('Release runtime classpath missing')
+            def rows = conf.resolvedConfiguration.resolvedArtifacts.collect { item ->
+                [group: item.moduleVersion.id.group, name: item.name,
+                 version: item.moduleVersion.id.version, file: item.file.absolutePath]
+            }.sort { a,b -> (a.group+':'+a.name+':'+a.version) <=> (b.group+':'+b.name+':'+b.version) }
+            new File(System.getProperty('kinegra.inventory')).text = JsonOutput.prettyPrint(JsonOutput.toJson(rows))+'\n'
+        }
+    }
+}

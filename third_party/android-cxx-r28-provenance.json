@@ -1,0 +1,26 @@
+{
+  "input": "Android NDK r28",
+  "revision": "28.0.13004108",
+  "source_archive": "https://dl.google.com/android/repository/android-ndk-r28-linux.zip",
+  "source_archive_bytes": 723148067,
+  "http_etag": "\"3db5b8a\"",
+  "archive_entries": [
+    {
+      "archive_entry": "android-ndk-r28/NOTICE.toolchain",
+      "sha256": "69f10d9ba1dd4b21b886b680926056ba43fe37dbbb7e41edf548a39125a17f2a",
+      "bytes": 800392
+    },
+    {
+      "archive_entry": "android-ndk-r28/NOTICE",
+      "sha256": "d8bfe075f09b1a64be034327085219f894133c5f13bf14fd026fb8eb60e44d32",
+      "bytes": 517191
+    },
+    {
+      "archive_entry": "android-ndk-r28/source.properties",
+      "sha256": "4f060f28f653cb492fdfbf48d7c4777399574bd2e4c14090141d2db770eef129",
+      "bytes": 107
+    }
+  ],
+  "scope": "Exact official NDK notice inputs for the libc++_shared.so carrying r28/build13004108. Full toolchain notice text retained; unrelated software is not relicensed.",
+  "downloaded_bytes_via_bounded_ranges": 1667128
+}

@@ -1,0 +1,125 @@
+{
+  "notices": [
+    {
+      "file": "OVERVIEW.txt",
+      "sha256": "63f31f51b9339e121c40d6e8fadc5dd06892917b3a2045407bc386f2242ab018",
+      "title": "About these licenses"
+    },
+    {
+      "file": "ANDROID-NDK-r26d-NOTICE.txt",
+      "sha256": "8ef75b1329afc86cc26b44fd38a4ece8c78266581a32c5e57d6e7b11721183e1",
+      "title": "Android NDK r26d NOTICE"
+    },
+    {
+      "file": "ANDROID-NDK-r26d-NOTICE.toolchain.txt",
+      "sha256": "d503f647f76ba8dc538eeeb5b3851f61d46a7d1f7651fe580dab8f2fbeecbfe5",
+      "title": "Android NDK r26d NOTICE.toolchain"
+    },
+    {
+      "file": "GRADLE-RUNTIME-POMS.txt",
+      "sha256": "b4e987052e5d61a360b2253ce9191e3a05cca0e5c32f7462dca8d619de3760dc",
+      "title": "Android runtime dependency POM licenses"
+    },
+    {
+      "file": "APACHE-2.0.txt",
+      "sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75",
+      "title": "Apache License 2.0"
+    },
+    {
+      "file": "ArduinoJson-LICENSE.txt",
+      "sha256": "ebba0906d6c8b3daa8a1b59acb2d3a416485dd77fc10f6dd4c9ed2cbe467ee2d",
+      "title": "ArduinoJson license"
+    },
+    {
+      "file": "FONT-LICENSE.txt",
+      "sha256": "e81d9dced49fea2a7d576cbea283873de58563c5d488f954deb282843c3ea79c",
+      "title": "DejaVu / Bitstream Vera font"
+    },
+    {
+      "file": "RUNTIME-INVENTORY.json",
+      "sha256": "584d194d5e225fe89ceb295ed6caf1e9c2348af94d11e31a949cdf6b51282644",
+      "title": "Exact runtime component inventory"
+    },
+    {
+      "file": "GODOT-COPYRIGHT.txt",
+      "sha256": "de07bf87199ea5d77f471f0d119fb6c871f3434094870fa466448e8ae9702b7f",
+      "title": "Godot 3.6.3 COPYRIGHT.txt"
+    },
+    {
+      "file": "GODOT-LICENSE.txt",
+      "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80",
+      "title": "Godot 3.6.3 LICENSE.txt"
+    },
+    {
+      "file": "GODOT-HEADERS-LICENSE.txt",
+      "sha256": "cb62d01ef85fc223c2e7018b4e90ec607bc78f10cecfda600919953dcbe229a5",
+      "title": "Godot GDNative headers"
+    },
+    {
+      "file": "IXWebSocket-LICENSE.txt",
+      "sha256": "9cc46d4265f18ab959b75c44102285dc04bb04ea2bb696b1858f5c38f7ebaca0",
+      "title": "IXWebSocket license"
+    },
+    {
+      "file": "micro-flac-LICENSE.txt",
+      "sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75",
+      "title": "micro-flac license"
+    },
+    {
+      "file": "micro-ogg-demuxer-LICENSE.txt",
+      "sha256": "9d32abddf41d631e572f7b418ee1c3a22d6d87b934f7d45a026bcbf742e87dc5",
+      "title": "micro-ogg-demuxer license"
+    },
+    {
+      "file": "MINIMP3-CC0.txt",
+      "sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01",
+      "title": "minimp3 CC0"
+    },
+    {
+      "file": "noise-c-COPYING.txt",
+      "sha256": "f2c0cc36aa63c383fd1669b63eff210ee8cabb304dd818a9f442d93906eff587",
+      "title": "Noise-C COPYING"
+    },
+    {
+      "file": "noise-c-LICENSE.txt",
+      "sha256": "f2c0cc36aa63c383fd1669b63eff210ee8cabb304dd818a9f442d93906eff587",
+      "title": "Noise-C license"
+    },
+    {
+      "file": "noise-crypto-README.txt",
+      "sha256": "af75cc66a558bcfe216ce029014c4aa9bce5482bba6aade6ffbe19c0d8a1def1",
+      "title": "Noise-C src/crypto/README"
+    },
+    {
+      "file": "noise-x25519-LICENSE.txt",
+      "sha256": "b1d6ece4743d0b02df2710a9c87d7120d0cac43112168c2197926c0b5a04034c",
+      "title": "Noise-C src/crypto/x25519/x25519-license.txt"
+    },
+    {
+      "file": "noise-c-SOURCE-NOTICES.txt",
+      "sha256": "5b86adcb00f84525b48efbbec25afe9da610c46f9b5d65b288731a293074aa4c",
+      "title": "Noise-C subcomponent copyright notices"
+    },
+    {
+      "file": "ANDROID-CXX-r28-NOTICE.txt",
+      "sha256": "c3252bdf5f543d588e598bf0debfa33e9ae3d667785ac848b779c920ccf6093e",
+      "title": "Official Godot AAR C++ runtime (NDK r28)"
+    },
+    {
+      "file": "sendspin-cpp-LICENSE.txt",
+      "sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75",
+      "title": "Sendspin C++ license"
+    },
+    {
+      "file": "PROJECT-LICENSE.txt",
+      "sha256": "e187739c22f63de0a0844a3703503077b76f3cc352dd41ce85e291ab47240f2f",
+      "title": "ShieldAmp MIT"
+    },
+    {
+      "file": "STB-LICENSE.txt",
+      "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63",
+      "title": "stb_vorbis license"
+    }
+  ],
+  "schema": 1
+}

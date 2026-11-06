@@ -1,0 +1,10 @@
+diff --git a/src/host/ws_server.cpp b/src/host/ws_server.cpp
+--- a/src/host/ws_server.cpp
++++ b/src/host/ws_server.cpp
+@@ -1,4 +1,6 @@
++#line 1 "/src/sendspin/ws_server.cpp"
+ // Copyright 2026 Sendspin Contributors
++// Kinegra Amp modification, 2026-11-06: stable compiler-generated source names.
+ //
+ // Licensed under the Apache License, Version 2.0 (the "License");
+ // you may not use this file except in compliance with the License.

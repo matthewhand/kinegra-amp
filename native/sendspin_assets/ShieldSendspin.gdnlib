@@ -1,0 +1,13 @@
+[general]
+singleton=false
+load_once=true
+symbol_prefix="godot_"
+reloadable=false
+
+[entry]
+X11.64="res://native/bin/libshield_sendspin_x11.so"
+Android.arm64-v8a="res://native/bin/libshield_sendspin_arm64.so"
+
+[dependencies]
+X11.64=[]
+Android.arm64-v8a=[]

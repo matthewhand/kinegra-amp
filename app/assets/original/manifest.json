@@ -1,0 +1,20 @@
+{
+  "contract": "shield-original-backdrop/1",
+  "asset": "neon-horizon-v1.bin",
+  "format": "PNG",
+  "width": 1774,
+  "height": 887,
+  "mode": "RGB",
+  "sha256": "39234ed3276dd1ec54e5edb0e0e0ff004f1483859ae248720ede4919cbdf8b25",
+  "encoded_bytes": 1855569,
+  "max_encoded_bytes": 2097152,
+  "max_decoded_pixels": 1573538,
+  "max_gpu_bytes": 8388608,
+  "mipmaps": false,
+  "repeat": false,
+  "source": "OpenAI built-in image_gen",
+  "created": "2026-10-25 Australia/Sydney",
+  "reference_images": [],
+  "use": "Original project backdrop; no user music, third-party avatar or trademarked art supplied",
+  "prompt": "Use case: stylized-concept. Asset type: original low-cost background texture for private NVIDIA Shield music visualizer and antigravity racing game. Generate a single wide landscape image, ideally 2048x1024, no text, no logos, no trademarked vehicles or characters. An atmospheric deep-navy cosmic horizon above a distant abstract cyan and violet crystalline skyline, soft nebula glow, restrained fine stars. Clean dark central and lower negative space keeps gameplay and menus readable. The horizon sits in the lower third, with large calm color masses rather than noisy detail. Elegant subtle retro-futurist illustrated environment, no race track, no UI, no borders, no collage. This is background art, not a screenshot of a finished game. Entirely original imagery. Opaque background."
+}

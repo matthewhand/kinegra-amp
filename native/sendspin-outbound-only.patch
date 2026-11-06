@@ -1,0 +1,21 @@
+diff --git a/src/connection_manager.cpp b/src/connection_manager.cpp
+--- a/src/connection_manager.cpp
++++ b/src/connection_manager.cpp
+@@ -1,4 +1,5 @@
+ // Copyright 2026 Sendspin Contributors
++// Locally modified for Kinegra ShieldAmp, 2026-11-03: explicit outbound-only mode for embedded clients.
+ //
+ // Licensed under the Apache License, Version 2.0 (the "License");
+ // you may not use this file except in compliance with the License.
+@@ -1204,6 +1205,11 @@
+ // ============================================================================
+
+ uint32_t ConnectionManager::maybe_start_ws_server(int64_t now_us) {
++    // A zero port is the explicit outbound-only mode for embedded clients.
++    // Never bind an ephemeral listener on an externally reachable interface.
++    if (this->client_->config_.server_port == 0) {
++        return ProtocolTask::NO_DEADLINE;
++    }
+     if (this->ws_server_ == nullptr || this->ws_server_->is_started() || !this->is_accepting()) {
+         return ProtocolTask::NO_DEADLINE;
+     }

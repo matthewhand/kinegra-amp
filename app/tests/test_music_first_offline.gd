@@ -1,0 +1,67 @@
+extends SceneTree
+# Offline regression: tests only the local headless Godot tree. Never uses Shield or MA.
+var failures = []
+var checks = 0
+func check(ok, label):
+    checks += 1
+    if not ok:
+        failures.append(label)
+        printerr("FAIL ", label)
+func _init():
+    call_deferred("run")
+func run():
+    var stage_scene = load("res://Main.tscn")
+    check(stage_scene != null, "scene_load")
+    if stage_scene == null:
+        print("MUSIC_FIRST_CHECKS=", checks, " FAILURES=", failures)
+        quit(1)
+        return
+    var ui = stage_scene.instance()
+    get_root().add_child(ui)
+    yield(create_timer(0.35), "timeout")
+    check(ui.music_ui != null, "music_first_ui_created")
+    check(ui.offline_music != null, "offline_music_created")
+    check(not ui.offline_music.is_playing(), "no_music_autoplay")
+    check(not ui.page_scroller.visible, "legacy_setup_hidden_by_default")
+    check(ui.music_ui.visible, "visualizer_stage_visible")
+    check(ui.music_ui.library_button != null, "ma_primary_button")
+    check(ui.offline_music.player != null, "offline_player")
+    check(ui.offline_music.player.stream != null, "private_omega_ogg_loaded")
+    check(ui.offline_music.current_title() == "Review sample 1", "omega_first_title")
+    check(ui.offline_music.player.bus == "Milkdrop", "real_fft_audio_bus")
+    ui.music_ui._open_library()
+    check(ui.music_ui.ma_drawer.visible, "ma_drawer_open")
+    ui.music_ui._close_library()
+    check(not ui.music_ui.ma_drawer.visible, "ma_drawer_close")
+    ui.music_ui._advanced()
+    check(ui.page_scroller.visible and not ui.music_ui.visible, "ha_in_advanced_only")
+    ui._show_music_stage()
+    check(ui.music_ui.visible and not ui.page_scroller.visible, "back_to_visualizer")
+    ui._on_ma_selected({"name": "My real music"})
+    check("My real music" in ui.music_ui.now_title.text, "ma_selection_metadata")
+    check("NO STREAM URL YET" in ui.music_ui.status_label.text, "ma_selection_does_not_fabricate_playback")
+    check(not ui.offline_music.is_playing(), "selection_never_autoplays")
+    ui._play_offline_music()
+    yield(create_timer(0.15), "timeout")
+    check(ui.offline_music.is_playing(), "play_real_ogg_on_explicit_action")
+    check(ui.music_ui.now_title.text == "Review sample 1", "now_playing_actual_song")
+    check(not ui.demo, "visuals_not_fake_demo_during_music")
+    ui._on_ma_selected({"name": "Other catalog item"})
+    check(ui.offline_music.is_playing() and ui.music_ui.now_title.text == "Review sample 1", "catalog_browse_preserves_playing_track")
+    check(ui.music_ui.fullscreen_track_title.text == "Review sample 1", "catalog_browse_preserves_fullscreen_credit")
+    ui.pose_visual.set_mode("live")
+    ui.pose_visual.tracking_live=true
+    ui.music_ui._body_status("BODY LIVE / DEMO LIMBS")
+    check(ui.music_ui.body_button.text == "WEBCAM: LIVE" and "BODY LIVE / DEMO LIMBS" in ui.music_ui.body_button.hint_tooltip, "mixed_dancer_label")
+    ui.music_ui._body_status("BODY HOLD / BRIEF DROPOUT")
+    check(ui.music_ui.body_button.text == "WEBCAM: LIVE" and "BODY HOLD / BRIEF DROPOUT" in ui.music_ui.body_button.hint_tooltip, "brief_dropout_label")
+    ui._next_offline()
+    check(ui.offline_music.current_title() == "Review sample 2", "next_omega_track")
+    ui._previous_offline()
+    check(ui.offline_music.current_title() == "Review sample 1", "previous_omega_track")
+    ui._stop_all_music()
+    check(not ui.offline_music.is_playing(), "stop_real_music")
+    check(not ui.live_audio, "stop_clears_live_state")
+    check(ui.ma_panel.catalog.token.empty(), "no_catalog_credentials_loaded")
+    print("MUSIC_FIRST_CHECKS=", checks, " FAILURES=", failures)
+    quit(0 if failures.empty() else 1)
