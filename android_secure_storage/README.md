@@ -22,7 +22,7 @@ Supply the pinned Godot 3.6.3 release AAR, an Android platform jar and JDK 17:
 python3 android_secure_storage/build_offline.py --godot-aar /path/to/godot-lib.3.6.3.stable.release.aar --android-jar /path/to/android.jar --javac /path/to/jdk/bin/javac --output build/ShieldAmpTokenStore.aar
 ```
 
-`GODOT_AAR`, `ANDROID_JAR`, `JAVAC` or `JAVA_HOME` can supply the corresponding tool inputs. The output must be new. The builder validates the engine hash, compiles against its real plugin API and runs migration, credential-record, forget-ordering, snapshot and task-policy host tests. The [Android preview builder](../docs/BUILDING.md#android-development-preview) invokes this stage in a separate development package. Production validation checks plugin registration, required APIs and JNI return descriptors in exported DEX. Compilation alone does not establish Godot JNI or device Keystore behavior.
+`GODOT_AAR`, `ANDROID_JAR`, `JAVAC` or `JAVA_HOME` can supply the corresponding tool inputs. The output must be new. The builder validates the engine hash, compiles against its real plugin API and runs migration, credential-record, forget-ordering, snapshot and task-policy host tests. The [Android preview builder](../packaging/build_preview.py) invokes this stage in a separate development package. Production validation checks plugin registration, required APIs and JNI return descriptors in exported DEX. Compilation alone does not establish Godot JNI or device Keystore behavior.
 
 ## Godot interface
 
