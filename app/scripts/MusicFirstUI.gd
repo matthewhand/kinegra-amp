@@ -281,11 +281,8 @@ func _ready():
     var top_row = GridContainer.new()
     header_grid=top_row
     top_row.columns=7
-    top_row.add_constant_override("separation", 16)
+    top_row.add_constant_override("hseparation", 8)
     top_inside.add_child(top_row)
-    var brand = VBoxContainer.new()
-    header_brand=brand
-    brand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     var emblem = TextureRect.new()
     header_emblem=emblem
     emblem.name = "KinegraAmpEmblem"
@@ -295,9 +292,13 @@ func _ready():
     emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
     emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
     top_row.add_child(emblem)
-    top_row.add_child(brand)
-    _text(brand, "KINEGRA", 28, WHITE)
-    _text(brand, "AMP", 15, MUTED)
+    var brand = _text(top_row, "Kinegra Amp", 26, WHITE)
+    brand.name = "KinegraAmpTitle"
+    brand.clip_text = false
+    brand.valign = Label.VALIGN_CENTER
+    brand.rect_min_size.y = 66
+    brand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    header_brand = brand
     library_button = _action(top_row, "MUSIC ASSISTANT", "_open_library", true)
     offline_button = _action(top_row, "OFFLINE LIBRARY", "_open_offline_collection")
     queue_button = _action(top_row, "QUEUE", "_open_queue")

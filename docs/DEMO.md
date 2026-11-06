@@ -1,6 +1,6 @@
 # Demonstration media
 
-The README animation is a silent staged desktop capture of Kinegra Amp 1.0.10, rendered from this source with Godot on Linux. It shows local playback, the current branding, queue controls, visualisers and fullscreen artwork. It is not an Android-device capture or a streaming, camera or performance benchmark.
+The README animation is a silent desktop preview of the current Kinegra Amp source, including the updated one-line header. The released 1.0.10 APK is unchanged. The preview is rendered with Godot on Linux. It shows local playback, the current branding, queue controls, visualisers and fullscreen artwork. It is not an Android-device capture or a streaming, camera or performance benchmark.
 
 The preview fixture generates its own tones and geometric cover art and uses fictional track labels. Dancer animation is procedural; no camera, account, household, Music Assistant server or private music library is accessed. The fixture uses isolated user data and a Dummy audio driver. Its temporary samples are not part of the Android release.
 

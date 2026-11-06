@@ -16,7 +16,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "7afe09c15542d140e5509fd49645a760affb6836eaca001d53e7a101f6090b73"
+      "sha256": "29e76aacadd6b58a14cd7f8b82234a053e61a64ca549ac8707cb2f20db5ee589"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -516,7 +516,7 @@
     },
     "app/scripts/MusicFirstUI.gd": {
       "mode": "100644",
-      "sha256": "c8a0256fdd6985e3cdbada9caa0de3c68fd6f266655ee0e4785aa5852fb7f413"
+      "sha256": "ec259faba804674d56e91a1a83670b8a4ef100894b282d5d2349ae08eb1892ad"
     },
     "app/scripts/MusicUiMemory.gd": {
       "mode": "100644",
@@ -820,7 +820,7 @@
     },
     "app/tests/test_kinegra_amp_branding.gd": {
       "mode": "100644",
-      "sha256": "c04cc63fde944aa658b8858296d2fbcb164623a85afbb262c00a25a13bcc0227"
+      "sha256": "c5a809f6bf26a5148ab6a4ec3a2761f5a57e641efeddd77d20dec586c5a0da90"
     },
     "app/tests/test_local_audio_buffer.gd": {
       "mode": "100644",
@@ -1240,7 +1240,7 @@
     },
     "docs/DEMO.md": {
       "mode": "100644",
-      "sha256": "094473bd5d9c1824978e12b7df9626568b2a9473b4f85461840f9c21931db8b4"
+      "sha256": "c79313491738306421c78ffd10278dddc2b9bf69ac05eee67914350791fd79dd"
     },
     "docs/DEVELOPMENT.md": {
       "mode": "100644",
@@ -1298,9 +1298,9 @@
       "mode": "100644",
       "sha256": "97bbc5be9cef54510fcbe3432ecc12e7ccb680857e0a5e23286679036439142f"
     },
-    "docs/readme/kinegra-amp-hero-1.0.10.gif": {
+    "docs/readme/kinegra-amp-hero.gif": {
       "mode": "100644",
-      "sha256": "bf33bf83fe2cce9a968af2f11633ebc03a9f072fe19f0388eecea6feda3ec55d"
+      "sha256": "fdc4d77d95aeee7bdf6c5c1b4a627098324950408e6706e951beeb4798c787d1"
     },
     "native/GODOT-AUDIO-CLEANUP.md": {
       "mode": "100644",
@@ -1920,7 +1920,7 @@
     },
     "tools/capture_hero.py": {
       "mode": "100644",
-      "sha256": "518cec0ac5d31778964d1976c2eed765555e6cb45716d06099c00e5ef58fabf1"
+      "sha256": "4d277ff18ea5145d37f6d00ab8cb6be080bce05ec20bbf9a8f4a4ed942498e39"
     },
     "tools/check_source.py": {
       "mode": "100644",
@@ -1996,12 +1996,12 @@
     }
   },
   "project": "Kinegra Amp",
-  "publication_fixture_overlay": {
-    "runtime_rebuilt": false,
-    "scope": "Current source cleanup removes retired experiments; published 1.0.10 APK and source archive remain unchanged at their release tag."
-  },
   "schema": 1,
   "scope": "Current Kinegra Amp source, build tools and regression tests. Generated outputs, personal media, credentials and signing material are excluded.",
+  "source_update": {
+    "android_apk_rebuilt": false,
+    "scope": "Current source has a single-line Kinegra Amp header and a regenerated synthetic desktop preview. Released 1.0.10 artifacts remain unchanged at their release tag."
+  },
   "version": "1.0.10",
   "version_code": 86
 }

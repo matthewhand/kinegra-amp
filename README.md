@@ -6,7 +6,7 @@
 
 Play music from Music Assistant or your own files, build a queue with your TV remote, and switch between album artwork, neon scenes and dancing avatars. Music Assistant playback stays inside Amp.
 
-![Playback, queues and fullscreen visuals](docs/readme/kinegra-amp-hero-1.0.10.gif)
+![Playback, queues and fullscreen visuals](docs/readme/kinegra-amp-hero.gif)
 
 ## Install
 

@@ -39,11 +39,11 @@ def main():
         raise RuntimeError('Capture failed; inspect capture.log')
     assert len(list(frames.glob('frame-*.png')))==96
     font=ROOT/'app/assets/fonts/DejaVuSans.ttf'
-    caption='STAGED DESKTOP PREVIEW - Generated audio and artwork - No live account or camera'
+    caption='DESKTOP PREVIEW - Demo music and artwork'
     filters=f"pad=iw:ih+40:0:0:color=0x091122,drawtext=fontfile='{font}':text='{caption}':fontcolor=0xcbd5e1:fontsize=16:x=16:y=h-28,split[a][b];[a]palettegen=stats_mode=diff:max_colors=256[p];[b][p]paletteuse=dither=sierra2_4a"
-    gif=output/'kinegra-amp-hero-1.0.10.gif'
+    gif=output/'kinegra-amp-hero.gif'
     subprocess.run(['ffmpeg','-hide_banner','-nostdin','-v','error','-threads','2','-framerate','6','-i',str(frames/'frame-%03d.png'),'-filter_complex',filters,'-map_metadata','-1','-an','-loop','0',str(gif)],check=True)
-    (output/'hero.json').write_text(json.dumps({'application':'Kinegra Amp','version':'1.0.10','frames':96,'fps':6,'silent':True,'synthetic_only':True,'device_capture':False,'camera_or_account_access':False,'sha256':hashlib.sha256(gif.read_bytes()).hexdigest()},indent=2)+'\n')
+    (output/'hero.json').write_text(json.dumps({'application':'Kinegra Amp','base_version':'1.0.10','source_preview':True,'released_apk_unchanged':True,'frames':96,'fps':6,'silent':True,'synthetic_only':True,'device_capture':False,'camera_or_account_access':False,'sha256':hashlib.sha256(gif.read_bytes()).hexdigest()},indent=2)+'\n')
     print('HERO_READY='+str(gif))
 
 if __name__=='__main__': main()
