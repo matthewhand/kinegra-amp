@@ -61,7 +61,7 @@ def assemble(source,app,cfg,graph,native):
     if expected.exists() and json.loads(expected.read_text())!=lock:raise ValueError('Resolved Gradle runtime differs from the reviewed dependency lock')
     (Path(graph).parent/'generated-gradle-runtime.lock.json').write_text(json.dumps(lock,indent=2,sort_keys=True)+'\n')
     entry('GRADLE-RUNTIME-POMS.txt','Android runtime dependency POM licenses','\n'.join(poms))
-    entry('APACHE-2.0.txt','Apache License 2.0',(source/'review/licenses/sendspin-cpp-LICENSE.txt').read_bytes())
+    entry('APACHE-2.0.txt','Apache License 2.0',(source/'tools/licenses/sendspin-cpp-LICENSE.txt').read_bytes())
     libs={name:sha(native/name) for name in ['libshield_sendspin_arm64.so','libtegra_godot_arm64.so']}
     libs['libgodot_android.so']=sha(cfg['godot_engine_library'])
     with zipfile.ZipFile(cfg['godot_aar']) as z:

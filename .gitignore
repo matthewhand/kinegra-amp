@@ -15,6 +15,10 @@ __pycache__/
 *.aar
 *.so
 *.a
+*.class
+*.dex
+*.idsig
+**/build/
 
 # Local settings and signing material
 .agent/

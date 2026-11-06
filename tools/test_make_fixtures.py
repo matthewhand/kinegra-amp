@@ -18,11 +18,11 @@ class Fixtures(unittest.TestCase):
   (app/"tests/example.gd").write_text('extends Node\nvar title="Owner track A"\nvar artist="Owner credit / original"\n')
   self.sentinels=["assets/music/track_01.ogg","assets/music/artwork/track_01.jpg","assets/music/manifest.json","native/bin/libowner.so",".import/cache.stex",".state/session.json","android/build/key.jks","music_assistant.cfg","export_presets.cfg"]
   for name in self.sentinels:(app/name).write_bytes(("SENTINEL-PRIVATE-INPUT:"+name).encode())
-  (self.root/"review").mkdir()
+  (self.root/"tools").mkdir()
   self.update_manifest()
  def update_manifest(self):
   files={str(p.relative_to(self.root)):{} for p in (self.root/"app").rglob("*") if p.is_file()}
-  (self.root/"review/SOURCE-MANIFEST.json").write_text(json.dumps({"files":files}))
+  (self.root/"tools/SOURCE-MANIFEST.json").write_text(json.dumps({"files":files}))
  def tearDown(self):self.temp.cleanup()
  def test_clean_source_copy_and_generic_media(self):
   before=hashes(self.root);app=make_fixtures(self.root,Path(self.temp.name)/"preview")
@@ -77,6 +77,6 @@ class Fixtures(unittest.TestCase):
   self.assertFalse((app/"assets/untracked-photo.png").exists())
   self.assertFalse((app/"scripts/untracked-token.json").exists())
  def test_unindexed_source_without_manifest_is_rejected(self):
-  (self.root/"review/SOURCE-MANIFEST.json").unlink()
+  (self.root/"tools/SOURCE-MANIFEST.json").unlink()
   with self.assertRaises(ValueError):make_fixtures(self.root,Path(self.temp.name)/"unknown-preview")
 if __name__=="__main__":unittest.main()

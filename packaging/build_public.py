@@ -175,8 +175,8 @@ def build(source,out,cfg,pins):
     from assemble_notices import assemble
     inventory=assemble(source,app,cfg,graph,native)
     wrapper=['xvfb-run','-a'] if not os.environ.get('DISPLAY') else []
-    sys.path.insert(0,str(source/'review'))
-    spec=importlib.util.spec_from_file_location('host_import_gate',source/'review/build_preview.py')
+    sys.path.insert(0,str(source/'tools'))
+    spec=importlib.util.spec_from_file_location('host_import_gate',source/'tools/build_preview.py')
     host=importlib.util.module_from_spec(spec);spec.loader.exec_module(host)
     import_assets=host.import_assets
     # Import art in a minimal host project. Android-only GDNative descriptors

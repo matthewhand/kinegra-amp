@@ -17,7 +17,7 @@ def main():
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', METHEXIS_SOURCE_TEST='1')
     env.pop('DISPLAY', None)
     preview = output / 'preview'
-    subprocess.run(['python3', str(ROOT/'review/build_preview.py'), '--godot', str(args.godot), '--output', str(preview)], env=env, check=True)
+    subprocess.run(['python3', str(ROOT/'tools/build_preview.py'), '--godot', str(args.godot), '--output', str(preview)], env=env, check=True)
     app = preview / 'app'
     titles = [('Review sample 1','Prism Circuit'),('Review sample 2','Midnight Geometry'),('Review sample 3','Signal Garden'),('Review sample 4','Glass Horizon')]
     for path in (app/'scripts').glob('*.gd'):
@@ -25,7 +25,7 @@ def main():
         for old,new in titles:
             text=text.replace(old,new)
         path.write_text(text)
-    shutil.copy2(ROOT/'review/capture_hero.gd', app/'capture_hero.gd')
+    shutil.copy2(ROOT/'tools/capture_hero.gd', app/'capture_hero.gd')
     frames=output/'frames'
     frames.mkdir()
     env['KINEGRA_AMP_HERO_FRAMES']=str(frames)

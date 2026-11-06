@@ -11,7 +11,7 @@ Original hero media and artwork use the project MIT licence. [Artwork provenance
 With the documented Linux host dependencies, run:
 
 ```sh
-python3 review/capture_hero.py --godot /opt/godot/Godot_v3.6.3-stable_x11.64 --output build/hero-capture
+python3 tools/capture_hero.py --godot /opt/godot/Godot_v3.6.3-stable_x11.64 --output build/hero-capture
 ```
 
 The command creates a new isolated fixture and user-data directory, captures 96 frames at six frames per second, and adds a visible synthetic-preview caption. It does not overwrite the README asset automatically.

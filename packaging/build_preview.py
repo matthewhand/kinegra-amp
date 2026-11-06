@@ -58,7 +58,7 @@ def load_config(path,source):
         if not (cfg["godot_templates"]/name).is_file():raise ValueError("Missing Godot export template: "+name)
     for name in ["config.gradle","build.gradle","AndroidManifest.xml"]:
         if not (cfg["android_template"]/name).is_file():raise ValueError("Missing Godot custom-build source: "+name)
-    lock=json.loads((source/"review/dependencies.lock.json").read_text())
+    lock=json.loads((source/"tools/dependencies.lock.json").read_text())
     pins={item["name"]:item["revision"] for item in lock["external"]}
     checkout(cfg["sendspin_checkout"],pins["sendspin-cpp"])
     for name,path in cfg["dependency_sources"].items():checkout(path,pins[name])
@@ -145,7 +145,7 @@ screen/immersive_mode=true
 
 
 def build(source,output,cfg,pins):
-    sys.path.insert(0,str(source/"review"))
+    sys.path.insert(0,str(source/"tools"))
     from make_fixtures import make_fixtures
     app=make_fixtures(source,output)
     logs=output/"logs";logs.mkdir();state=output/"state"
@@ -171,7 +171,7 @@ def build(source,output,cfg,pins):
     run([sys.executable,source/"android_secure_storage/build_offline.py","--godot-aar",cfg["godot_aar"],"--android-jar",cfg["android_sdk"]/"platforms"/("android-"+cfg["android_platform"])/"android.jar","--javac",cfg["jdk"]/"bin/javac","--output",plugins/"ShieldAmpTokenStore.aar"],env,logs/"token-plugin.log")
     notices=app/"assets/notices";notices.mkdir()
     for original,name in [(source/"LICENSE","PROJECT-LICENSE.txt"),(source/"docs/THIRD-PARTY-NOTICES.md","THIRD-PARTY-NOTICES.txt"),(source/"native/vendor/STB-LICENSE.txt","STB-LICENSE.txt"),(source/"native/vendor/godot-headers/LICENSE.md","GODOT-HEADERS-LICENSE.txt"),(source/"app/assets/fonts/LICENSE.txt","FONT-LICENSE.txt")]:shutil.copyfile(original,notices/name)
-    for original in (source/"review/licenses").glob("*.txt"):shutil.copyfile(original,notices/original.name)
+    for original in (source/"tools/licenses").glob("*.txt"):shutil.copyfile(original,notices/original.name)
     keys=output/"keys";keys.mkdir();key=keys/"preview.keystore"
     run([cfg["jdk"]/"bin/keytool","-genkeypair","-noprompt","-keystore",key,"-alias","androiddebugkey","-keyalg","RSA","-keysize","2048","-validity","3650","-dname","CN=Kinegra Amp Preview,O=Development","-storepass:env","SHIELDAMP_PREVIEW_PASSWORD","-keypass:env","SHIELDAMP_PREVIEW_PASSWORD"],env,logs/"preview-key.log")
     settings=state/"config/godot/editor_settings-3.tres"

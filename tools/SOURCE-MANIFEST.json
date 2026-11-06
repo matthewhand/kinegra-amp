@@ -4,11 +4,11 @@
   "files": {
     ".gitattributes": {
       "mode": "100644",
-      "sha256": "107e9362e262d9e7e1120ccd3105404903ca574576efec04016a450e3d5b10c7"
+      "sha256": "9a314a8752ff3441ee88b8e5a65084397f3353e246a42b4e6313de0d0fc6b2f2"
     },
     ".gitignore": {
       "mode": "100644",
-      "sha256": "6d3c7ab33a65e03acc5226e8365dc55b06483954048d8e81fa1a9cf5e515ef36"
+      "sha256": "98923041baceb358a5877616febf3df96f458ca6d6bc81d994001f1e71487c62"
     },
     "LICENSE": {
       "mode": "100644",
@@ -17,42 +17,6 @@
     "README.md": {
       "mode": "100644",
       "sha256": "7afe09c15542d140e5509fd49645a760affb6836eaca001d53e7a101f6090b73"
-    },
-    "android_playback_capture/AndroidManifest.xml": {
-      "mode": "100644",
-      "sha256": "9174d7a1852f3dda94a2423af7e195fa30eca58e080ddf6bad33e058e61d9082"
-    },
-    "android_playback_capture/README.md": {
-      "mode": "100644",
-      "sha256": "e029c196c0a428958b8d70c80a155c32a375f4a8caf83b605a7fdaa449ecdc01"
-    },
-    "android_playback_capture/ShieldAmpPlaybackCapture.gdap": {
-      "mode": "100644",
-      "sha256": "c0ede596eed3f37066a8c04d6626c00c43b22bb849a8bbeced62188229989fbe"
-    },
-    "android_playback_capture/build_offline.sh": {
-      "mode": "100644",
-      "sha256": "14d6784b286636799b9c25238a5e7b72028ff900ad0e10e529ca62c51016048f"
-    },
-    "android_playback_capture/src/au/local/shieldamp/capture/CaptureEnvelope.java": {
-      "mode": "100644",
-      "sha256": "1fd9f2250fd409826e5053502ea2311fc1a3d23f75be53ee2b2a249cca8d661a"
-    },
-    "android_playback_capture/src/au/local/shieldamp/capture/CaptureService.java": {
-      "mode": "100644",
-      "sha256": "a9f122468574bb4682ad297b2b077902280e343baa1fda59f93d8359c36fb7ee"
-    },
-    "android_playback_capture/src/au/local/shieldamp/capture/PlaybackCaptureSession.java": {
-      "mode": "100644",
-      "sha256": "8a6ffb5264825589f60a9bd96e0bd8217d607517ea78aff36c65f4747f93030f"
-    },
-    "android_playback_capture/src/au/local/shieldamp/capture/ShieldAmpPlaybackCapture.java": {
-      "mode": "100644",
-      "sha256": "369e17b2eb7b4d1f530f8a713d83ce072bd61151c134d29ad9fcb47802fb6a46"
-    },
-    "android_playback_capture/tests/CaptureEnvelopeTest.java": {
-      "mode": "100644",
-      "sha256": "fc7f1aa6a08985bd49032b006c1638bfb35796ff0420ca2c9d6fa40d23073e0b"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -580,7 +544,7 @@
     },
     "app/scripts/OfflinePcmStaging.gd": {
       "mode": "100644",
-      "sha256": "c421ada93b213203b9d21879591fa95c5e8fdf3381094b3ee3139df3072bb424"
+      "sha256": "c3cfcb2ad6e66f6f95bdb23febc505c5006535cf73a46b9cfac584b8726f9833"
     },
     "app/scripts/OfflineQueueSave.gd": {
       "mode": "100644",
@@ -593,10 +557,6 @@
     "app/scripts/PlaybackBufferPresentation.gd": {
       "mode": "100644",
       "sha256": "090571b9eda69acb94248d8b492ee1dba32cdfe424cfbd1c8bf2139a068611a3"
-    },
-    "app/scripts/PlaybackCaptureClient.gd": {
-      "mode": "100644",
-      "sha256": "7a78e26c432ba545e2a4ec39231f2aa00de18cc9f100674700a053cf3d2f9990"
     },
     "app/scripts/PlaybackNotice.gd": {
       "mode": "100644",
@@ -637,10 +597,6 @@
     "app/scripts/SendspinPcmOutput.gd": {
       "mode": "100644",
       "sha256": "c815167708d53def5750104649cf9b27a867e470887cdb1cf8f9756910c29e16"
-    },
-    "app/scripts/SendspinPcmSession.gd": {
-      "mode": "100644",
-      "sha256": "62e6ac7e212c339d7fe0278f2baf2b3e2e89e2b27c773f1a935363c5cd55d272"
     },
     "app/scripts/SendspinPlaybackRuntime.gd": {
       "mode": "100644",
@@ -1040,7 +996,7 @@
     },
     "app/tests/test_offline_tv_player_batch.gd": {
       "mode": "100644",
-      "sha256": "d853dd4187745be4c08e38277391ed18f212a33b5995ac66dd3364c215a71139"
+      "sha256": "42cbb90c60bcde8e5df3bb5ec7677794f93347db4f1296431fe178efea791a7e"
     },
     "app/tests/test_pairing_lifecycle_guards.gd": {
       "mode": "100644",
@@ -1049,10 +1005,6 @@
     "app/tests/test_playback_buffer_presentation.gd": {
       "mode": "100644",
       "sha256": "cd4ac4ff58d99533f88fbb8d4e5c91a69f14c8d0b9f16b77a7ee1490c8cf8bde"
-    },
-    "app/tests/test_playback_capture_client_20261031.gd": {
-      "mode": "100644",
-      "sha256": "961fd3f94b82d28c8af07a70fa1a8e60b56c0b72837fa084953eab316145382a"
     },
     "app/tests/test_playback_notice.gd": {
       "mode": "100644",
@@ -1142,10 +1094,6 @@
       "mode": "100644",
       "sha256": "ad324deed34c70a307d54d0638e6335636cf891193702d62d7d4e67734c597a4"
     },
-    "app/tests/test_sendspin_pcm_session.gd": {
-      "mode": "100644",
-      "sha256": "1881be254a5cb9c2477ee6ad4886fe618abedc7ef722da362e2236068458dfe5"
-    },
     "app/tests/test_sendspin_pump_sink.gd": {
       "mode": "100644",
       "sha256": "32bfc2bfb03c3320357298afc9ec60a8612e552765a0f64704f8e745fe20ea3f"
@@ -1153,10 +1101,6 @@
     "app/tests/test_sendspin_runtime.gd": {
       "mode": "100644",
       "sha256": "f7eb1fa17b8f109d394c40f9e03629f13f241331b540a0cb24f098072818d933"
-    },
-    "app/tests/test_sendspin_stage_output.gd": {
-      "mode": "100644",
-      "sha256": "f024cf846d123943cb6dd118a71f9b4ec9bb4462b54a87dcd598d0458e4f8970"
     },
     "app/tests/test_sendspin_tv_transport.gd": {
       "mode": "100644",
@@ -1270,57 +1214,13 @@
       "mode": "100644",
       "sha256": "d5d3e6b5eb3e30452e49b773403a8762a49af0ef88f93c946c5d567abc28cceb"
     },
-    "bridge/MA-CATALOG.md": {
-      "mode": "100644",
-      "sha256": "70ac1c81276e7111cf4054f248ba3c388afb6280aa7d48fe4ec416fcfda66032"
-    },
-    "bridge/README.md": {
-      "mode": "100644",
-      "sha256": "54bee9d9f04a2a117a250eb122607024e8d0e5611b35f6116b91d0f740c054f7"
-    },
-    "bridge/codec_bridge.py": {
-      "mode": "100644",
-      "sha256": "ddb664fb478de7252d2619f93e78d3d53680fe0fe7f2a51a851bfa372323925f"
-    },
-    "bridge/contracts/installation.example.json": {
-      "mode": "100644",
-      "sha256": "a95eb643da9c6185e6ed0ba7b0ca1403585795364297d1f2a74d7d78139d39a5"
-    },
-    "bridge/contracts/ma-2.10.7-readonly.json": {
-      "mode": "100644",
-      "sha256": "00c4226dbd086f672eb4e8bed319396b68e954beb4d32d358bad299c286c96d0"
-    },
-    "bridge/ma_catalog.py": {
-      "mode": "100644",
-      "sha256": "8eab0c8aca758f501678672c93498d1dce29e9aad386e55c2908d52d0c13ef9f"
-    },
-    "bridge/run_local_e2e.py": {
-      "mode": "100644",
-      "sha256": "2b170b84835cc19392bfafa0ddeaa2c41e44c6535652d5143183426284bd2090"
-    },
-    "bridge/test_bridge_reliability.py": {
-      "mode": "100644",
-      "sha256": "fba7faf71512ebdfc3d0a9715c59ae6ea42223996cacb2cc214b11056212b9bf"
-    },
-    "bridge/test_codec_bridge.py": {
-      "mode": "100644",
-      "sha256": "eefafc0dbdf7a3d47bab56302d225210328160fee1d41191152a1db6d376168f"
-    },
-    "bridge/test_ma_catalog.py": {
-      "mode": "100644",
-      "sha256": "858f2fab3d1dbf780b9930ec06a4d4d1ef0a819647b5de39de6a8cf1840eae08"
-    },
     "clients/kinegra_amp_remote.py": {
       "mode": "100755",
-      "sha256": "e9e8248e66e9ad7e9fe4a250d5007f6567951e1701420ee44420e2c795ea0b18"
+      "sha256": "9887d09f3b266d0e3e6edbc20eda0251f1316807b667483939236080967e3aea"
     },
     "clients/offline_source.py": {
       "mode": "100644",
       "sha256": "78dc6e289d2d35381958465e7ac1f01932bbfae0ae3a5b2f4593744f99900c9e"
-    },
-    "clients/shieldamp_remote.py": {
-      "mode": "100755",
-      "sha256": "1266b8a82748bd779a15d0eb08858dd1abf23c5df3733edab75f0bb133f97e17"
     },
     "docs/ARTWORK-AND-FULLSCREEN.md": {
       "mode": "100644",
@@ -1332,23 +1232,19 @@
     },
     "docs/BUILDING.md": {
       "mode": "100644",
-      "sha256": "d1d192ff8858b80b7ecaef023ff02b38901e5bc2019c7f77f90e01ccfd6f9dc0"
+      "sha256": "11ee283fe9d0a701c48f629c075bed4c0f5d0447ad35fd03e4d0ebb62cfe995d"
     },
     "docs/CLI.md": {
       "mode": "100644",
-      "sha256": "09aa47f0927cee651cc9312f5656a4ad35417ab35a13e45d2866d95183158aaf"
-    },
-    "docs/CLIENT-COMPARISON.md": {
-      "mode": "100644",
-      "sha256": "28b5ea27ca5084c982ceb92703cb132f1f29bf8a386d371c6e57bb5af21e9e52"
+      "sha256": "e231063bd160061617b08a5ab110b3dec8fd007117603d1c02365e25fb8a465f"
     },
     "docs/DEMO.md": {
       "mode": "100644",
-      "sha256": "111d6135e1b3d5a741297f3f30f6c1684e878297b7ecb819e2a9795129635b48"
+      "sha256": "094473bd5d9c1824978e12b7df9626568b2a9473b4f85461840f9c21931db8b4"
     },
     "docs/DEVELOPMENT.md": {
       "mode": "100644",
-      "sha256": "3249825fd80f5472a489b2f78baa0b356dfd4a59dea3e820b51a26303e4c631a"
+      "sha256": "af35a2243e89a707b82c5800f722dfb7725b45a70565c3f1ebfbc0efa3066fbb"
     },
     "docs/MA-LIBRARY-REMOTE.md": {
       "mode": "100644",
@@ -1366,46 +1262,6 @@
       "mode": "100644",
       "sha256": "cfbd61a2774ef70747f175bffcaa1375b7642c4cd511d92445d83eb500b6efcf"
     },
-    "docs/RELEASE-1.0.0.md": {
-      "mode": "100644",
-      "sha256": "8cdceb6ceffb5ee3561183af16a2375e774098da06fbba3ab873cf0b45689492"
-    },
-    "docs/RELEASE-1.0.1.md": {
-      "mode": "100644",
-      "sha256": "d2352ae5f94f1bbf72a8b1fb133a9abf236322b0fcb12a3b41fa1e43b883a39f"
-    },
-    "docs/RELEASE-1.0.2.md": {
-      "mode": "100644",
-      "sha256": "780c00cfee2a823f38eb4eedbc8dbdb1837d600752f5513cc099b77c3b1621e0"
-    },
-    "docs/RELEASE-1.0.3.md": {
-      "mode": "100644",
-      "sha256": "7d3bedac038728148824f5bfcef239cd97d4a4b53fae64478cd640ba50f99c36"
-    },
-    "docs/RELEASE-1.0.4.md": {
-      "mode": "100644",
-      "sha256": "2af10f5313e15d156ac3572c853295314da21a39e9ca7479af6795e4117291a1"
-    },
-    "docs/RELEASE-1.0.5.md": {
-      "mode": "100644",
-      "sha256": "1afae6233c2daef757784359fa8fc60ab2e8bee514fa1560c975251f5be8669f"
-    },
-    "docs/RELEASE-1.0.6.md": {
-      "mode": "100644",
-      "sha256": "81029862d5ad2f12a7dd722533fdc64e81d139b8f8c718348c1aa2a0e3deba9c"
-    },
-    "docs/RELEASE-1.0.7.md": {
-      "mode": "100644",
-      "sha256": "9ab9cf495d677dffcf90a47881e95de32349fb3f0be79ff4ba397f24aa8de193"
-    },
-    "docs/RELEASE-1.0.8.md": {
-      "mode": "100644",
-      "sha256": "c96bc7231aabc88a9a350d8dbba2975c28d976b49d795fdfc6bdde00cd8828f5"
-    },
-    "docs/RELEASE-1.0.9.md": {
-      "mode": "100644",
-      "sha256": "46015c2dd495aba0404645db7af982c085e4bd3bfc6d5f66456e4ebe318656dd"
-    },
     "docs/RELEASE.md": {
       "mode": "100644",
       "sha256": "aec368b126cc022d1c97b1c2ea61f259ca0551f9e67d5dce09c611c251a230fb"
@@ -1420,7 +1276,7 @@
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
-      "sha256": "9e9ef780e3b8a6162dbbfa191d52adc7c3946f7725ee46fda7934f167da391d2"
+      "sha256": "ef0a3995efe18f6e3d71e85a8ea6e1602bbd3362597bacbddf00fd94b7ad0b9a"
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
@@ -1880,7 +1736,7 @@
     },
     "packaging/assemble_notices.py": {
       "mode": "100644",
-      "sha256": "c1fa4f6ca7bac71124ecc65a21b1fc57076af98d485ad653b92083df5e875bcd"
+      "sha256": "17adcc17bb0cd0221acdcd0c8d7ea515f021a9d7d7bffdb735fd4cccfdd7e55a"
     },
     "packaging/build_arm_noise_proof.py": {
       "mode": "100644",
@@ -1892,11 +1748,11 @@
     },
     "packaging/build_preview.py": {
       "mode": "100644",
-      "sha256": "da27cfbf5251a588c0cfb3bb3a00377353868079388b3a06f62f2a19bc90096b"
+      "sha256": "1f85b05824c330cf02c3da59fb603ba15e8d1354901c19065161261fea269519"
     },
     "packaging/build_public.py": {
       "mode": "100644",
-      "sha256": "6e38aab4828ac358436de9b7be77c136af63adcce075988585ea8c9a25bc96a5"
+      "sha256": "c30becd6da09e9f3268fedf633c5e9ee69f1217f95137cab2f64c3df48339b71"
     },
     "packaging/patch_android_tv_manifest.py": {
       "mode": "100644",
@@ -1953,102 +1809,6 @@
     "packaging/test_tv_banner_manifest.py": {
       "mode": "100644",
       "sha256": "cfa8b0d0e62e47177bec8935de92fade864c60acdd10d15131da0d9961f96f3c"
-    },
-    "review/README.md": {
-      "mode": "100644",
-      "sha256": "60cbd13b69faeeb630b46a85830bbf801dec9348069b78d1acce20f07d234a27"
-    },
-    "review/SOURCE-MANIFEST-NOTE.md": {
-      "mode": "100644",
-      "sha256": "39659e82f217b88d8dc10a7f115c929510db5993e6b021a26af83086bf8a464f"
-    },
-    "review/build_preview.py": {
-      "mode": "100644",
-      "sha256": "f06485cc62745c0d4984e581e83f37e78eb0f58bb08d45476bb43a1661cf708c"
-    },
-    "review/capture_hero.gd": {
-      "mode": "100644",
-      "sha256": "c3d147c69ba4003ea9109adc6e4ca8d0ec6a4396178d27fed5214e032d5f7928"
-    },
-    "review/capture_hero.py": {
-      "mode": "100644",
-      "sha256": "bbd89e82ea26feb048867639e4642eb10cbb8fa1e9acccb1b4246786b062c669"
-    },
-    "review/check_source.py": {
-      "mode": "100644",
-      "sha256": "734eaeffda69803e079ffe0ce4964cf8785b1dd0969c45ec69e72553b06a9b91"
-    },
-    "review/dependencies.lock.json": {
-      "mode": "100644",
-      "sha256": "49c922b4e904af3cbf928155590c43d886d916e155ac9865f1ef51246c8c917a"
-    },
-    "review/licenses/ArduinoJson-LICENSE.txt": {
-      "mode": "100644",
-      "sha256": "ebba0906d6c8b3daa8a1b59acb2d3a416485dd77fc10f6dd4c9ed2cbe467ee2d"
-    },
-    "review/licenses/FTXUI-LICENSE.txt": {
-      "mode": "100644",
-      "sha256": "0224d97639ad37047d719a5ed5c0acc98de1c58ae63be0c27183dcad1328fc61"
-    },
-    "review/licenses/IXWebSocket-LICENSE.txt": {
-      "mode": "100644",
-      "sha256": "9cc46d4265f18ab959b75c44102285dc04bb04ea2bb696b1858f5c38f7ebaca0"
-    },
-    "review/licenses/micro-flac-LICENSE.txt": {
-      "mode": "100644",
-      "sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75"
-    },
-    "review/licenses/micro-ogg-demuxer-LICENSE.txt": {
-      "mode": "100644",
-      "sha256": "9d32abddf41d631e572f7b418ee1c3a22d6d87b934f7d45a026bcbf742e87dc5"
-    },
-    "review/licenses/minimp3-CC0.txt": {
-      "mode": "100644",
-      "sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01"
-    },
-    "review/licenses/noise-c-LICENSE.txt": {
-      "mode": "100644",
-      "sha256": "f2c0cc36aa63c383fd1669b63eff210ee8cabb304dd818a9f442d93906eff587"
-    },
-    "review/licenses/sendspin-cpp-LICENSE.txt": {
-      "mode": "100644",
-      "sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75"
-    },
-    "review/make_fixtures.py": {
-      "mode": "100644",
-      "sha256": "e269ca55c91fc8a8e7f6103c5a4df8d922be35fb068cf6b003ac5f5a751c61f9"
-    },
-    "review/test_build_preview_errors.py": {
-      "mode": "100644",
-      "sha256": "138e18a54d30f4e3fa4c72b849c5c79e19bafc86765352fadb83df21c29cc752"
-    },
-    "review/test_make_fixtures.py": {
-      "mode": "100644",
-      "sha256": "f7ce80fee25e32edc5b909d8a0681f3a2528535d2c925dac4d909e8be86d7fea"
-    },
-    "review/test_offline_save.py": {
-      "mode": "100644",
-      "sha256": "fbed611c1d44d596cecc02daed2d1884ddc9942727ac5b0473201346edb21cd3"
-    },
-    "review/test_preview_import_completion.py": {
-      "mode": "100644",
-      "sha256": "c7d5e0e04bd5a43ffbde64a27230519b8f0809945fcdb21a16ecbd029f5f048b"
-    },
-    "review/test_remote_cli.py": {
-      "mode": "100644",
-      "sha256": "ba6dd054d6533ae68580f7a5fe53610baa2f099a6385f66f4a620ce2e2c818b4"
-    },
-    "review/test_web_access.py": {
-      "mode": "100644",
-      "sha256": "3b7b6d27c6cd11b02c4aa988d8956e59a91f096f8acaf42c8756782a819552b3"
-    },
-    "review/test_web_music_browser.py": {
-      "mode": "100644",
-      "sha256": "3d248e5a22f0b92b48b615d85bbb5de5cabf1d079f3db415d652275a186f19c1"
-    },
-    "review/test_web_remote.py": {
-      "mode": "100644",
-      "sha256": "79b943b8b72752ea6d7c45f7a5c69ba85b953f2d550a42b654906b0eb8d58a80"
     },
     "third_party/android-cxx-r28-provenance.json": {
       "mode": "100644",
@@ -2141,15 +1901,107 @@
     "third_party/notices/sendspin-cpp-LICENSE.txt": {
       "mode": "100644",
       "sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75"
+    },
+    "tools/README.md": {
+      "mode": "100644",
+      "sha256": "98cd3130c9d428bd73091c19590b1e53c066f6a15687255ca8afb68c38d947a4"
+    },
+    "tools/SOURCE-MANIFEST-NOTE.md": {
+      "mode": "100644",
+      "sha256": "75b2da25adad0fa3bb1ba7fb3462bb8dac44cdc0cb13b1fe70efcff9dda496e2"
+    },
+    "tools/build_preview.py": {
+      "mode": "100644",
+      "sha256": "f06485cc62745c0d4984e581e83f37e78eb0f58bb08d45476bb43a1661cf708c"
+    },
+    "tools/capture_hero.gd": {
+      "mode": "100644",
+      "sha256": "c3d147c69ba4003ea9109adc6e4ca8d0ec6a4396178d27fed5214e032d5f7928"
+    },
+    "tools/capture_hero.py": {
+      "mode": "100644",
+      "sha256": "518cec0ac5d31778964d1976c2eed765555e6cb45716d06099c00e5ef58fabf1"
+    },
+    "tools/check_source.py": {
+      "mode": "100644",
+      "sha256": "d209e93e6bc4e26f1122aa2457c502c34aaced3e1e432b1e57c8fe48828d9c85"
+    },
+    "tools/check_web_access.py": {
+      "mode": "100644",
+      "sha256": "3b7b6d27c6cd11b02c4aa988d8956e59a91f096f8acaf42c8756782a819552b3"
+    },
+    "tools/check_web_music_browser.py": {
+      "mode": "100644",
+      "sha256": "3d248e5a22f0b92b48b615d85bbb5de5cabf1d079f3db415d652275a186f19c1"
+    },
+    "tools/check_web_remote.py": {
+      "mode": "100644",
+      "sha256": "79b943b8b72752ea6d7c45f7a5c69ba85b953f2d550a42b654906b0eb8d58a80"
+    },
+    "tools/dependencies.lock.json": {
+      "mode": "100644",
+      "sha256": "2d86d2b295aa68c250a2e3266cf89f90a346b2e2c73575b70ce2eaaa482b19f6"
+    },
+    "tools/licenses/ArduinoJson-LICENSE.txt": {
+      "mode": "100644",
+      "sha256": "ebba0906d6c8b3daa8a1b59acb2d3a416485dd77fc10f6dd4c9ed2cbe467ee2d"
+    },
+    "tools/licenses/IXWebSocket-LICENSE.txt": {
+      "mode": "100644",
+      "sha256": "9cc46d4265f18ab959b75c44102285dc04bb04ea2bb696b1858f5c38f7ebaca0"
+    },
+    "tools/licenses/micro-flac-LICENSE.txt": {
+      "mode": "100644",
+      "sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75"
+    },
+    "tools/licenses/micro-ogg-demuxer-LICENSE.txt": {
+      "mode": "100644",
+      "sha256": "9d32abddf41d631e572f7b418ee1c3a22d6d87b934f7d45a026bcbf742e87dc5"
+    },
+    "tools/licenses/minimp3-CC0.txt": {
+      "mode": "100644",
+      "sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01"
+    },
+    "tools/licenses/noise-c-LICENSE.txt": {
+      "mode": "100644",
+      "sha256": "f2c0cc36aa63c383fd1669b63eff210ee8cabb304dd818a9f442d93906eff587"
+    },
+    "tools/licenses/sendspin-cpp-LICENSE.txt": {
+      "mode": "100644",
+      "sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75"
+    },
+    "tools/make_fixtures.py": {
+      "mode": "100644",
+      "sha256": "4932992f91430f09d6ce139d96254654e4df5b2b2e000329c99fe99b05d40b62"
+    },
+    "tools/test_build_preview_errors.py": {
+      "mode": "100644",
+      "sha256": "138e18a54d30f4e3fa4c72b849c5c79e19bafc86765352fadb83df21c29cc752"
+    },
+    "tools/test_make_fixtures.py": {
+      "mode": "100644",
+      "sha256": "864ed98af16f1dbd77ac31155749a56f1112bff2fe85ff582897d1dfdc86c128"
+    },
+    "tools/test_offline_save.py": {
+      "mode": "100644",
+      "sha256": "fbed611c1d44d596cecc02daed2d1884ddc9942727ac5b0473201346edb21cd3"
+    },
+    "tools/test_preview_import_completion.py": {
+      "mode": "100644",
+      "sha256": "c7d5e0e04bd5a43ffbde64a27230519b8f0809945fcdb21a16ecbd029f5f048b"
+    },
+    "tools/test_remote_cli.py": {
+      "mode": "100644",
+      "sha256": "ba6dd054d6533ae68580f7a5fe53610baa2f099a6385f66f4a620ce2e2c818b4"
     }
   },
   "project": "Kinegra Amp",
   "publication_fixture_overlay": {
     "runtime_rebuilt": false,
-    "scope": "Documentation, provenance and test-only reserved example address; application/runtime code and reviewed signed APK unchanged."
+    "scope": "Current source cleanup removes retired experiments; published 1.0.10 APK and source archive remain unchanged at their release tag."
   },
   "schema": 1,
-  "scope": "Sanitized initial publication snapshot. Development history, signing inputs, runtime state and private review metadata are excluded.",
+  "scope": "Current Kinegra Amp source, build tools and regression tests. Generated outputs, personal media, credentials and signing material are excluded.",
   "version": "1.0.10",
   "version_code": 86
 }

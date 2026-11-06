@@ -8,7 +8,7 @@ Prepare these public inputs on Linux before an offline build:
 
 - Godot **3.6.3** Linux editor, official Android release/debug AARs, export templates and matching Android custom-build source.
 - JDK **17**, Android platform **36** / build tools **36.1.0**, Android NDK **26.3.11579264 (r26d)**, Gradle **8.11.1**, CMake, Git, a C/C++ compiler, Python 3.12 with Pillow, FFmpeg, Xvfb and **SCons 4.8.1**.
-- Clean checkouts of the exact revisions in [the dependency lock](../review/dependencies.lock.json): Sendspin, ArduinoJson, IXWebSocket, micro-flac with its micro-ogg-demuxer submodule, and Noise-C.
+- Clean checkouts of the exact revisions in [the dependency lock](../tools/dependencies.lock.json): Sendspin, ArduinoJson, IXWebSocket, micro-flac with its micro-ogg-demuxer submodule, and Noise-C.
 - A Gradle cache populated for the matching Android template. The build resolves its runtime artifacts offline and compares all 33 module artifacts/POMs and license metadata with [the runtime lock](../third_party/gradle-runtime.lock.json).
 
 The build validates explicit paths rather than using another developer's home directory. It does not download missing toolchains or dependencies. Prepare caches from their upstream distributions before building. The original AAR hashes, dependency revisions, source archive and patch hashes are checked by the tools.
@@ -49,8 +49,8 @@ The APK uses the existing package ID, non-debuggable release settings, disabled 
 ## Host checks
 
 ```sh
-python3 review/check_source.py
-python3 review/build_preview.py --godot /opt/godot/Godot_v3.6.3-stable_x11.64 \
+python3 tools/check_source.py
+python3 tools/build_preview.py --godot /opt/godot/Godot_v3.6.3-stable_x11.64 \
   --output build/host-preview --test tests/test_offline_tv_accessibility.gd
 ```
 

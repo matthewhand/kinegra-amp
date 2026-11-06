@@ -3,11 +3,11 @@
 from pathlib import Path
 import hashlib,json,re,os,ast,subprocess
 ROOT=Path(__file__).resolve().parents[1]
-manifest=ROOT/'review/SOURCE-MANIFEST.json'
+manifest=ROOT/'tools/SOURCE-MANIFEST.json'
 record=json.loads(manifest.read_text())
 ignored={'.git','build','releases','.state','.import','.godot','__pycache__'}
 actual={p.relative_to(ROOT).as_posix() for p in ROOT.rglob('*') if p.is_file() and not any(x in ignored for x in p.relative_to(ROOT).parts)}
-assert actual==set(record['files'])|{'review/SOURCE-MANIFEST.json'},'Unexpected or missing review file'
+assert actual==set(record['files'])|{'tools/SOURCE-MANIFEST.json'},'Unexpected or missing source file'
 for name,entry in record['files'].items():
  p=ROOT/name
  assert not p.is_symlink() and hashlib.sha256(p.read_bytes()).hexdigest()==entry['sha256'],name
@@ -30,9 +30,9 @@ for name,entry in record['files'].items():
    if resource in ['native/ShieldSendspin.gdns','native/ShieldSendspin.gdnlib']:continue
    if name=='app/tests/test_kinegra_amp_branding.gd' and resource=='scripts/DeviceAcceptance.gd':continue # explicit negative-absence assertion
    raise AssertionError(('Missing source resource',name,resource))
-lock=json.loads((ROOT/'review/dependencies.lock.json').read_text())
+lock=json.loads((ROOT/'tools/dependencies.lock.json').read_text())
 for dependency in lock['external']:
- p=ROOT/'review/licenses'/(dependency['name']+'-LICENSE.txt')
+ p=ROOT/'tools/licenses'/(dependency['name']+'-LICENSE.txt')
  assert hashlib.sha256(p.read_bytes()).hexdigest()==dependency['license_sha256'],dependency['name']
 for item in lock['verified_vendored_source']['verified_upstream_blobs']:
  assert hashlib.sha256((ROOT/item['path']).read_bytes()).hexdigest()==item['sha256'],item['path']

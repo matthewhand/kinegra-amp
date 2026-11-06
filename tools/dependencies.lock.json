@@ -70,17 +70,6 @@
         "native/noise-pattern-bounds.patch"
       ],
       "local_patch_note": "Exact pinned export; object-sized pattern scans, no cryptographic or protocol changes."
-    },
-    {
-      "name": "FTXUI",
-      "repository": "https://github.com/ArthurSonzogni/FTXUI",
-      "revision": "cdf28903a7781f97ba94d30b79c3a4b0c97ccce7",
-      "license": "MIT",
-      "license_path": "LICENSE",
-      "license_sha256": "0224d97639ad37047d719a5ed5c0acc98de1c58ae63be0c27183dcad1328fc61",
-      "license_url": "https://raw.githubusercontent.com/ArthurSonzogni/FTXUI/cdf28903a7781f97ba94d30b79c3a4b0c97ccce7/LICENSE",
-      "role": "optional-cli",
-      "bundled_in_review": false
     }
   ],
   "verified_vendored_source": {

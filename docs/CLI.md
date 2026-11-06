@@ -32,6 +32,4 @@ Operations have a bounded polling deadline (--wait-seconds, default 42, maximum 
 
 The tool uses the app’s verified own-output routing. It cannot target another Music Assistant player or change server credentials. Offline-library control, queue editing/reordering, settings and full web/TV UI parity remain outside this CLI’s scope.
 
-Run the loopback checks with python3 review/test_remote_cli.py. These use fictional metadata and disposable credentials, not a live library or Shield.
-
-The previous `shieldamp_remote.py` entry point and `SHIELDAMP_ACCESS_KEY` variable remain accepted for existing scripts. New scripts should use the names above.
+Run the loopback checks with python3 tools/test_remote_cli.py. These use fictional metadata and disposable credentials, not a live library or Shield.

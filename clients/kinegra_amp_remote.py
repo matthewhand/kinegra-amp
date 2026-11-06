@@ -147,7 +147,7 @@ def main(argv=None):
             request_id = args.request_id or uuid.uuid4().hex
             if not re.fullmatch('[A-Za-z0-9_-]{8,64}', request_id):
                 raise RemoteError('Request IDs need 8–64 letters, numbers, underscores or hyphens.')
-        remote = Remote(args.url, os.environ.get('KINEGRA_AMP_ACCESS_KEY', os.environ.get('SHIELDAMP_ACCESS_KEY', '')).strip(), args.wait_seconds)
+        remote = Remote(args.url, os.environ.get('KINEGRA_AMP_ACCESS_KEY', '').strip(), args.wait_seconds)
         remote.connect(args.no_key)
         cmd = args.command
         if cmd in ['status', 'diagnostics']:

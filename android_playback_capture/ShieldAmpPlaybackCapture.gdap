@@ -1,9 +1,0 @@
-[config]
-name="ShieldAmpPlaybackCapture"
-binary_type="local"
-binary="ShieldAmpPlaybackCapture.aar"
-
-[dependencies]
-local=[]
-remote=[]
-custom_maven_repos=[]

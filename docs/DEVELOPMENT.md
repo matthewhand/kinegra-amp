@@ -1,35 +1,33 @@
 # Developing Kinegra Amp
 
-Kinegra Amp uses Godot 3.6.3/GLES2, GDScript, native audio adapters and Android plugins. Start with [building](BUILDING.md), [validation](VALIDATION.md) and [privacy](PRIVACY.md).
+Kinegra Amp uses Godot 3.6.3/GLES2, GDScript, native audio adapters and an Android plugin. Start with [building](BUILDING.md), [validation](VALIDATION.md) and [privacy](PRIVACY.md).
 
 | Path | Purpose |
 | --- | --- |
-| `app/` | Player, library/queue UI, shaders, avatars and focused GDScript fixtures |
-| `native/` | MP3/Ogg codec, Sendspin adapter and reviewed source patches |
-| `android_secure_storage/` | Keystore credentials, pairing identity, USB presence and file imports |
-| `android_playback_capture/` | Separate optional capture prototype; current player UI does not enable it |
-| `packaging/` | Explicit-input music-free build and Android package checks |
-| `review/` | Source integrity, dependency pins and disposable synthetic-host tooling |
-| `third_party/` | Exact dependency/notice provenance and Gradle runtime lock |
+| `app/` | Player, library/queue UI, shaders, avatars and GDScript tests |
+| `native/` | MP3/Ogg codec, Sendspin adapter, dependency patches and native tests |
+| `android_secure_storage/` | Android Keystore credentials, pairing identity, USB detection and file imports |
+| `clients/` | Python web-remote CLI and optional offline file-source helper |
+| `packaging/` | Android build, preview isolation and package checks |
+| `tools/` | Source integrity, dependency pins and synthetic host fixtures |
+| `third_party/` | Dependency notices, provenance and Gradle runtime lock |
 
-## Current limitations
+## Playback and visuals
 
-The Music Assistant server owns its queue and playback position; current/next metadata snapshots can lag. Collection snapshots are bounded to 2,000 tracks and 2 MiB. Search applies to retrieved collection tracks, while library album/track searches use server pages. Queue reordering, paused-track seeking and radio seeking are not implemented.
+Music Assistant streaming uses the native Sendspin adapter and the in-app output. Local MP3/Ogg files use the native decoder. Neither needs a separate Python codec bridge. The server owns its streaming queue and playback position. Collection snapshots are bounded to 2,000 tracks and 2 MiB; queue reordering and paused/radio seeking are not implemented.
 
-Broader physical listening, remote/gamepad, webcam hotplug/gestures, regular-TV/portrait and sustained combined-load acceptance remain open. Earlier Shield builds exercised the same in-app streaming architecture; automated checks do not certify the new build's audible or hardware behavior. Optional gestures use approximate 2D body landmarks and are experimental. [Client comparison](CLIENT-COMPARISON.md).
+Visuals use frame timing, buffer health, current-process CPU time and Android thermal state. Optional webcam avatars consume Kinegra Cam landmarks. Tracking and gestures remain experimental; see [webcam setup](WEBCAM-GESTURES.md).
 
-Adaptive visuals use frame timing, buffer recovery, current-process CPU time and Android thermal status. They do not measure whole-device or GPU idle capacity. Explicit gestures may keep bounded pose polling active with decorative visuals off.
-
-The optional [web remote](WEB-REMOTE.md) supplies authenticated LAN transport/status, searchable Music Assistant browsing, collection paging, Play/Add to Queue/Queue Page and an upcoming-queue view. Web queue removal/reordering, offline-library control, settings parity and a CLI remain future work. Development defaults on and production defaults off, with separate saved preferences.
+The opt-in [web remote](WEB-REMOTE.md) provides playback, library and queue controls. The [CLI](CLI.md) uses the same API. Development and production builds keep separate remote preferences; production starts with the service disabled.
 
 ## Tests
 
-Use generated audio, synthetic landmarks and fresh XDG state. The [host builder](BUILDING.md#host-checks) compiles its codec and imports fixtures before selected tests. Relevant suites include offline accessibility, public music-free startup/migration, library/queue routing, modal focus, direct Play/resume and tracking policies. The public music-free fixture must run with the production empty `SOURCES` and cover arrays; its generated Ogg input remains test-only.
+Use generated audio, synthetic landmarks and isolated state. The [host builder](BUILDING.md#host-checks) compiles its codec and imports fixtures before selected GDScript tests. Native stream and bounds tests use pinned dependency sources and local synthetic services. Credential/plugin tests use disposable credentials, never live accounts.
 
-Native stream and bounds fixtures use pinned dependency sources and isolated loopback services. Historical Android proofs bind their exact binaries; a newly compiled native hash does not inherit a prior device receipt. Hardware acceptance is recorded separately from host/source tests.
+Run source checks with `python3 tools/check_source.py`. Run Python unit tests with `python3 -m unittest discover -s tools` and `python3 -m unittest discover -s packaging`. Browser integration scripts use `tools/check_web_*.py --godot PATH --project HOST_PREVIEW_APP`. Python tests live beside their tools and under `packaging/`; GDScript tests are in `app/tests/`, native tests in `native/tests/`, and Android plugin tests in `android_secure_storage/tests/`. The Android security harnesses are regression tools for the active plugin, not app features.
 
-When changing dependencies, review the pinned source/patches, native alignment, full linked notices and actual Gradle artifact/POM lock. The build fails on unreviewed runtime dependency or license changes. Source integrity uses a complete path/hash/mode manifest; regenerate it when preparing an intentional source snapshot.
+When changing dependencies, update the pinned revisions, patch hashes, native alignment, licence texts and Gradle artifact/POM lock. Regenerate `tools/SOURCE-MANIFEST.json` for intentional source changes. Automated checks complement physical playback/controller/webcam testing; see [test scope](VALIDATION.md).
 
 ## Contributing
 
-Include the version, device, input method and reproduction steps. Add a focused regression for behavioral changes. Keep credentials, private library metadata, camera imagery and generated signing keys out of commits. Code, documentation, original artwork and hero media use MIT; retain upstream notices with third-party material.
+Include the version, device, input method and reproduction steps. Add a focused regression for behavioral fixes. Keep credentials, personal media and generated signing keys out of commits. Original code and artwork use MIT; retain upstream notices with dependencies.

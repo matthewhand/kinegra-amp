@@ -18,8 +18,8 @@ def source_files(source_root):
         raw=subprocess.check_output(["git","-C",str(source_root),"ls-files","-z","--","app"])
         allowed={name.decode() for name in raw.split(b"\0") if name}
     else:
-        manifest=source_root/"review/SOURCE-MANIFEST.json"
-        if not manifest.is_file():raise ValueError("Preview source needs a Git index or review/SOURCE-MANIFEST.json allowlist")
+        manifest=source_root/"tools/SOURCE-MANIFEST.json"
+        if not manifest.is_file():raise ValueError("Preview source needs a Git index or tools/SOURCE-MANIFEST.json allowlist")
         allowed=set(json.loads(manifest.read_text())["files"])
     allowed={name for name in allowed if name.startswith("app/")}
     if "app/project.godot" not in allowed:raise ValueError("Source allowlist is missing app/project.godot")
