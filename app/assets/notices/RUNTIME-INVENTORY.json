@@ -576,36 +576,36 @@
         "file": "MINIMP3-CC0.txt",
         "revision": "source-distribution",
         "sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01",
-        "source_url": "https://github.com/matthewhand/kinegra-shieldamp",
+        "source_url": "https://github.com/matthewhand/kinegra-amp/blob/main/app/assets/notices/MINIMP3-CC0.txt",
         "title": "minimp3 CC0"
       },
       {
         "file": "STB-LICENSE.txt",
         "revision": "source-distribution",
         "sha256": "bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63",
-        "source_url": "https://github.com/matthewhand/kinegra-shieldamp",
+        "source_url": "https://github.com/matthewhand/kinegra-amp/blob/main/app/assets/notices/STB-LICENSE.txt",
         "title": "stb_vorbis license"
       },
       {
         "file": "GODOT-HEADERS-LICENSE.txt",
         "revision": "source-distribution",
         "sha256": "cb62d01ef85fc223c2e7018b4e90ec607bc78f10cecfda600919953dcbe229a5",
-        "source_url": "https://github.com/matthewhand/kinegra-shieldamp",
+        "source_url": "https://github.com/matthewhand/kinegra-amp/blob/main/app/assets/notices/GODOT-HEADERS-LICENSE.txt",
         "title": "Godot GDNative headers"
       },
       {
         "file": "FONT-LICENSE.txt",
         "revision": "source-distribution",
         "sha256": "e81d9dced49fea2a7d576cbea283873de58563c5d488f954deb282843c3ea79c",
-        "source_url": "https://github.com/matthewhand/kinegra-shieldamp",
+        "source_url": "https://github.com/matthewhand/kinegra-amp/blob/main/app/assets/notices/FONT-LICENSE.txt",
         "title": "DejaVu / Bitstream Vera font"
       },
       {
         "file": "PROJECT-LICENSE.txt",
         "revision": "source-distribution",
         "sha256": "281387eb1b03407d700fae7dc7a553cad267e3daf3f91b21658d7e9db3296da2",
-        "source_url": "https://github.com/matthewhand/kinegra-shieldamp",
-        "title": "ShieldAmp MIT"
+        "source_url": "https://github.com/matthewhand/kinegra-amp/blob/main/app/assets/notices/PROJECT-LICENSE.txt",
+        "title": "Kinegra Amp MIT"
       }
     ],
     "schema": 1,

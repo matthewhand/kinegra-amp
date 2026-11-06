@@ -1,3 +1,3 @@
-# Android vault instrumentation sources
+# Android vault instrumentation
 
-Synthetic instrumentation and Godot proof sources only. Use an isolated test app/data directory. No live token, device address, credentials or signing identity is supplied here. These files do not authorize replacing or clearing the installed app.
+These fixtures exercise the active credential-storage plugin using synthetic values. Run them in an isolated test application and data directory, with no production credentials or signing key. The [credential lifecycle fixture](security_lifecycle/README.md) documents its build and checks.

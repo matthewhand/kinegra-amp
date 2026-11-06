@@ -2,7 +2,7 @@
   "notices": [
     {
       "file": "OVERVIEW.txt",
-      "sha256": "63f31f51b9339e121c40d6e8fadc5dd06892917b3a2045407bc386f2242ab018",
+      "sha256": "75ce21178945857f0533833b7d2fc02789f9423a4303f30a5e1998c633e08565",
       "title": "About these licenses"
     },
     {
@@ -37,7 +37,7 @@
     },
     {
       "file": "RUNTIME-INVENTORY.json",
-      "sha256": "584d194d5e225fe89ceb295ed6caf1e9c2348af94d11e31a949cdf6b51282644",
+      "sha256": "49fa71c83207b3a51f88ad96e8f33f293f5e7236fdc10587a60848b77aea37bf",
       "title": "Exact runtime component inventory"
     },
     {
@@ -59,6 +59,11 @@
       "file": "IXWebSocket-LICENSE.txt",
       "sha256": "9cc46d4265f18ab959b75c44102285dc04bb04ea2bb696b1858f5c38f7ebaca0",
       "title": "IXWebSocket license"
+    },
+    {
+      "file": "PROJECT-LICENSE.txt",
+      "sha256": "e187739c22f63de0a0844a3703503077b76f3cc352dd41ce85e291ab47240f2f",
+      "title": "Kinegra Amp MIT"
     },
     {
       "file": "micro-flac-LICENSE.txt",
@@ -109,11 +114,6 @@
       "file": "sendspin-cpp-LICENSE.txt",
       "sha256": "37deff111f8786efe200466bc2901fad9040b6e1b3e4ff2e57b5a1a4e461bf75",
       "title": "Sendspin C++ license"
-    },
-    {
-      "file": "PROJECT-LICENSE.txt",
-      "sha256": "e187739c22f63de0a0844a3703503077b76f3cc352dd41ce85e291ab47240f2f",
-      "title": "ShieldAmp MIT"
     },
     {
       "file": "STB-LICENSE.txt",

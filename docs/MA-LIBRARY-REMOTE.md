@@ -12,4 +12,4 @@ Library and playback configuration open as separate popups so they cannot push t
 
 Playback uses only the unique, ungrouped wrapper for Kinegra Amp’s current paired Sendspin client. No Cast or similarly named external player is a fallback. The explicit library action sends `player_queues/play_media` with `option=play`; Add uses `option=add`. The queue-preserving Play semantics were checked against [Music Assistant 2.10.7’s pinned queue loader](https://github.com/music-assistant/server/blob/76ad754a68abdd0bfd179b13a2807d44771ddf90/music_assistant/controllers/player_queues/queue_loader.py). No default enqueue option or queue replacement is used.
 
-Synthetic native-GUI and loopback HTTP tests exercise these paths without contacting an owner server. Physical remote/provider acceptance remains separate.
+Synthetic native-GUI and loopback HTTP tests exercise these paths using synthetic server responses. Wider remote/provider coverage remains limited.

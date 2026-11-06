@@ -6,8 +6,6 @@ Two source files obtained via HTTPS from pinned official upstream commits.
   License: CC0/public domain in source header.
 - stb_vorbis.c; official nothings/stb commit 003501f6d7a8668ce8b6d875e34dd97ad0d5d5b5
   License: MIT/Unlicense/public domain in source and STB-LICENSE.txt.
-- Used existing NDK r26d (revision 26.3.11579264) already on Ubuntu-Max.
-  No SDK installation or paid inference.
 57e437c5c1f0e8b243885d3929c8973b5e6c778451e0100ab4251d19915cb3ad  native/vendor/minimp3.h
 4c7cb2ff1f7011e9d67950446b7eb9ca044f2e464d76bfbb0b84dd2e23e65636  native/vendor/stb_vorbis.c
 bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63  native/vendor/STB-LICENSE.txt
@@ -17,10 +15,7 @@ bebfe904b14301657e4e5d655c811d51fd31b97c455b9cc2d8600d6bac6cff63  native/vendor/
 Official upstream https://github.com/godotengine/godot-headers,
 tag `godot-3.6-stable`, pinned object/commit
 `9aea2a115dfc6b5b403fd62882f9b872bf5948c1` (HTTPS codeload archive).
-MIT license retained in godot-headers/LICENSE.md. Only C ABI header directories,
-generated API structure, upstream README and license are tracked; upstream API
-JSON/image files are not needed for this C adapter. The ABI was exercised against
-actual Godot 3.6.3 on Ubuntu-Max, not a Java stub.
+MIT license retained in godot-headers/LICENSE.md. The distribution includes the C ABI headers, generated API structure, licence and upstream README with its tutorial images. The README has a documented link-only correction; header bytes are pinned in [the dependency lock](../../tools/dependencies.lock.json).
 
 Header SHA256 (relative to native/vendor/godot-headers):
 aacf3847fc2bbecde16690f211fb4ac42fe1d58b77c2763f4c1e3ce5c78da04d  android/godot_android.h

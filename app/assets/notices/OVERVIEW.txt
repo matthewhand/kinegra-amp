@@ -16,4 +16,4 @@ artifacts. Runtime dependency resolution fails if its reviewed lock changes.
 Use the component selector and Previous/Next Page to read long notices.
 The complete notice bundle is also included with the source distribution.
 
-Source: https://github.com/matthewhand/kinegra-shieldamp
+Source: https://github.com/matthewhand/kinegra-amp

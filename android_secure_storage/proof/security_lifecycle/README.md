@@ -18,7 +18,7 @@ The manifest requests no permissions, has no shared UID or MAIN/LAUNCHER/LEANBAC
 
 ## Platform checks and evidence
 
-An authorized operator must first verify the expected device and system media mute, and confirm this exact temporary package is absent. Install only this proof package, explicitly launch `au.local.shieldamp.SecurityLifecycleProofActivity`, then read the `ShieldAmpSecurityProof` log tag. Remove only the temporary proof package after collecting the numeric result. Production app data and signing identity are outside this flow.
+Select your test device and confirm that the temporary package is not already installed. Install only this proof package, explicitly launch `au.local.shieldamp.SecurityLifecycleProofActivity`, then read the `ShieldAmpSecurityProof` log tag. Remove only the temporary proof package after collecting the numeric result. Production app data and signing identity are outside this flow.
 
 The activity refuses to mutate anything if its package/UID boundary is wrong or known credential files/Keystore aliases already exist. The current fixture emits 34 numbered checks covering:
 

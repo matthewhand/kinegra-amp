@@ -17,11 +17,11 @@ The muted secondary progress fill and `Buffered ~0.7s` readout show a **lower bo
 On Ubuntu, with the pinned reviewed SDK source and both existing patches unchanged:
 
 - `native/tests/test_sendspin_startup_buffer.cpp`: bounded policy, malformed header rejection, first-timestamp-only retention, clear/end/restart and no reset for in-place start.
-- `native/tests/test_sendspin_paired.py GODOT HOST_ADAPTER startup`: encrypted loopback with synthetic identities and PCM, jittered cold start, manual clear/refill, reconnect and startup cancellation. The 0.8.44 fixture negotiates a four-second lead and three-second minimum; measured scheduled lead was about 3.97 seconds. The current run observed cold PCM handoff after 3,365 ms (ramp sample 390, about 8.1 ms of adjustment), clear after 3,320 ms (sample 1), and reconnect after 3,360 ms (sample 1). The handoff precedes audible output because real PCM is queued locally. Earlier loaded-host testing also observed sub-chunk adjustment. The test rejects loss of a complete 20 ms chunk, while allowing sub-chunk synchronization adjustment. It does not claim bit-exact output, zero initial sample trimming or measured audible start.
+- `native/tests/test_sendspin_paired.py GODOT HOST_ADAPTER startup`: encrypted loopback with synthetic identities/audio, jittered cold start, manual clear/refill, reconnect and cancellation. The fixture requests a four-second lead and three-second minimum. It rejects loss of a complete 20 ms chunk while allowing sub-chunk synchronization adjustment.
 - `... continuity-jitter` with `SHIELDAMP_CONTINUITY_SECONDS=30`: ongoing ramp continuity across repeated delivery jitter; no intentional boundary pause.
 - `app/tests/test_playback_buffer_presentation.gd`, `test_local_audio_buffer.gd` and `test_buffered_playback_ui.gd`: stale/invalid values, generation/auth/command invalidation, paused occupancy, radio, layered fill and widget bounds at host 4:3, 16:9, 21:9 and portrait sizes.
 
-The test output records actual waits, first ramp samples, continuity counts and local queue results. All fixture identities/audio are synthetic; none of these checks contacts the owner's Music Assistant or changes the Shield. Hardware listening and physical remote/display acceptance of this new build remain separate release checks.
+The test output records actual waits, first ramp samples, continuity counts and local queue results. All fixture identities/audio are synthetic. Hardware listening and physical remote/display behavior require separate device checks.
 
 ## Startup workload and queue preparation
 

@@ -20,7 +20,7 @@
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
-      "sha256": "0a238c593be069729c549f6543d1fffebc8134533a1b031e62c1e463fa388051"
+      "sha256": "5a54511be1a7fd7222448c813d63a9df3ee0c700619644154939cbcd153fd855"
     },
     "android_secure_storage/ShieldAmpTokenStore.gdap": {
       "mode": "100644",
@@ -32,7 +32,7 @@
     },
     "android_secure_storage/proof/README.md": {
       "mode": "100644",
-      "sha256": "ec881b1221af9aed3e3e6d73d02da8c5dee8ccf04a23fd91dbdc3ecbc6e2ad54"
+      "sha256": "c5452cfc32dab7878c2eaba2171c24b56a00794e55e47c0e6d63d02726acead9"
     },
     "android_secure_storage/proof/TokenProofInstrumentation.java": {
       "mode": "100644",
@@ -48,7 +48,7 @@
     },
     "android_secure_storage/proof/security_lifecycle/README.md": {
       "mode": "100644",
-      "sha256": "a568facb90cffb40f2d1ccd35ba2c92ca5e43dbfaf87d0e2b9abe456289cf18c"
+      "sha256": "58e5eea3cd98da9277ae3445468f2d7cc19675c3b6aaf68a860df1dcdd53782c"
     },
     "android_secure_storage/proof/security_lifecycle/build.py": {
       "mode": "100755",
@@ -180,7 +180,7 @@
     },
     "app/assets/branding/README.md": {
       "mode": "100644",
-      "sha256": "9b93473bbfd683252033a7acbcdfa16abe2c5860bc20d50c24a88c940080829e"
+      "sha256": "873732e1bae5547e6935a91ef63e2bade36cd594db3eae4ea867421662d496e3"
     },
     "app/assets/branding/boot_splash_1280x720.png": {
       "mode": "100644",
@@ -312,7 +312,7 @@
     },
     "app/assets/notices/INDEX.json": {
       "mode": "100644",
-      "sha256": "7dde9ea6fea877dcfa9ebc35b14c75b6c76ad2e72ae7f19ce832d936370ec112"
+      "sha256": "fe6027324be5cd0aaa136e0985a8b339a65c5453aae34b3dc035d7f05b6b5ea9"
     },
     "app/assets/notices/IXWebSocket-LICENSE.txt": {
       "mode": "100644",
@@ -324,7 +324,7 @@
     },
     "app/assets/notices/OVERVIEW.txt": {
       "mode": "100644",
-      "sha256": "63f31f51b9339e121c40d6e8fadc5dd06892917b3a2045407bc386f2242ab018"
+      "sha256": "75ce21178945857f0533833b7d2fc02789f9423a4303f30a5e1998c633e08565"
     },
     "app/assets/notices/PROJECT-LICENSE.txt": {
       "mode": "100644",
@@ -332,7 +332,7 @@
     },
     "app/assets/notices/RUNTIME-INVENTORY.json": {
       "mode": "100644",
-      "sha256": "584d194d5e225fe89ceb295ed6caf1e9c2348af94d11e31a949cdf6b51282644"
+      "sha256": "49fa71c83207b3a51f88ad96e8f33f293f5e7236fdc10587a60848b77aea37bf"
     },
     "app/assets/notices/STB-LICENSE.txt": {
       "mode": "100644",
@@ -1232,7 +1232,7 @@
     },
     "docs/BUILDING.md": {
       "mode": "100644",
-      "sha256": "11ee283fe9d0a701c48f629c075bed4c0f5d0447ad35fd03e4d0ebb62cfe995d"
+      "sha256": "6f20232ec6bdacd2a0d375114ed7f284f3ffbeb26e17af020b3be043ad34b25d"
     },
     "docs/CLI.md": {
       "mode": "100644",
@@ -1248,7 +1248,7 @@
     },
     "docs/MA-LIBRARY-REMOTE.md": {
       "mode": "100644",
-      "sha256": "9553ff580b83833d0b239270501b52cd5bb02a942bf05b5b22c4948f8df8310e"
+      "sha256": "100b65fe911391e2f2d181f95e49befe858c94e531e944ecdc1ce20f57e8043e"
     },
     "docs/OFFLINE-COPYING.md": {
       "mode": "100644",
@@ -1264,7 +1264,7 @@
     },
     "docs/RELEASE.md": {
       "mode": "100644",
-      "sha256": "aec368b126cc022d1c97b1c2ea61f259ca0551f9e67d5dce09c611c251a230fb"
+      "sha256": "9e0a727342d686563916c8d00dd2066677227a82d188e7aa7a5fd0cf49bd56e8"
     },
     "docs/SECURE-TOKEN-LIFECYCLE.md": {
       "mode": "100644",
@@ -1272,7 +1272,7 @@
     },
     "docs/THIRD-PARTY-NOTICES.md": {
       "mode": "100644",
-      "sha256": "6c48d39df85b5e2c4a709d852710578aa1aec292bc7fd1a17583bf29e5deae5d"
+      "sha256": "83d722b87327cfcfc415516d607d689a703e1711ad79d072325096da271b8298"
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
@@ -1280,7 +1280,7 @@
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
-      "sha256": "e3da185f7f94832f48647a1dfd8de2ee40cfc2e1c09e41940c40a6c5672e4e30"
+      "sha256": "e5c256b026dbfe4b85582964fb7852d398d76a8a98fe5c45a8f821dc6fb0263d"
     },
     "docs/WEB-REMOTE.md": {
       "mode": "100644",
@@ -1292,7 +1292,7 @@
     },
     "docs/branding/README.md": {
       "mode": "100644",
-      "sha256": "f2a1d29f38dc901fff4e14ca996655a99b93498976dd663518532194afe28d92"
+      "sha256": "f1e9762682714c55f89241d06c4a281b2af87649a96145a8f4a8949221d35481"
     },
     "docs/branding/kinegra-amp-banner.png": {
       "mode": "100644",
@@ -1316,7 +1316,7 @@
     },
     "native/README.md": {
       "mode": "100644",
-      "sha256": "2e9d8ed51423dfda711486c78a381215ebfad79f01fb44446ab61f6a0df419d1"
+      "sha256": "73261dcc80c4fd5f7b5b7dc189219b5aa3fabe0cd35d80cc9a6f59faa7d0c254"
     },
     "native/SOURCE-PATHS.md": {
       "mode": "100644",
@@ -1324,7 +1324,7 @@
     },
     "native/STARTUP-BUFFERING.md": {
       "mode": "100644",
-      "sha256": "32778093483360c13ea936dc851d1bbdf9e9fadbabd0ad0a4ecf13ddc168c866"
+      "sha256": "54bb32f0ba572423901029a86310ba2c88026457bb79295394347398bdf641be"
     },
     "native/build_godot.sh": {
       "mode": "100644",
@@ -1572,7 +1572,7 @@
     },
     "native/vendor/MANIFEST.md": {
       "mode": "100644",
-      "sha256": "4c323f64cdb14275b55c0746c1f90e07f05a81aba72f1453d73cc83cd8ff9dcf"
+      "sha256": "b7a80ffbd2526ea8df511672c400ededa55c00db8a77fe745c8256d3043b84da"
     },
     "native/vendor/STB-LICENSE.txt": {
       "mode": "100644",
@@ -1820,7 +1820,7 @@
     },
     "third_party/notice-sources.json": {
       "mode": "100644",
-      "sha256": "9e09a6766fd88c1d9547974f5a8f314329f9507e511a2c5c6449812f164b06ca"
+      "sha256": "a7d145a9dc0d559e8e8cce10eb14ee2721e2ec8e292e6ce23777168663af57e3"
     },
     "third_party/notices/ANDROID-CXX-r28-NOTICE.txt": {
       "mode": "100644",

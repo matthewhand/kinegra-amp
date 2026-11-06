@@ -1,6 +1,6 @@
 # Build Kinegra Amp
 
-The public build produces the music-free `org.local.tegramilkdrop` ARM64 app. It uses the normal Music Assistant and user-import playback paths, starts with an empty local library, and preserves the legacy index range used by existing imported tracks and queues. It does not require the original soundtrack, private Git history or production signer.
+The build produces an unsigned ARM64 APK for package `org.local.tegramilkdrop`, with Music Assistant and local-file playback and an empty initial library.
 
 ## Inputs
 
@@ -34,7 +34,7 @@ Copy [the example configuration](../packaging/public-build.example.json) to a lo
 
 ```sh
 python3 packaging/build_public.py \
-  --config /opt/build-inputs/shieldamp.json \
+  --config /opt/build-inputs/kinegra-amp.json \
   --output build/android-release
 ```
 

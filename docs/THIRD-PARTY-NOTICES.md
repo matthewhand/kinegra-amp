@@ -21,3 +21,5 @@ The app exposes **Settings → Licenses & notices**, with bounded pages for long
 [Pinned notice sources](../third_party/notice-sources.json) record upstream URLs, revisions and hashes. [The Gradle runtime lock](../third_party/gradle-runtime.lock.json) identifies actual resolved Java artifacts. External build tools, caches and clean dependency checkouts are supplied separately; their binaries are not part of the source repository.
 
 Original generated branding has provenance in [the artwork notes](branding/README.md); original procedural icons and synthetic hero media share the project MIT grant. Separately supplied user music always retains its own terms. Enabling a camera/AI service in Kinegra Cam does not bundle that service or its model into Kinegra Amp.
+
+Upstream licence texts are retained verbatim, including historical URLs.
