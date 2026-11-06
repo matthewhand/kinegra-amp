@@ -19,8 +19,6 @@ adb connect DEVICE_IP:ADB_PORT
 adb install -r KinegraAmp-1.0.10.apk
 ```
 
-Previously called Kinegra ShieldAmp. Install the update over the existing app to retain your settings, files and pairing. [Upgrade guide](docs/UPGRADING.md).
-
 ## Play music
 
 1. Open **Music Assistant → Settings**, enter your server address and library access token, then **Connect library**. Enable **Remember access** to save the connection.
