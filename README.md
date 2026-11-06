@@ -21,6 +21,8 @@ adb install -r KinegraAmp-1.0.10.apk
 
 ## Play music
 
+Amp is built around [Music Assistant](https://github.com/music-assistant/server), with local MP3/Ogg playback also supported.
+
 1. Open **Music Assistant → Settings**, enter your server address and library access token, then **Connect library**. Enable **Remember access** to save the connection.
 2. Browse or search **Albums**, **Tracks** or **Playlists**, choose your music and press **Play**. Approve playback pairing in Music Assistant when prompted.
 3. Use **Add to Queue** without interrupting playback, **Queue Page** to add the displayed tracks, or **View Queue** to see what is next.
