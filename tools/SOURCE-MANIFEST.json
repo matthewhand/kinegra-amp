@@ -1,6 +1,6 @@
 {
   "application": "Kinegra Amp",
-  "code": 91,
+  "code": 92,
   "files": {
     ".gitattributes": {
       "mode": "100644",
@@ -16,7 +16,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "8d6c510e0fcdfb3b4f83caec22c95e69e58819b6205b747b05be4d0936e98e3b"
+      "sha256": "79cd4cdf17f5588160c72fb4113a71a5acd6a1f23f568d220f7aa836309470e7"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -384,7 +384,7 @@
     },
     "app/export_presets.cfg": {
       "mode": "100644",
-      "sha256": "5ea1f742680316ae6a334ba9a4fe3b36658478bb5b699e3d29395f35f773dff4"
+      "sha256": "e88381b056aa6efdaefa8f42aca0cd15cf74857a773878535ce44d5f79398804"
     },
     "app/native/TegraCodec.gdnlib": {
       "mode": "100644",
@@ -396,7 +396,7 @@
     },
     "app/project.godot": {
       "mode": "100644",
-      "sha256": "dbc3d0f8e6a1419a0bdf570f7e9ceafce38d46d005797c7c41e01096aac6c382"
+      "sha256": "29f452070ee45502121ad645cc8f17d1f67816423e1931ae3590cc15aec66b7d"
     },
     "app/scripts/AdaptiveVisuals.gd": {
       "mode": "100644",
@@ -548,7 +548,7 @@
     },
     "app/scripts/OfflineQueueSave.gd": {
       "mode": "100644",
-      "sha256": "83a6172da57f3e698ed8afecf23f04157ece1db998a4928506ec62c6843bd7db"
+      "sha256": "3a5ebeca4177051cf61512a22bb6f69b724469bc6771123abc2f2cc6c9e710aa"
     },
     "app/scripts/OriginalHorizon.gd": {
       "mode": "100644",
@@ -980,7 +980,7 @@
     },
     "app/tests/test_offline_queue_save.gd": {
       "mode": "100644",
-      "sha256": "2bb05f1fdfd03fc93e8faf3a21cdf89f928578ccf6912944145413cddb89de61"
+      "sha256": "4335683773a8c600c33297b5a1439fa9a06d3a1e7cf66cea17e185883a5f7ce0"
     },
     "app/tests/test_offline_seek.gd": {
       "mode": "100644",
@@ -1232,7 +1232,7 @@
     },
     "docs/BUILDING.md": {
       "mode": "100644",
-      "sha256": "6f20232ec6bdacd2a0d375114ed7f284f3ffbeb26e17af020b3be043ad34b25d"
+      "sha256": "865fb8338cc81aa718568cc503b4a6a5dc6cbc269ac392aa72b84ce22ec5bfc1"
     },
     "docs/CLI.md": {
       "mode": "100644",
@@ -1252,7 +1252,7 @@
     },
     "docs/OFFLINE-COPYING.md": {
       "mode": "100644",
-      "sha256": "392213b26898b2f80dda5085a04786ae1c6e70fe21bc7bcd6491da48ee3931a2"
+      "sha256": "ea77e8860d4e1d3a839987704dcc1aec6e166a102e6d5ca735dc2176b71cfe3f"
     },
     "docs/OFFLINE-LIBRARY.md": {
       "mode": "100644",
@@ -1264,7 +1264,7 @@
     },
     "docs/RELEASE.md": {
       "mode": "100644",
-      "sha256": "583d1c98709b42b8a759d2540c8e09d02eddc8f910721529ec18a7f3d74a5776"
+      "sha256": "9266ed55efc867840a58a08b9c6b633456d48b83b57e5aff357d04e0907f7360"
     },
     "docs/SECURE-TOKEN-LIFECYCLE.md": {
       "mode": "100644",
@@ -1276,7 +1276,7 @@
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
-      "sha256": "5fd349aad927b3a2af6b6fbceca1947504ab42d3904354a0740a68d520fbaab0"
+      "sha256": "b3a277b63b425004940e2bb4f4bde0f800615e2fc18be5158c63572f376e07a1"
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
@@ -1984,7 +1984,7 @@
     },
     "tools/test_offline_save.py": {
       "mode": "100644",
-      "sha256": "c152bd1bcda5e07ca6686801cc9c7803ef75ec624e3aa7bb61a9777d0276283f"
+      "sha256": "5a5f48af632dd6eb32607743a71d04864da7592633220d0f7b8ec3dda5815b74"
     },
     "tools/test_preview_import_completion.py": {
       "mode": "100644",
@@ -1998,6 +1998,6 @@
   "project": "Kinegra Amp",
   "schema": 1,
   "scope": "Current Kinegra Amp source, build tools and regression tests. Generated outputs, personal media, credentials and signing material are excluded.",
-  "version": "1.0.15",
-  "version_code": 91
+  "version": "1.0.16",
+  "version_code": 92
 }

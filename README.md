@@ -10,13 +10,13 @@ Play music from Music Assistant or your own files, build a queue with your TV re
 
 ## Install
 
-**[Download 1.0.15 public beta](https://github.com/matthewhand/kinegra-amp/releases/tag/v1.0.15)** · Android 8.0+ · ARM64
+**[Download 1.0.16 public beta](https://github.com/matthewhand/kinegra-amp/releases/tag/v1.0.16)** · Android 8.0+ · ARM64
 
-Sideload `KinegraAmp-1.0.15.apk` onto your SHIELD, or install with ADB:
+Sideload `KinegraAmp-1.0.16.apk` onto your SHIELD, or install with ADB:
 
 ```sh
 adb connect DEVICE_IP:ADB_PORT
-adb install -r KinegraAmp-1.0.15.apk
+adb install -r KinegraAmp-1.0.16.apk
 ```
 
 ## Play music

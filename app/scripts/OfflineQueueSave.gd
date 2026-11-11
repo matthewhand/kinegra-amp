@@ -380,10 +380,12 @@ func _http(path,method,body,limit,range_header=""):
     request.timeout=135.0 if phase=="prepare" else 20.0
     request.body_size_limit=limit
     request.max_redirects=0
-    request.download_chunk_size=32768
-    request.use_threads=true
+    # Cancelling a threaded Godot request waits for its blocking socket read.
+    request.use_threads=false
     var headers=["Authorization: Bearer "+source_key,"Content-Type: application/json"]
     if phase=="download":
+        # Keep transfers moving when the game loop polls the socket once per frame.
+        request.download_chunk_size=262144
         request.download_file=_part_path()+".segment"
         headers.append(range_header)
     add_child(request)

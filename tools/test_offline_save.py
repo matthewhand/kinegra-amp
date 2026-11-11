@@ -74,6 +74,27 @@ def main():
                     if range_header:del self.headers['Range']
                 if helper.mode=='resume-start' and self.path.endswith(long_file['file']) and range_header.startswith('bytes=1048576-'):
                     time.sleep(2)
+                if (helper.mode=='stalled-pause' and self.path.endswith(long_file['file'])
+                        and range_header.startswith('bytes=1048576-') and self.authenticated()
+                        and not helper.faults.get('stalled')):
+                    helper.faults['stalled']=True
+                    end=2*1024*1024-1
+                    self.send_response(206)
+                    self.send_header('Content-Length',str(1024*1024))
+                    self.send_header('Content-Range',f"bytes 1048576-{end}/{long_file['bytes']}")
+                    self.end_headers()
+                    with (source.cache/long_file['file']).open('rb') as audio_file:
+                        audio_file.seek(1024*1024)
+                        self.wfile.write(audio_file.read(64))
+                    self.wfile.flush()
+                    (root/'stalled-range').touch()
+                    self.connection.settimeout(5)
+                    try:
+                        helper.faults['closed_on_pause']=self.connection.recv(1)==b''
+                    except (TimeoutError,ConnectionError):
+                        helper.faults['closed_on_pause']=False
+                    self.close_connection=True
+                    return
                 if helper.mode=='transient' and helper.faults.get('download',0)==0 and self.authenticated():
                     helper.faults['download']=1
                     self.send_response(206)
@@ -115,13 +136,13 @@ def main():
                     assert args['provider_instance_id_or_domain']=='library'
                     n=int(args['item_id'])
                     path=f'Original/fictional{n%2}.m4a'
-                    if mode.startswith('resume-') and n%2:path='Original/long.mp3'
+                    if (mode.startswith('resume-') or mode=='stalled-pause') and n%2:path='Original/long.mp3'
                     value={'item_id':str(n),'provider':'library','media_type':'track','provider_mappings':[{'provider_domain':'filesystem_local' if n!=34 else 'unsupported_subscription','item_id':path,'available':True}]}
                 body=json.dumps(value).encode();self.send_response(200);self.send_header('Content-Length',str(len(body)));self.send_header('Content-Type','application/json');self.end_headers();self.wfile.write(body)
         ma=http.server.ThreadingHTTPServer(('127.0.0.1',0),MA);ma.calls=[];ma.items=[];ma.faults={}
         threading.Thread(target=ma.serve_forever,daemon=True).start()
         try:
-            for mode in ['complete','idle','during','cancel','legacy','transient','failed-one','resume-start','resume-finish','large','slice','legacy-journal','corrupt']:
+            for mode in ['complete','idle','during','cancel','legacy','transient','failed-one','resume-start','resume-finish','stalled-pause','large','slice','legacy-journal','corrupt']:
                 if os.environ.get('OFFLINE_CASE') and mode not in os.environ['OFFLINE_CASE'].split(','):continue
                 ma.mode=helper.mode=mode
                 ma.items.clear()
@@ -132,6 +153,7 @@ def main():
                     for file in source.cache.glob('*.mp3'):
                         data=bytearray(file.read_bytes());data[-1]^=1;file.write_bytes(data)
                 env=dict(os.environ,METHEXIS_SOURCE_TEST='0',OFFLINE_MODE=mode,OFFLINE_MA_URL=f'http://127.0.0.1:{ma.server_port}',OFFLINE_SOURCE_URL=helper_url,XDG_DATA_HOME=str(root/('resume' if mode.startswith('resume-') else mode)))
+                env['OFFLINE_STALL_MARKER']=str(root/'stalled-range')
                 p=subprocess.run(['xvfb-run','-a',a.godot,'--path',str(a.app),'--audio-driver','Dummy','--script','res://tests/test_offline_queue_save.gd'],env=env,capture_output=True,text=True,timeout=50)
                 output=p.stdout+p.stderr
                 print(mode,output,flush=True)
@@ -149,6 +171,11 @@ def main():
                 if mode=='resume-finish':
                     assert helper.ranges and all(path.endswith(long_file['file']) for path,_ in helper.ranges)
                     assert helper.ranges[0][1].startswith('bytes=1048576-') and '0' not in ma.items
+                if mode=='stalled-pause':
+                    assert helper.faults=={'stalled':True,'closed_on_pause':True},helper.faults
+                    long_ranges=[value for path,value in helper.ranges if path.endswith(long_file['file'])]
+                    expected_starts=[0,1048576]+list(range(1048576,long_file['bytes'],1048576))
+                    assert [int(value.split('=')[1].split('-')[0]) for value in long_ranges]==expected_starts,long_ranges
             assert 'player_queues/items' in ma.calls
             assert not any(x in ma.calls for x in ['player_queues/play','player_queues/clear','player_queues/next'])
             print('OFFLINE_QUEUE_READ_ONLY_HTTP_PASS')

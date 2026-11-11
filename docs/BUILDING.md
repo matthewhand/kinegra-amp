@@ -38,7 +38,7 @@ python3 packaging/build_public.py \
   --output build/android-release
 ```
 
-This compiles the codec, patched Sendspin SDK/adapter and Android secure-storage/import plugin from source, imports the cleared artwork and exports version 1.0.10/code 86. Native source paths are remapped, including compiler-generated lambda metadata; the final owned native payloads are checked before acceptance. [Portable source names](../native/SOURCE-PATHS.md). CMake is disconnected and Gradle runs offline. A build-only ADB stub prevents Godot's editor polling from accessing a device.
+This compiles the codec, patched Sendspin SDK/adapter and Android secure-storage/import plugin from source, imports the cleared artwork and exports the version and build code from the Android export preset. Native source paths are remapped, including compiler-generated lambda metadata; the final owned native payloads are checked before acceptance. [Portable source names](../native/SOURCE-PATHS.md). CMake is disconnected and Gradle runs offline. A build-only ADB stub prevents Godot's editor polling from accessing a device.
 
 Godot requires a debug-keystore setting even when exporting unsigned. The helper generates a disposable configuration-only key under the output directory; `package/signed=false` and a final signature check enforce unsigned output. No production signing settings or keys are read. The final APK, exact native hashes, runtime notices, source revision and build metadata remain under the output directory. Keep the generated validation key and build logs out of source commits.
 

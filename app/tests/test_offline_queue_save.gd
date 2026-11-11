@@ -54,11 +54,12 @@ func run():
         check(saver._write_checkpoint_file(saver.checkpoint_path,legacy,saver.MAX_SNAPSHOT_BYTES),"legacy_fixture_written")
         saver._restore_checkpoint()
         check(saver.has_pending(),"prior_version_checkpoint_restored")
-    check((saver.begin(2) if mode=="slice" else saver.begin()),"explicit_save_begins")
+    check((saver.begin(2) if mode in ["slice","stalled-pause"] else saver.begin()),"explicit_save_begins")
     print("SAVE_MESSAGE=",saver.message)
     check(not saver.begin(),"second_save_does_not_overlap")
     var deadline=OS.get_ticks_msec()+25000
     var played_during_copy=false
+    var paused_during_stall=false
     while saver.active and OS.get_ticks_msec()<deadline:
         if OS.get_environment("OFFLINE_MODE")=="during" and saver.copied>=2 and not played_during_copy:
             check(saver.play_saved(),"completed_prefix_can_play_while_copying")
@@ -66,6 +67,16 @@ func run():
         if mode in ["cancel","large"] and saver.copied>=1:saver.cancel()
         if mode=="resume-start" and saver.copied==1 and saver._length(saver._part_path())==saver.SEGMENT_BYTES:
             saver.cancel()
+        if mode=="stalled-pause" and not paused_during_stall and File.new().file_exists(OS.get_environment("OFFLINE_STALL_MARKER")):
+            paused_during_stall=true
+            check(saver.request!=null and saver.copied==1,"pause_targets_an_inflight_range")
+            var started=OS.get_ticks_msec()
+            saver.cancel()
+            var elapsed=OS.get_ticks_msec()-started
+            print("OFFLINE_PAUSE_MS=",elapsed)
+            check(elapsed<300 and saver.state=="paused" and saver.has_pending() and saver.request==null,"pause_does_not_wait_for_stalled_response")
+            check(saver._length(saver._part_path())==saver.SEGMENT_BYTES and not File.new().file_exists(saver._part_path()+".segment"),"pause_keeps_only_the_completed_range")
+            check(saver.begin(),"can_resume_immediately_after_stalled_request")
         yield(create_timer(.025),"timeout")
     check(not saver.active,"operation_completes_within_bound")
     if mode=="large":
@@ -77,6 +88,9 @@ func run():
     elif mode=="slice":
         check(saver.state=="complete" and saver.source_count==9001 and saver.entries.size()==2 and saver.copied==2 and not saver.has_pending(),"copies_selected_prefix_of_large_finished_queue")
         check(app.offline_music.user_library.slots.size()==2 and saver.saved_indices.size()==2,"prefix_keeps_exact_requested_count")
+    elif mode=="stalled-pause":
+        check(paused_during_stall and saver.state=="complete" and saver.copied==2 and not saver.has_pending(),"stalled_copy_resumes_without_missing_tracks")
+        check(app.offline_music.user_library.slots.size()==2 and saver.saved_indices.size()==2,"stalled_copy_keeps_one_file_per_track")
     elif mode=="legacy-journal":
         check(saver.state=="complete" and saver.copied==1 and not saver.has_pending(),"prior_version_checkpoint_finishes")
     elif mode in ["cancel","resume-start"]:
