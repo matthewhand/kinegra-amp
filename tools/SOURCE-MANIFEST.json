@@ -16,7 +16,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "51868596de7862b4b76037f3b49bfecfb722ad4a43ed3801dd32ffc9fa971b81"
+      "sha256": "3dce8d5d51ca1137a6a34915406614bc9df87ee03e46040482a35f89cefb7d23"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -384,7 +384,7 @@
     },
     "app/export_presets.cfg": {
       "mode": "100644",
-      "sha256": "33c6ae7433c526bb3ba73cf67063e970cfb89444f4a6241be312fa893b51b6ee"
+      "sha256": "50eceb5af1b693e420e728b0463993adda42b28552f0a2db826cf28fcf98dfd8"
     },
     "app/native/TegraCodec.gdnlib": {
       "mode": "100644",
@@ -396,7 +396,7 @@
     },
     "app/project.godot": {
       "mode": "100644",
-      "sha256": "2d6985b4999ac140747eb2394bb3b50124df4239748d67cb0515511c551cf35f"
+      "sha256": "effb330d6fd67e7f95b1bf73c29b12866bbf11c36252e822d9a05a9a36cb1612"
     },
     "app/scripts/AdaptiveVisuals.gd": {
       "mode": "100644",
@@ -516,7 +516,7 @@
     },
     "app/scripts/MusicFirstUI.gd": {
       "mode": "100644",
-      "sha256": "cb6bc698d15c191d6b92a32d12c65a5867d05ff0f96686fca47bcefdca4e19d4"
+      "sha256": "2b942ecbcf68812ff0862a5946ec38582d6781ab08ec4b6f47be69912da59232"
     },
     "app/scripts/MusicUiMemory.gd": {
       "mode": "100644",
@@ -548,7 +548,7 @@
     },
     "app/scripts/OfflineQueueSave.gd": {
       "mode": "100644",
-      "sha256": "f94a440fd69d064ba84cc1cb64aecb3e8d58d216618a6582563ee972b8666945"
+      "sha256": "87866e993b4c1bc89e601e3d6b31506a31dda1a04cecfb6d878a6221f4cd2153"
     },
     "app/scripts/OriginalHorizon.gd": {
       "mode": "100644",
@@ -656,11 +656,11 @@
     },
     "app/scripts/WebRemote.gd": {
       "mode": "100644",
-      "sha256": "4f06672d9e743a23ef6cf9c7e79bfa580feaf7c5fd8e501755bf8649cccc1c30"
+      "sha256": "7097a7779e32676119d97bb2d1e9a34ee708a0b1c7b137348a02252a9972623f"
     },
     "app/scripts/WebRemotePage.gd": {
       "mode": "100644",
-      "sha256": "4a65b6dd7814b25e12c7b430500309d4c8992d14197721d1b123824822108fbe"
+      "sha256": "b4b1db58e088aba45504cee86f873db109cc8389ae03b005b37308104809c3ba"
     },
     "app/scripts/WebcamGesturePolicy.gd": {
       "mode": "100644",
@@ -980,7 +980,7 @@
     },
     "app/tests/test_offline_queue_save.gd": {
       "mode": "100644",
-      "sha256": "85db9e9cde2971552f5dd0a8dbcd87a6756bd6f76cd31925e861e5f0019cdd37"
+      "sha256": "d2b77a68942091f365adc2c6b70d791d28404c734a3fe994bd5a153482e8909f"
     },
     "app/tests/test_offline_seek.gd": {
       "mode": "100644",
@@ -1220,7 +1220,7 @@
     },
     "clients/offline_source.py": {
       "mode": "100644",
-      "sha256": "78dc6e289d2d35381958465e7ac1f01932bbfae0ae3a5b2f4593744f99900c9e"
+      "sha256": "1e40ef87ea9d9284595c6f9b29a6ff185359f604f635cc49f10d2abbd470bda8"
     },
     "docs/ARTWORK-AND-FULLSCREEN.md": {
       "mode": "100644",
@@ -1252,7 +1252,7 @@
     },
     "docs/OFFLINE-COPYING.md": {
       "mode": "100644",
-      "sha256": "a0c89e629362fe9aab6e4b5a5fa3a97abc7fd80218c4e26cb5d658244ed6d08a"
+      "sha256": "d23b3d8fdba2cacb7a9b2b0c8c95c101bd80954b06c6db01cb9be55db4adff9a"
     },
     "docs/OFFLINE-LIBRARY.md": {
       "mode": "100644",
@@ -1264,7 +1264,7 @@
     },
     "docs/RELEASE.md": {
       "mode": "100644",
-      "sha256": "836403956a367025fe7926a0759b3fe8aa11864c084cc45bdc5fa15c54bddbfe"
+      "sha256": "9e0a727342d686563916c8d00dd2066677227a82d188e7aa7a5fd0cf49bd56e8"
     },
     "docs/SECURE-TOKEN-LIFECYCLE.md": {
       "mode": "100644",
@@ -1276,15 +1276,15 @@
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
-      "sha256": "a48b0b2163ccbc9dabcff2f8dba470eda73ba8a944af58698c9a04b2d5fd797f"
+      "sha256": "ef0a3995efe18f6e3d71e85a8ea6e1602bbd3362597bacbddf00fd94b7ad0b9a"
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
-      "sha256": "e5c256b026dbfe4b85582964fb7852d398d76a8a98fe5c45a8f821dc6fb0263d"
+      "sha256": "c3992de6020d8fb39b2e1a35a0aa5dc4f7509195e997bc479e4b9f3ed8228e6e"
     },
     "docs/WEB-REMOTE.md": {
       "mode": "100644",
-      "sha256": "0be70f9680a5be4316c2a52aacaafc663b131f2e25ea215def93079a18f08a99"
+      "sha256": "23e335d050fbe985c422bbe409d3e1de516e8497874b5290bd5b748737b9a4db"
     },
     "docs/WEBCAM-GESTURES.md": {
       "mode": "100644",
@@ -1984,7 +1984,7 @@
     },
     "tools/test_offline_save.py": {
       "mode": "100644",
-      "sha256": "fbed611c1d44d596cecc02daed2d1884ddc9942727ac5b0473201346edb21cd3"
+      "sha256": "d8e04fe5910641a95759e9196357fea79d05110e2d6207452e1f53352fa747fa"
     },
     "tools/test_preview_import_completion.py": {
       "mode": "100644",

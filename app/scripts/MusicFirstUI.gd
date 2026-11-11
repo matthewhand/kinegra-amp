@@ -60,6 +60,7 @@ var queue_local_first=0
 var queue_previous_page=null
 var queue_next_page=null
 var queue_download_button=null
+var queue_discard_copy_button=null
 var queue_play_saved_button=null
 var queue_save_label = null
 var queue_empty_label = null
@@ -554,6 +555,7 @@ func _ready():
     queue_refresh_button=_action(queue_switch,"REFRESH QUEUE", "_refresh_tv_queue_preview")
     queue_refresh_button.rect_min_size.y=50
     queue_download_button=_action(queue_switch,"SAVE QUEUE OFFLINE","_save_queue_offline")
+    queue_discard_copy_button=_action(queue_switch,"DISCARD PENDING COPY","_discard_pending_copy")
     queue_play_saved_button=_action(queue_switch,"PLAY SAVED QUEUE","_play_saved_queue")
     queue_previous_page=_action(queue_switch,"PREVIOUS PAGE","_queue_previous_page")
     queue_next_page=_action(queue_switch,"NEXT PAGE","_queue_next_page")
@@ -1156,8 +1158,11 @@ func _refresh_queue():
     if queue_refresh_button!=null: queue_refresh_button.visible=queue_view=="tv"
     queue_previous_page.visible=queue_view=="local"
     queue_next_page.visible=queue_view=="local"
-    queue_download_button.visible=queue_view=="tv" or app.offline_save.active
-    queue_download_button.text="CANCEL SAVING" if app.offline_save.active else "SAVE QUEUE OFFLINE"
+    var saver=app.offline_save
+    var pending=saver.has_pending()
+    queue_download_button.visible=queue_view=="tv" or saver.active or pending
+    queue_download_button.text="PAUSE SAVING" if saver.active else ("RESUME SAVING" if pending else "SAVE QUEUE OFFLINE")
+    queue_discard_copy_button.visible=pending and not saver.active
     queue_play_saved_button.visible=not app.offline_save.saved_indices.empty()
     queue_play_saved_button.text="PLAY SAVED SO FAR" if app.offline_save.active else "PLAY SAVED QUEUE"
     if queue_view=="tv":
@@ -1210,8 +1215,8 @@ func _refresh_queue():
     if queue_save_label != null:
         queue_save_label.text="" if app.offline_music.queue_save_ok else "QUEUE CHANGES COULD NOT BE SAVED"
         queue_save_label.visible=not app.offline_music.queue_save_ok
-        if app.offline_save.active:
-            queue_save_label.text=app.offline_save.message
+        if saver.active or pending:
+            queue_save_label.text=saver.message
             queue_save_label.show()
     for i in range(queue_items.size()):
         var button=queue_items[i]
@@ -1716,7 +1721,7 @@ func _refresh_tv_presentation():
 
 func _fit_stage_button_labels():
     if _stage_font==null: return
-    for button in [library_button,offline_button,queue_button,fullscreen_button,settings_button,visuals_button,previous_button,play_button,tv_pause_button,next_button,stop_button,playlist_button,favorite_button,repeat_button,shuffle_button,preset_button,sensitivity_button,body_button,avatar_button,rewind_button,forward_button,queue_toggle_button,queue_refresh_button,queue_previous_page,queue_next_page,queue_download_button,queue_play_saved_button,queue_up_button,queue_down_button,queue_remove_button,queue_clear_button,queue_close_button]:
+    for button in [library_button,offline_button,queue_button,fullscreen_button,settings_button,visuals_button,previous_button,play_button,tv_pause_button,next_button,stop_button,playlist_button,favorite_button,repeat_button,shuffle_button,preset_button,sensitivity_button,body_button,avatar_button,rewind_button,forward_button,queue_toggle_button,queue_refresh_button,queue_previous_page,queue_next_page,queue_download_button,queue_discard_copy_button,queue_play_saved_button,queue_up_button,queue_down_button,queue_remove_button,queue_clear_button,queue_close_button]:
         if button==null or not button.is_visible_in_tree() or button.rect_size.x<=0: continue
         var key=str(button.text)+"|"+str(int(button.rect_size.x))+"|"+str(_stage_font.size)
         if button.has_meta("fitted_label_key") and button.get_meta("fitted_label_key")==key: continue
@@ -2362,6 +2367,10 @@ func _save_queue_offline():
     if app.offline_save.active:app.offline_save.cancel()
     else:app.offline_save.begin()
     _refresh_queue()
+
+func _discard_pending_copy():
+    queue_download_button.grab_focus()
+    app.offline_save.discard()
 
 func _play_saved_queue():
     if not app.offline_save.play_saved():show_status("No saved tracks available / open Offline Library")

@@ -167,12 +167,36 @@ class Handler(BaseHTTPRequestHandler):
                 size = os.fstat(f.fileno()).st_size
                 if not 4 <= size <= MAX_BYTES:
                     raise ValueError()
-                self.send_response(200)
+                ranges = self.headers.get_all('Range') or []
+                start, end = 0, size - 1
+                if ranges:
+                    match = re.fullmatch(r'bytes=([0-9]{1,9})-([0-9]{0,9})', ranges[0]) if len(ranges) == 1 else None
+                    if match:
+                        start = int(match[1])
+                        end = min(int(match[2]), end) if match[2] else end
+                    if not match or not 0 <= start <= end < size:
+                        self.send_response(416)
+                        self.send_header('Content-Range', f'bytes */{size}')
+                        self.send_header('Content-Length', '0')
+                        self.send_header('Cache-Control', 'no-store')
+                        self.end_headers()
+                        return
+                remaining = end - start + 1
+                self.send_response(206 if ranges else 200)
                 self.send_header('Content-Type', 'audio/mpeg' if name.endswith('.mp3') else 'audio/ogg')
-                self.send_header('Content-Length', str(size))
+                self.send_header('Content-Length', str(remaining))
+                self.send_header('Accept-Ranges', 'bytes')
+                if ranges:
+                    self.send_header('Content-Range', f'bytes {start}-{end}/{size}')
                 self.send_header('Cache-Control', 'no-store')
                 self.end_headers()
-                shutil.copyfileobj(f, self.wfile, 65536)
+                f.seek(start)
+                while remaining:
+                    data = f.read(min(remaining, 65536))
+                    if not data:
+                        break
+                    self.wfile.write(data)
+                    remaining -= len(data)
         except (OSError, ValueError):
             self.close_connection = True
 

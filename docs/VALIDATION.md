@@ -18,6 +18,6 @@ Tested on an original NVIDIA SHIELD with SHIELD Experience 9.x (Android 11), a 3
 
 Webcam avatars consume external body landmarks; no inference model is bundled. Head pose is approximate, tracking can jitter or lose a body, and gestures remain experimental.
 
-Bulk offline queue copying is experimental. Metadata failures can stop a batch; completed copies remain playable. Automatic retry and durable resume are not implemented. [Offline copying](OFFLINE-COPYING.md).
+Bulk offline queue copying is experimental. Temporary errors retry with a limit per track. Interrupted copies retain a checkpoint and verified byte ranges when using the current file-source helper. [Offline copying](OFFLINE-COPYING.md).
 
 Reports should include app/server versions, device, input method, layout, duration and reproduction steps. Remove credentials, private addresses, access URLs, personalized library data and camera imagery.

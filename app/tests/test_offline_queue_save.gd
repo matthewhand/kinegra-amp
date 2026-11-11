@@ -25,7 +25,6 @@ func run():
     var app=load("res://scripts/Main.gd").new();get_root().add_child(app)
     yield(create_timer(.1),"timeout")
     app.set_process(false);app.music_ui.set_process(false)
-    app.offline_music.user_library.initialize()
     var panel=app.ma_panel
     for timer in [app.tv_queue_timer,app.tv_reconnect_timer,app.tv_audio_wait_timer,panel.sendspin_refresh_timer]:
         if timer!=null:timer.stop()
@@ -41,6 +40,13 @@ func run():
     var saver=app.offline_save
     check(not saver.configure("http://public.invalid","synthetic-source-key-1234567890123456"),"nonprivate_source_rejected")
     check(saver.configure(OS.get_environment("OFFLINE_SOURCE_URL"),"synthetic-source-key-1234567890123456") and saver.configured(),"explicit_source_saved")
+    var mode=OS.get_environment("OFFLINE_MODE")
+    if mode=="resume-finish":
+        check(saver.has_pending() and saver.copied==1 and saver.saved_indices.size()==1,"restart_restores_completed_prefix_and_pending_copy")
+        check(saver._length(saver._part_path())==saver.SEGMENT_BYTES,"restart_keeps_completed_download_range")
+        check(saver.configure("http://127.0.0.1:1","synthetic-source-key-1234567890123456") and not saver.begin(),"resume_rejects_changed_file_source")
+        check(saver.configure(OS.get_environment("OFFLINE_SOURCE_URL"),"synthetic-source-key-1234567890123456"),"restore_original_source")
+        app.sendspin_facade=null
     check(saver.begin(),"explicit_save_begins")
     print("SAVE_MESSAGE=",saver.message)
     check(not saver.begin(),"second_save_does_not_overlap")
@@ -50,19 +56,35 @@ func run():
         if OS.get_environment("OFFLINE_MODE")=="during" and saver.copied>=2 and not played_during_copy:
             check(saver.play_saved(),"completed_prefix_can_play_while_copying")
             played_during_copy=true
-        if OS.get_environment("OFFLINE_MODE")=="cancel" and saver.copied>=1:saver.cancel()
+        if mode=="cancel" and saver.copied>=1:saver.cancel()
+        if mode=="resume-start" and saver.copied==1 and saver._length(saver._part_path())==saver.SEGMENT_BYTES:
+            saver.cancel()
         yield(create_timer(.025),"timeout")
     check(not saver.active,"operation_completes_within_bound")
-    if OS.get_environment("OFFLINE_MODE")=="cancel":
-        check(saver.state=="cancelled" and saver.copied>=1,"cancel_keeps_completed_files")
-    elif OS.get_environment("OFFLINE_MODE")=="corrupt":
-        check(saver.copied==0 and saver.failed==34 and saver.state=="error" and app.offline_music.user_library.slots.empty(),"corrupt_audio_never_enters_library")
+    if mode in ["cancel","resume-start"]:
+        check(saver.state=="paused" and saver.has_pending() and saver.copied>=1,"pause_keeps_completed_files_and_checkpoint")
+        if mode=="resume-start":
+            check(saver._length(saver._part_path())==saver.SEGMENT_BYTES,"pause_keeps_completed_download_range")
+        else:
+            check(saver.discard() and not saver.has_pending() and not saver.saved_indices.empty(),"discard_keeps_completed_files")
+    elif mode=="corrupt":
+        check(saver.copied==0 and saver.failed==2 and saver.state=="error" and saver.has_pending() and app.offline_music.user_library.slots.empty(),"corrupt_audio_never_enters_library")
+    elif mode=="failed-one":
+        check(saver.state=="partial" and saver.copied==33 and saver.failed==1 and saver.has_pending(),"exhausted_track_does_not_block_remaining_tracks")
+        check(saver.begin(),"retry_failed_track_from_saved_snapshot")
+        deadline=OS.get_ticks_msec()+15000
+        while saver.active and OS.get_ticks_msec()<deadline:yield(create_timer(.025),"timeout")
+        check(saver.state=="complete" and saver.copied==34 and saver.failed==0 and not saver.has_pending(),"retry_fills_failed_entry_without_duplicates")
+        check(saver.saved_indices[0]==saver.saved_indices[2] and saver.saved_indices[1]!=saver.saved_indices[0],"retried_track_keeps_original_queue_order")
+        check(app.offline_music.user_library.slots.size()==2,"retry_keeps_one_file_per_digest")
     else:
-        check(saver.state=="complete" and saver.copied==34 and saver.skipped==1 and saver.failed==0,"paged_queue_copied_without_provider_downloads")
+        check(saver.state=="complete" and saver.copied==34 and saver.skipped==1 and saver.failed==0 and not saver.has_pending(),"paged_queue_copied_without_provider_downloads")
         check(saver.saved_indices.size()==34 and saver.saved_indices[0]==saver.saved_indices[2],"snapshot_order_and_duplicates_preserved")
         var stored=saver.queue_store.read(saver.saved_queue_path)
         check(stored.ok and stored.items==saver.saved_indices,"saved_snapshot_order_persists_to_disk")
         check(app.offline_music.user_library.slots.size()==2,"identical_audio_reuses_verified_offline_file")
+        if mode=="resume-finish":
+            check(app.offline_music.user_library.slots.size()==2 and saver.saved_indices.size()==34,"resumed_batch_has_no_duplicate_files_or_queue_rows")
         check(saver.play_saved() and app.offline_music.upcoming_queue.size()==33 and app.music_ui.playback_context=="offline","explicit_play_saved_switches_to_full_local_queue")
         if OS.get_environment("OFFLINE_MODE")=="during":check(played_during_copy,"copy_finished_after_switch_to_local_audio")
         app.music_ui._open_queue()
