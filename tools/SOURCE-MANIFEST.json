@@ -16,7 +16,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "29e76aacadd6b58a14cd7f8b82234a053e61a64ca549ac8707cb2f20db5ee589"
+      "sha256": "51868596de7862b4b76037f3b49bfecfb722ad4a43ed3801dd32ffc9fa971b81"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -1264,7 +1264,7 @@
     },
     "docs/RELEASE.md": {
       "mode": "100644",
-      "sha256": "9e0a727342d686563916c8d00dd2066677227a82d188e7aa7a5fd0cf49bd56e8"
+      "sha256": "836403956a367025fe7926a0759b3fe8aa11864c084cc45bdc5fa15c54bddbfe"
     },
     "docs/SECURE-TOKEN-LIFECYCLE.md": {
       "mode": "100644",
@@ -1276,7 +1276,7 @@
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
-      "sha256": "ef0a3995efe18f6e3d71e85a8ea6e1602bbd3362597bacbddf00fd94b7ad0b9a"
+      "sha256": "a48b0b2163ccbc9dabcff2f8dba470eda73ba8a944af58698c9a04b2d5fd797f"
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
