@@ -1,10 +1,11 @@
 extends Node
 # Explicit local-file copies, separate from Music Assistant's playback streams.
 signal changed
-const MAX_TRACKS=1024
+const MAX_TRACKS=preload("res://scripts/QueueStore.gd").MAX_QUEUE
 const MAX_BYTES=67108864
 const SEGMENT_BYTES=1048576
-const MAX_CHECKPOINT_BYTES=4194304
+const MAX_SNAPSHOT_BYTES=25165824
+const MAX_PROGRESS_BYTES=2097152
 const MAX_RETRIES=2
 var app=null
 var state="idle"
@@ -18,6 +19,9 @@ var capture_rows=[]
 var track_path=""
 var seen_queue_ids={}
 var saved_indices=[]
+var saved_positions=[]
+var source_count=0
+var requested_tracks=MAX_TRACKS
 var source_origin=""
 var source_key=""
 var catalog=null
@@ -32,6 +36,7 @@ var phase=""
 var prepared={}
 var outcomes=[]
 var checkpoint_binding=""
+var checkpoint_id=""
 var download_hash=""
 var segment_start=0
 var segment_end=0
@@ -96,44 +101,65 @@ func _length(path):
     return bytes
 
 func _save_checkpoint():
-    var value={"version":1,"binding":checkpoint_binding,"entries":entries,"outcomes":outcomes,"download_hash":download_hash}
+    if checkpoint_id.empty():
+        return _write_checkpoint_file(checkpoint_path,{"version":1,"binding":checkpoint_binding,"entries":entries,"outcomes":outcomes,"download_hash":download_hash},MAX_SNAPSHOT_BYTES)
+    return _write_checkpoint_file(checkpoint_path+".progress",{"id":checkpoint_id,"outcomes":outcomes,"download_hash":download_hash},MAX_PROGRESS_BYTES)
+
+func _write_checkpoint_file(path,value,limit):
     var encoded=to_json(value)
-    if encoded.to_utf8().size()>MAX_CHECKPOINT_BYTES:return false
-    var temporary=checkpoint_path+".new"
+    if encoded.to_utf8().size()>limit:return false
+    var temporary=path+".new"
     var file=File.new()
     if file.open(temporary,File.WRITE)!=OK:return false
     file.store_string(encoded)
     var ok=file.get_error()==OK
     file.close()
     var dir=Directory.new()
-    if ok and dir.rename(temporary,checkpoint_path)==OK:return true
+    if ok and dir.rename(temporary,path)==OK:return true
     dir.remove(temporary)
     return false
 
 func _restore_checkpoint():
     if app==null or app.offline_music==null or active:return
     var store=app.offline_music.user_library
-    var value=store._json(checkpoint_path,MAX_CHECKPOINT_BYTES)
-    if typeof(value)!=TYPE_DICTIONARY or value.get("version")!=1 or not store._hex(value.get("binding")):return
+    var value=store._json(checkpoint_path,MAX_SNAPSHOT_BYTES)
+    if typeof(value)!=TYPE_DICTIONARY or not value.get("version") in [1,2] or not store._hex(value.get("binding")):return
     var rows=value.get("entries")
-    var results=value.get("outcomes")
-    var digest=value.get("download_hash")
-    if typeof(rows)!=TYPE_ARRAY or rows.empty() or rows.size()>MAX_TRACKS or typeof(results)!=TYPE_ARRAY or results.size()!=rows.size():return
-    if digest!="" and not store._hex(digest):return
+    if typeof(rows)!=TYPE_ARRAY or rows.empty() or rows.size()>MAX_TRACKS:return
+    var saved_id=""
+    var progress=value
+    if value.version==2:
+        saved_id=value.get("id","")
+        if not store._hex(saved_id):return
+        progress=store._json(checkpoint_path+".progress",MAX_PROGRESS_BYTES)
+        if typeof(progress)!=TYPE_DICTIONARY or progress.get("id")!=saved_id:progress={}
+    var results=progress.get("outcomes")
+    var digest=progress.get("download_hash","")
+    if typeof(results)!=TYPE_ARRAY or results.size()!=rows.size() or (digest!="" and not store._hex(digest)):
+        if value.version==1:return
+        results=[]
+        for _row in rows:results.append("")
+        digest=""
     var validator=preload("res://scripts/MACatalog.gd").new()
     var seen={}
     var valid=true
     for i in range(rows.size()):
         var row=rows[i]
-        if typeof(row)!=TYPE_DICTIONARY or not queue_policy.item_id(row.get("queue_item_id")) or seen.has(row.get("queue_item_id")) or typeof(row.get("name"))!=TYPE_STRING or row.name.length()>120 or typeof(row.get("media"))!=TYPE_DICTIONARY or not validator._id(row.media.get("item_id")) or not validator._id(row.media.get("provider")) or (not results[i] in ["","skipped","failed"] and not store._hex(results[i])):
+        if typeof(row)!=TYPE_DICTIONARY or typeof(row.get("name"))!=TYPE_STRING or row.name.length()>120 or typeof(row.get("media"))!=TYPE_DICTIONARY or not validator._id(row.media.get("item_id")) or not validator._id(row.media.get("provider")) or (not results[i] in ["","skipped","failed"] and not store._hex(results[i])):
             valid=false
             break
-        seen[row.queue_item_id]=true
+        if value.version==1:
+            var queue_item=row.get("queue_item_id")
+            if not queue_policy.item_id(queue_item) or seen.has(queue_item):
+                valid=false
+                break
+            seen[queue_item]=true
     validator.free()
     if not valid:return
     entries=rows
     outcomes=results
     checkpoint_binding=value.binding
+    checkpoint_id=saved_id
     download_hash=digest
     _sync_saved_queue()
     state="paused" if has_pending() else "complete"
@@ -148,7 +174,8 @@ func discard():
         _status("Could not discard the pending copy. Try again.")
         return false
     _remove_part()
-    checkpoint_binding="";download_hash="";outcomes.clear();entries.clear()
+    Directory.new().remove(checkpoint_path+".progress")
+    checkpoint_binding="";checkpoint_id="";download_hash="";outcomes.clear();entries.clear()
     state="idle"
     _status("Pending copy discarded. Completed files remain in Offline Library.")
     return true
@@ -162,8 +189,8 @@ func _owner_current():
     var status=session.client.status()
     return typeof(status)==TYPE_DICTIONARY and status.get("paired")==true and status.get("client_id")==client_id
 
-func begin():
-    if active or hash_thread!=null:return false
+func begin(limit=MAX_TRACKS):
+    if active or hash_thread!=null or typeof(limit)!=TYPE_INT or limit<1 or limit>MAX_TRACKS:return false
     if app==null or app.offline_music==null or app.offline_music.user_library.blocked:return false
     var config=ConfigFile.new()
     if config.load(config_path)!=OK or _origin(config.get_value("source","origin","")).empty() or not _valid_key(config.get_value("source","key","")):
@@ -199,6 +226,7 @@ func begin():
     catalog.connect("state_changed",self,"_catalog_state")
     active=true
     retries=0;position=0;offset=0
+    requested_tracks=limit;source_count=0
     if resuming:
         for i in range(outcomes.size()):
             if outcomes[i]=="failed":outcomes[i]=""
@@ -219,8 +247,13 @@ func _perform():
         _finish("paused","Offline copy paused because the connection changed.")
         return
     match phase:
-        "snapshot","page":
-            if not catalog.discover_players():_retry(phase)
+        "snapshot":
+            if not catalog.discover_players():_retry("snapshot")
+        "page":
+            if catalog.resolve_local_player(client_id)==queue_id:
+                if not catalog.offline_queue_request(client_id,offset,min(32,remaining)):_retry("page")
+            elif not catalog.discover_players():
+                _retry("page")
         "track":
             if not catalog.offline_track_request(entries[position].media):_retry("track")
         "prepare":
@@ -246,17 +279,22 @@ func _snapshot(value):
     if not _owner_current():
         _finish("paused","Offline copy paused because the connection changed.")
         return
-    queue_id=catalog.resolve_local_player(client_id)
+    queue_id=catalog.request_context.get("queue_id","")
     var start=value.get("current_index",0)
     var count=value.get("item_count",-1)
     if start==null or start==-1:start=0
     if not typeof(start) in [TYPE_INT,TYPE_REAL] or int(start)!=start or not typeof(count) in [TYPE_INT,TYPE_REAL] or int(count)!=count or start<0 or count<start:
         _finish("error","Queue position is unavailable. Refresh playback and retry.")
         return
-    if count-start<1 or count-start>MAX_TRACKS:
-        _finish("error","Choose a queue with 1 to 1,024 current and upcoming tracks.")
+    if count==0:
+        _finish("error","This Music Assistant queue is empty.")
         return
-    offset=int(start);remaining=int(count)-offset;phase="page"
+    # Music Assistant can leave its cursor at the end of a finished queue.
+    if start==count:start=0
+    offset=int(start)
+    source_count=int(count)-offset
+    remaining=min(source_count,requested_tracks)
+    phase="page"
     retries=0
     _perform()
 
@@ -271,25 +309,27 @@ func _page(value):
             _finish("error","Queue changed while reading. Start saving again.")
             return
         seen_queue_ids[id]=true
-    capture_rows.append_array(value)
+        capture_rows.append({"name":row.name,"media":row.media})
     offset+=value.size();remaining-=value.size();retries=0
     if remaining>0:
         _perform()
         return
-    entries=capture_rows.duplicate()
-    capture_rows.clear()
-    outcomes=[]
-    outcomes.resize(entries.size())
-    for i in range(outcomes.size()):outcomes[i]=""
     if not _remove_part():
         _finish("paused","Could not clear the old partial file.")
         return
-    download_hash=""
-    checkpoint_binding=_binding(catalog.endpoint,source_origin)
-    state="copying"
-    if not _save_checkpoint():
+    var next_id=Crypto.new().generate_random_bytes(32).hex_encode()
+    var next_binding=_binding(catalog.endpoint,source_origin)
+    if next_id.length()!=64 or not _write_checkpoint_file(checkpoint_path,{"version":2,"id":next_id,"binding":next_binding,"entries":capture_rows},MAX_SNAPSHOT_BYTES):
         _finish("error","Could not save the queue checkpoint. Check offline storage.")
         return
+    entries=capture_rows.duplicate()
+    capture_rows.clear()
+    outcomes=[]
+    for _row in entries:outcomes.append("")
+    checkpoint_id=next_id
+    checkpoint_binding=next_binding
+    download_hash=""
+    state="copying"
     _sync_saved_queue()
     _next()
 
@@ -317,6 +357,7 @@ func _next():
     if position>=entries.size():
         var result="complete" if failed==0 and copied>0 else ("partial" if copied>0 else "error")
         var summary="Saved %d queue entries; %d unsupported; %d failed." % [copied,skipped,failed]
+        if source_count>entries.size():summary+=" Copied from a queue of %d tracks." % source_count
         if failed>0:summary+=" Choose Resume Saving to retry failed tracks."
         _finish(result,summary)
         return
@@ -509,8 +550,7 @@ func _process(_delta):
         dir.remove(temp)
         _finish("paused","Could not finish the offline copy. Check storage and resume saving.")
         return
-    music.refresh_user_library()
-    slot=_slot_for(record.sha256)
+    slot=music.adopt_verified_queue_copy(record)
     if slot<0 or not store.available(slot):
         _finish("paused","Could not add the saved file to Offline Library. Resume saving to retry.")
         return
@@ -525,11 +565,13 @@ func _slot_for(digest):
 func _sync_saved_queue():
     copied=0;skipped=0;failed=0
     saved_indices.clear()
+    saved_positions.clear()
     var store=app.offline_music.user_library
     var indices={}
     for i in range(store.slots.size()):
         if not store.slots[i].deleted:indices[store.slots[i].sha256]=i+4
-    for result in outcomes:
+    for row in range(outcomes.size()):
+        var result=outcomes[row]
         match result:
             "skipped":skipped+=1
             "failed":failed+=1
@@ -537,7 +579,9 @@ func _sync_saved_queue():
                 pass
             _:
                 copied+=1
-                if indices.has(result):saved_indices.append(indices[result])
+                if indices.has(result):
+                    saved_positions.append(row)
+                    saved_indices.append(indices[result])
 
 func _complete_track(outcome):
     if not _remove_part():
@@ -550,7 +594,16 @@ func _complete_track(outcome):
         outcomes[position]=""
         _finish("paused","Could not save queue progress. Resume saving to retry.")
         return
-    _sync_saved_queue()
+    match outcome:
+        "skipped":skipped+=1
+        "failed":failed+=1
+        _:
+            copied+=1
+            var slot=_slot_for(outcome)
+            if slot>=0:
+                var insertion=saved_positions.bsearch(position)
+                saved_positions.insert(insertion,position)
+                saved_indices.insert(insertion,slot+4)
     position+=1
     call_deferred("_next")
 
@@ -559,13 +612,8 @@ func play_saved():
     if not checkpoint_binding.empty():_sync_saved_queue()
     if saved_indices.empty():return false
     var music=app.offline_music
-    if music.queue_load_blocked:return false
-    for index in saved_indices:
-        if not music.available(index):return false
-    # Explicit Play replaces only Kinegra Amp's local queue, never the MA queue.
-    music.queue_clear()
-    for i in saved_indices:
-        if not music.queue_track(i):return false
+    # Replace the local queue in one write after validating every entry.
+    if not music.replace_queue(saved_indices):return false
     app._stop_audio()
     if not music._play_queued()>0:return false
     app.music_ui.set_playback_context("offline")

@@ -250,7 +250,7 @@ func _read_request(client):
         _respond(client, 401, {"error":"Enter the access key shown in Kinegra Amp Settings"})
         return
     if request[0]=="GET" and path=="/api/offline-status" and int(length)==0:
-        _respond(client,200,{"state":app.offline_save.state,"active":app.offline_save.active,"message":app.offline_save.message,"saved":app.offline_save.copied,"has_saved":not app.offline_save.saved_indices.empty(),"has_pending":app.offline_save.has_pending(),"configured":app.offline_save.configured(),"free_bytes":app.offline_save._free_bytes(app.offline_music.user_library.directory)})
+        _respond(client,200,{"state":app.offline_save.state,"active":app.offline_save.active,"message":app.offline_save.message,"saved":app.offline_save.copied,"has_saved":not app.offline_save.saved_indices.empty(),"has_pending":app.offline_save.has_pending(),"source_count":app.offline_save.source_count,"configured":app.offline_save.configured(),"free_bytes":app.offline_save._free_bytes(app.offline_music.user_library.directory)})
         return
     if request[0]=="GET" and path=="/api/diagnostics" and int(length)==0:
         _respond(client,200,app.web_remote_diagnostics())
@@ -282,7 +282,12 @@ func _read_request(client):
             _respond(client,400,{"error":"Unknown offline action"})
             return
         if action=="cancel":app.offline_save.cancel()
-        elif action=="save":app.offline_save.begin()
+        elif action=="save":
+            var limit=body.result.get("limit",app.offline_save.MAX_TRACKS)
+            if not typeof(limit) in [TYPE_INT,TYPE_REAL] or limit!=int(limit) or limit<1 or limit>app.offline_save.MAX_TRACKS:
+                _respond(client,400,{"error":"Choose 1 to 8,192 tracks"})
+                return
+            app.offline_save.begin(int(limit))
         elif action=="discard":app.offline_save.discard()
         elif action=="play":app.offline_save.play_saved()
         _respond(client,200,{"state":app.offline_save.state,"active":app.offline_save.active,"message":app.offline_save.message,"saved":app.offline_save.copied})

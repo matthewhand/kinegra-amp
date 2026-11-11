@@ -28,10 +28,10 @@ func run():
     var origin="https://synthetic.invalid"
     var page={"kind":"playlist_items","offset":50,"search":"","playlist":{"item_id":"71","provider":"library","name":"Private title never retained"}}
     check(store.remember_location(origin,page,{"provider":"library","item_id":"203","name":"Private track never retained"},25) and store.save(),"playlist_identity_and_position_saved")
-    check(store.remember_offline(1027) and not store.remember_offline(1028) and store.save(),"offline_slot_is_bounded_and_stable")
+    check(store.remember_offline(store.MAX_OFFLINE_INDEX) and not store.remember_offline(store.MAX_OFFLINE_INDEX+1) and store.save(),"offline_slot_is_bounded_and_stable")
     reload.load_state();var location=reload.location(origin)
     check(location.kind=="playlist_items" and location.offset==50 and location.selected_id=="203" and location.playlist_id=="71" and location.return_offset==25,"playlist_bookmark_survives_relaunch")
-    check(reload.offline_index()==1027,"offline_slot_survives_relaunch")
+    check(reload.offline_index()==store.MAX_OFFLINE_INDEX,"offline_slot_survives_relaunch")
     check(reload.location("https://different.invalid").empty(),"bookmark_cannot_cross_server_origin")
     check(store.identity("https://user:password@synthetic.invalid").empty() and store.identity(origin+"/private").empty(),"credentials_and_non_origin_urls_rejected")
     var text=read(store.path)

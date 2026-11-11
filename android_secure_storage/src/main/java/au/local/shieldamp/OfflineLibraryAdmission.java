@@ -7,7 +7,7 @@ import java.util.regex.*;
 
 /** Read-only union of append-only slots and unadopted private hash files. */
 final class OfflineLibraryAdmission {
-    static final int MAX_IDENTITIES=1024,MAX_ENTRIES=4096,MAX_CATALOG_BYTES=1048576;
+    static final int MAX_IDENTITIES=4096,MAX_ENTRIES=16384,MAX_CATALOG_BYTES=4194304;
     static final Pattern HASH=Pattern.compile("[0-9a-f]{64}");
     static final Pattern FILE=Pattern.compile("import_([0-9a-f]{64})\\.(?:mp3|ogg)(?:\\.meta\\.json)?(?:\\.delete)?");
     interface CatalogReader {Set<String> read(File file)throws IOException;}

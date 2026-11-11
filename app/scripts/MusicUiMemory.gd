@@ -3,6 +3,7 @@ extends Reference
 const VERSION=1
 const MAX_BYTES=4096
 const MAX_OFFSET=10000
+const MAX_OFFLINE_INDEX=preload("res://scripts/LocalPlaylists.gd").MAX_TRACKS-1
 var path="user://music_ui_state.json"
 var state={"version":VERSION,"source":"ma","origin":"","location":{},"offline_index":-1}
 var blocked=false
@@ -58,7 +59,7 @@ func load_state():
     if value.empty():return false
     if _integer(value.get("version"),100000)!=VERSION or not value.get("source") in ["ma","offline"]:return false
     state.source=value.source
-    state.offline_index=_integer(value.get("offline_index"),1027)
+    state.offline_index=_integer(value.get("offline_index"),MAX_OFFLINE_INDEX)
     var location=_location(value.get("location",{}))
     if _digest(value.get("origin")) and not location.empty():
         state.origin=value.origin;state.location=location
@@ -66,7 +67,7 @@ func load_state():
 func source():return state.source
 func offline_index():return int(state.offline_index)
 func remember_offline(index):
-    var valid=_integer(index,1027)
+    var valid=_integer(index,MAX_OFFLINE_INDEX)
     if valid<0:return false
     if state.offline_index!=valid:
         state.offline_index=valid

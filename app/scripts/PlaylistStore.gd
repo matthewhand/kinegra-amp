@@ -2,7 +2,8 @@ extends Reference
 # Local-only, versioned Omega preferences. No tokens, stream addresses or MA state.
 # A caller-provided path makes tests independent of actual user settings.
 const CURRENT_VERSION = 4
-const MAX_BYTES = 16384
+const MAX_BYTES = 65536
+const MAX_TRACKS = preload("res://scripts/LocalPlaylists.gd").MAX_TRACKS
 
 func _valid_int(value, lo, hi):
     return typeof(value) == TYPE_INT and value >= lo and value <= hi
@@ -18,7 +19,7 @@ func _decode(config):
     var saved = config.get_value("omega", "favorites", null)
     if not _valid_int(playlist, 0, 3) or not _valid_int(repeat, 0, 2):
         return {}
-    if typeof(saved) != TYPE_ARRAY or saved.size() < 4 or saved.size() > 1028 or (version < 4 and saved.size() != 4):
+    if typeof(saved) != TYPE_ARRAY or saved.size() < 4 or saved.size() > MAX_TRACKS or (version < 4 and saved.size() != 4):
         return {}
     var flags = []
     for item in saved:
@@ -67,7 +68,7 @@ func write(path, state):
     var flags = state.get("favorites", null)
     if not _valid_int(state.get("playlist", null), 0, 3) or not _valid_int(state.get("repeat", null), 0, 2):
         return false
-    if typeof(flags) != TYPE_ARRAY or flags.size() < 4 or flags.size() > 1028:
+    if typeof(flags) != TYPE_ARRAY or flags.size() < 4 or flags.size() > MAX_TRACKS:
         return false
     for flag in flags:
         if typeof(flag) != TYPE_BOOL:

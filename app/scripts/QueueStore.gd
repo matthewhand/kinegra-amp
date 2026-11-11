@@ -1,8 +1,9 @@
 extends Reference
 # Stable local catalog indices only. No media, URLs or credentials.
-const MAX_BYTES=16384
-const MAX_QUEUE=1024
-func valid(items, maximum=1028):
+const MAX_BYTES=65536
+const MAX_QUEUE=8192
+const MAX_INDEX_EXCLUSIVE=preload("res://scripts/LocalPlaylists.gd").MAX_TRACKS
+func valid(items, maximum=MAX_INDEX_EXCLUSIVE):
     if typeof(items)!=TYPE_ARRAY or items.size()>MAX_QUEUE: return false
     for index in items:
         if typeof(index)!=TYPE_INT or index<0 or index>=maximum: return false
@@ -21,7 +22,7 @@ func read(path):
     if cfg.parse(contents)!=OK or not cfg.get_value("queue","version",0) in [1,2]:
         return {"ok":false,"items":[]}
     var items=cfg.get_value("queue","items",null)
-    if not valid(items,4 if cfg.get_value("queue","version")==1 else 1028): return {"ok":false,"items":[]}
+    if not valid(items,4 if cfg.get_value("queue","version")==1 else MAX_INDEX_EXCLUSIVE): return {"ok":false,"items":[]}
     return {"ok":true,"items":items.duplicate()}
 func write(path,items):
     if not valid(items) or not read(path)["ok"]: return false

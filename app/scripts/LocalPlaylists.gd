@@ -2,7 +2,7 @@ extends Reference
 # Bounded, in-memory offline collection. No storage, imports,
 # Media Assistant writes, random global seed or service calls.
 const TRACK_COUNT = 4
-const MAX_TRACKS = 1028
+const MAX_TRACKS = TRACK_COUNT + preload("res://scripts/UserLibraryStore.gd").MAX_IMPORTS
 const PRESET_NAMES = ["ALL TRACKS", "NIGHT FLIGHT", "HEAVY ROTATION", "FAVOURITES"]
 const PRESET_INDICES = [[0, 1, 2, 3], [0, 2, 3], [1, 3]]
 const REPEAT = ["ALL", "ONE", "OFF"]

@@ -9,7 +9,7 @@ signal repeat_changed(mode)
 signal shuffle_changed(enabled)
 signal library_changed
 signal queue_changed
-const MAX_QUEUE = 1024
+const MAX_QUEUE = preload("res://scripts/QueueStore.gd").MAX_QUEUE
 var upcoming_queue = []
 var queue_store = preload("res://scripts/QueueStore.gd").new()
 var queue_path = "user://methexis_up_next.cfg"
@@ -145,6 +145,17 @@ func refresh_user_library():
     _refresh_availability()
     emit_signal("library_changed")
     return result
+
+func adopt_verified_queue_copy(record):
+    var index=user_library.adopt_verified_copy(record)
+    if index<0:return -1
+    var track=4+index
+    var values=playlists.available_tracks.duplicate()
+    while values.size()<track_count():values.append(false)
+    values[track]=true
+    playlists.set_availability(values)
+    emit_signal("library_changed")
+    return index
 
 func remove_library_track(index):
     if typeof(index) != TYPE_INT or index < 0 or index >= track_count(): return false
@@ -285,6 +296,19 @@ func queue_track(index):
     _pending_queue_index = -1 # An edit invalidates a pending reservation.
     upcoming_queue.append(index)
     _changed_queue()
+    return true
+
+func replace_queue(items):
+    if queue_load_blocked or not queue_store.valid(items,track_count()):return false
+    for index in items:
+        if not available(index):return false
+    if not queue_store.write(queue_path,items):
+        queue_save_ok=false
+        return false
+    upcoming_queue=items.duplicate()
+    _pending_queue_index=-1
+    queue_save_ok=true
+    emit_signal("queue_changed")
     return true
 
 func queue_remove(position):

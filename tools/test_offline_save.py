@@ -103,11 +103,11 @@ def main():
                     self.server.faults[command]=self.server.faults.get(command,0)+1
                     self.send_response(503);self.send_header('Content-Length','0');self.end_headers()
                     return
-                count=2 if mode=='corrupt' else 35
+                count={'corrupt':2,'large':1537,'slice':9001}.get(mode,35)
                 if command=='players/all':
                     value=[{'player_id':'own-wrapper','provider':'universal_player','type':'player','available':True,'enabled':True,'active_group':None,'synced_to':None,'group_members':[],'static_group_members':[],'active_output_protocol':None,'output_protocols':[{'output_protocol_id':'own-client','protocol_domain':'sendspin','available':True,'derived_from':None}]}]
                 elif command=='player_queues/get':
-                    value={'queue_id':'own-wrapper','active':True,'state':'playing','items':count,'current_index':(-1 if self.server.mode=='idle' else 0),'index_in_buffer':1,'current_item':{'queue_item_id':'first','name':'Fictional current','duration':1},'next_item':None}
+                    value={'queue_id':'own-wrapper','active':True,'state':'playing','items':count,'current_index':(-1 if mode=='idle' else count if mode=='slice' else 0),'index_in_buffer':1,'current_item':{'queue_item_id':'first','name':'Fictional current','duration':1},'next_item':None}
                 elif command=='player_queues/items':
                     assert args['queue_id']=='own-wrapper' and 1<=args['limit']<=32
                     value=[{'queue_id':'own-wrapper','queue_item_id':'fictional-'+str(i),'name':'Fictional '+str(i),'media_item':{'provider':'library','item_id':str(i),'media_type':'track'}} for i in range(args['offset'],min(count,args['offset']+args['limit']))]
@@ -121,7 +121,7 @@ def main():
         ma=http.server.ThreadingHTTPServer(('127.0.0.1',0),MA);ma.calls=[];ma.items=[];ma.faults={}
         threading.Thread(target=ma.serve_forever,daemon=True).start()
         try:
-            for mode in ['complete','idle','during','cancel','legacy','transient','failed-one','resume-start','resume-finish','corrupt']:
+            for mode in ['complete','idle','during','cancel','legacy','transient','failed-one','resume-start','resume-finish','large','slice','legacy-journal','corrupt']:
                 if os.environ.get('OFFLINE_CASE') and mode not in os.environ['OFFLINE_CASE'].split(','):continue
                 ma.mode=helper.mode=mode
                 ma.items.clear()
@@ -144,6 +144,8 @@ def main():
                     checkpoint=next((root/'resume').rglob('offline_queue_copy_v1.json'))
                     text=checkpoint.read_text()
                     assert key not in text and 'synthetic-library-token' not in text and helper_url not in text
+                if mode=='slice':
+                    assert ma.items==['0','1']
                 if mode=='resume-finish':
                     assert helper.ranges and all(path.endswith(long_file['file']) for path,_ in helper.ranges)
                     assert helper.ranges[0][1].startswith('bytes=1048576-') and '0' not in ma.items

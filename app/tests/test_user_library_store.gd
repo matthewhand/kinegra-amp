@@ -104,7 +104,7 @@ func run():
     check(not stable._audio_valid(record), "size_mismatch_unavailable")
     check(stable._title("  bad/\\name\n" + "x".repeat(200)).length() == 120, "bounded_sanitized_title")
     var maximum = []
-    for i in range(1024):
+    for i in range(stable.MAX_IMPORTS):
         var digest = ("%064x" % i)
         maximum.append({"sha256":digest,"file":"import_"+digest+".ogg","title":"Synthetic","bytes":4,"deleted":true})
     check(stable._decode({"version":1,"slots":maximum}) != null, "maximum_stable_slots_valid")
@@ -114,7 +114,7 @@ func run():
     full._write_manifest(maximum)
     full.slots = maximum.duplicate(true)
     receipt(full,"f".repeat(64))
-    check(not full.refresh() and full.slots.size() == 1024 and not full.last_error.empty(),"overflow_not_reported_as_available")
+    check(not full.refresh() and full.slots.size() == stable.MAX_IMPORTS and not full.last_error.empty(),"overflow_not_reported_as_available")
     clean(full.directory)
     maximum.append(maximum[0].duplicate())
     check(stable._decode({"version":1,"slots":maximum}) == null, "slot_limit_enforced")

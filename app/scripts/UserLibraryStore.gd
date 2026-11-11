@@ -1,9 +1,10 @@
 extends Reference
 # App-owned MP3/Ogg copies only. The Android picker writes trusted hash receipts;
 # this bounded manifest assigns append-only slots so queues never change identity.
-const MAX_IMPORTS = 1024
+const MAX_IMPORTS = 4096
+const MAX_DIRECTORY_ENTRIES = 16384
 const MAX_FILE_BYTES = 67108864
-const MAX_MANIFEST_BYTES = 1048576
+const MAX_MANIFEST_BYTES = 4194304
 const MAX_RECEIPT_BYTES = 2048
 var directory = "user://offline_music"
 var slots = []
@@ -119,7 +120,7 @@ func refresh():
     dir.list_dir_begin(true, true)
     var name = dir.get_next()
     var visited = 0
-    while not name.empty() and visited < 4096:
+    while not name.empty() and visited < MAX_DIRECTORY_ENTRIES:
         visited += 1
         if not dir.current_is_dir() and name.ends_with(".meta.json") and name.length() <= 90: names.append(name)
         name = dir.get_next()
@@ -151,6 +152,27 @@ func refresh():
         return false
     slots = next
     return not overflow
+
+# Adopt the just-verified file and receipt without rescanning the entire library.
+func adopt_verified_copy(value):
+    if blocked:return -1
+    var record=_record(value,false)
+    if record.empty() or not _audio_valid(record):return -1
+    var next=slots.duplicate()
+    for i in range(next.size()):
+        var previous=next[i]
+        if previous.sha256!=record.sha256:continue
+        if previous.file!=record.file or previous.bytes!=record.bytes:return -1
+        if not previous.deleted:return i
+        next[i]=record
+        if not _write_manifest(next):return -1
+        slots=next
+        return i
+    if next.size()>=MAX_IMPORTS:return -1
+    next.append(record)
+    if not _write_manifest(next):return -1
+    slots=next
+    return slots.size()-1
 
 func _write_manifest(records):
     if blocked: return false

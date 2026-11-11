@@ -14,7 +14,7 @@ public final class OfflineLibraryAdmissionTest {
         Path root=Files.createTempDirectory("shieldamp-capacity-test-");
         try{
             File dir=Files.createDirectory(root.resolve("offline_music")).toFile();
-            Set<String> slots=new HashSet<>();for(int i=1;i<=1023;i++)slots.add(id(i));
+            Set<String> slots=new HashSet<>();for(int i=1;i<OfflineLibraryAdmission.MAX_IDENTITIES;i++)slots.add(id(i));
             File catalog=new File(dir,"catalog-v1.json");Files.write(catalog.toPath(),new byte[]{'{','}'});
             OfflineLibraryAdmission.CatalogReader reader=f->slots;
             byte[] first=new byte[]{'O','g','g','S',1,2,3,4},second=new byte[]{'O','g','g','S',5,6,7,8};

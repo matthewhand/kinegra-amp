@@ -47,7 +47,14 @@ func run():
         check(saver.configure("http://127.0.0.1:1","synthetic-source-key-1234567890123456") and not saver.begin(),"resume_rejects_changed_file_source")
         check(saver.configure(OS.get_environment("OFFLINE_SOURCE_URL"),"synthetic-source-key-1234567890123456"),"restore_original_source")
         app.sendspin_facade=null
-    check(saver.begin(),"explicit_save_begins")
+    if mode=="legacy-journal":
+        var legacy={"version":1,"binding":saver._binding(panel.endpoint_edit.text,OS.get_environment("OFFLINE_SOURCE_URL")),
+            "entries":[{"queue_item_id":"old","name":"Legacy pending track","media":{"provider":"library","item_id":"0"}}],
+            "outcomes":[""],"download_hash":""}
+        check(saver._write_checkpoint_file(saver.checkpoint_path,legacy,saver.MAX_SNAPSHOT_BYTES),"legacy_fixture_written")
+        saver._restore_checkpoint()
+        check(saver.has_pending(),"prior_version_checkpoint_restored")
+    check((saver.begin(2) if mode=="slice" else saver.begin()),"explicit_save_begins")
     print("SAVE_MESSAGE=",saver.message)
     check(not saver.begin(),"second_save_does_not_overlap")
     var deadline=OS.get_ticks_msec()+25000
@@ -56,12 +63,23 @@ func run():
         if OS.get_environment("OFFLINE_MODE")=="during" and saver.copied>=2 and not played_during_copy:
             check(saver.play_saved(),"completed_prefix_can_play_while_copying")
             played_during_copy=true
-        if mode=="cancel" and saver.copied>=1:saver.cancel()
+        if mode in ["cancel","large"] and saver.copied>=1:saver.cancel()
         if mode=="resume-start" and saver.copied==1 and saver._length(saver._part_path())==saver.SEGMENT_BYTES:
             saver.cancel()
         yield(create_timer(.025),"timeout")
     check(not saver.active,"operation_completes_within_bound")
-    if mode in ["cancel","resume-start"]:
+    if mode=="large":
+        check(saver.state=="paused" and saver.source_count==1537 and saver.entries.size()==1537 and saver.copied==1,"captures_queue_over_previous_limit")
+        var store=app.offline_music.user_library
+        var snapshot=store._json(saver.checkpoint_path,saver.MAX_SNAPSHOT_BYTES)
+        var progress=store._json(saver.checkpoint_path+".progress",saver.MAX_PROGRESS_BYTES)
+        check(snapshot.version==2 and snapshot.entries.size()==1537 and not snapshot.has("outcomes") and progress.id==snapshot.id and progress.outcomes.size()==1537,"large_snapshot_and_progress_separate")
+    elif mode=="slice":
+        check(saver.state=="complete" and saver.source_count==9001 and saver.entries.size()==2 and saver.copied==2 and not saver.has_pending(),"copies_selected_prefix_of_large_finished_queue")
+        check(app.offline_music.user_library.slots.size()==2 and saver.saved_indices.size()==2,"prefix_keeps_exact_requested_count")
+    elif mode=="legacy-journal":
+        check(saver.state=="complete" and saver.copied==1 and not saver.has_pending(),"prior_version_checkpoint_finishes")
+    elif mode in ["cancel","resume-start"]:
         check(saver.state=="paused" and saver.has_pending() and saver.copied>=1,"pause_keeps_completed_files_and_checkpoint")
         if mode=="resume-start":
             check(saver._length(saver._part_path())==saver.SEGMENT_BYTES,"pause_keeps_completed_download_range")

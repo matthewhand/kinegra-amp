@@ -1,6 +1,6 @@
 {
   "application": "Kinegra Amp",
-  "code": 86,
+  "code": 91,
   "files": {
     ".gitattributes": {
       "mode": "100644",
@@ -16,7 +16,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "7c84a9b5701b1f3619da6c7f49a79741eab6d396231c539b66a661083e40f3b8"
+      "sha256": "8d6c510e0fcdfb3b4f83caec22c95e69e58819b6205b747b05be4d0936e98e3b"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -100,7 +100,7 @@
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/OfflineLibraryAdmission.java": {
       "mode": "100644",
-      "sha256": "29f052758e6338e1b349422e7ca917949b4a123cdf1de0af4312d71e9b4d1bd1"
+      "sha256": "9b62a1c8c6a803d890688a0aea103d471e99a666ddf3945c9df9a4860a38972a"
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/SelfTaskCleaner.java": {
       "mode": "100644",
@@ -148,7 +148,7 @@
     },
     "android_secure_storage/tests/OfflineLibraryAdmissionTest.java": {
       "mode": "100644",
-      "sha256": "766918bc0c50419c21d135f1195bc4d01000824184272c987557628a258f6bad"
+      "sha256": "e9ebbd4edf773395765ad3edad18d66e38626af64467990b24d5fb4e3812c59d"
     },
     "android_secure_storage/tests/SelfTaskCleanerTest.java": {
       "mode": "100644",
@@ -384,7 +384,7 @@
     },
     "app/export_presets.cfg": {
       "mode": "100644",
-      "sha256": "50eceb5af1b693e420e728b0463993adda42b28552f0a2db826cf28fcf98dfd8"
+      "sha256": "5ea1f742680316ae6a334ba9a4fe3b36658478bb5b699e3d29395f35f773dff4"
     },
     "app/native/TegraCodec.gdnlib": {
       "mode": "100644",
@@ -396,7 +396,7 @@
     },
     "app/project.godot": {
       "mode": "100644",
-      "sha256": "effb330d6fd67e7f95b1bf73c29b12866bbf11c36252e822d9a05a9a36cb1612"
+      "sha256": "dbc3d0f8e6a1419a0bdf570f7e9ceafce38d46d005797c7c41e01096aac6c382"
     },
     "app/scripts/AdaptiveVisuals.gd": {
       "mode": "100644",
@@ -472,7 +472,7 @@
     },
     "app/scripts/LocalPlaylists.gd": {
       "mode": "100644",
-      "sha256": "1021a3e1f710d12772c220bd22ad1028f2b843a08949188b4f4e05aa523c65c7"
+      "sha256": "f3cb3c489a1a685ff2e9abd55579ba83dbaaee4d7d2b471173dc74ff366c1538"
     },
     "app/scripts/MAArtworkController.gd": {
       "mode": "100644",
@@ -520,7 +520,7 @@
     },
     "app/scripts/MusicUiMemory.gd": {
       "mode": "100644",
-      "sha256": "baa24c8ff68f5b39c2b475b746b879e232a0be0f8cabbdcd285f10456676d19d"
+      "sha256": "08be507475d2e0310936bfdd64b42c477856772dd0e6e6b7e135785b9e009583"
     },
     "app/scripts/NativeDecoderPlayer.gd": {
       "mode": "100644",
@@ -540,7 +540,7 @@
     },
     "app/scripts/OfflineMusic.gd": {
       "mode": "100644",
-      "sha256": "016db08a921148e5cc8f1ecaf8fdc1838aa79e5c1f65fb5347c26e6461ba29d4"
+      "sha256": "d6b77ce44f3a8371db7cc6199a944f10411f74971f01e534ccfd3af492086c3a"
     },
     "app/scripts/OfflinePcmStaging.gd": {
       "mode": "100644",
@@ -548,7 +548,7 @@
     },
     "app/scripts/OfflineQueueSave.gd": {
       "mode": "100644",
-      "sha256": "87866e993b4c1bc89e601e3d6b31506a31dda1a04cecfb6d878a6221f4cd2153"
+      "sha256": "83a6172da57f3e698ed8afecf23f04157ece1db998a4928506ec62c6843bd7db"
     },
     "app/scripts/OriginalHorizon.gd": {
       "mode": "100644",
@@ -572,7 +572,7 @@
     },
     "app/scripts/PlaylistStore.gd": {
       "mode": "100644",
-      "sha256": "1ee5d532d569a252273f4dcba841148abcadf9ae524a2e0824a28cf4121475ac"
+      "sha256": "ca9c364c9b0eacc90dc4019385cd860f302c08c7281743e18b9f320bde60ae0d"
     },
     "app/scripts/PoseVisual.gd": {
       "mode": "100644",
@@ -580,7 +580,7 @@
     },
     "app/scripts/QueueStore.gd": {
       "mode": "100644",
-      "sha256": "25ffe2e480996220591e0e5969f9465db77e190330113bdf5dbbefc24f460e58"
+      "sha256": "296acabf591b9eea861f8e63ae8e7ba9bb4bb619a00fdc035f9f3a0e3b2c971f"
     },
     "app/scripts/SendspinBridgePump.gd": {
       "mode": "100644",
@@ -640,7 +640,7 @@
     },
     "app/scripts/UserLibraryStore.gd": {
       "mode": "100644",
-      "sha256": "90493a3e60f73b9ab49b5a230df0db0491b69ed43b960f78ec0aa374d242bfc6"
+      "sha256": "51d491aa9e4e19657b47aa51e7a2147ef84463d2b0c6da2392f63cd847a5de98"
     },
     "app/scripts/VolumeStore.gd": {
       "mode": "100644",
@@ -656,11 +656,11 @@
     },
     "app/scripts/WebRemote.gd": {
       "mode": "100644",
-      "sha256": "7097a7779e32676119d97bb2d1e9a34ee708a0b1c7b137348a02252a9972623f"
+      "sha256": "e99cbc695efa7f441162573bd50dbab0b47503ab09ddd95dbe60acfabeb48e89"
     },
     "app/scripts/WebRemotePage.gd": {
       "mode": "100644",
-      "sha256": "b4b1db58e088aba45504cee86f873db109cc8389ae03b005b37308104809c3ba"
+      "sha256": "846f8d503f21587c4db5497cb7a4ece8d127020da280c7a3d19635d9cded867c"
     },
     "app/scripts/WebcamGesturePolicy.gd": {
       "mode": "100644",
@@ -932,7 +932,7 @@
     },
     "app/tests/test_music_ui_memory.gd": {
       "mode": "100644",
-      "sha256": "36a029d559df01aa55340f3ebac72eb0bebf8fb2d59cdf3efdd6daf5fb91e27c"
+      "sha256": "39769ea07205aa5a7a91d9b42fad6eeaa85a34ed46bf8b2a08fee1725b2720e3"
     },
     "app/tests/test_native_boundaries.gd": {
       "mode": "100644",
@@ -980,7 +980,7 @@
     },
     "app/tests/test_offline_queue_save.gd": {
       "mode": "100644",
-      "sha256": "d2b77a68942091f365adc2c6b70d791d28404c734a3fe994bd5a153482e8909f"
+      "sha256": "2bb05f1fdfd03fc93e8faf3a21cdf89f928578ccf6912944145413cddb89de61"
     },
     "app/tests/test_offline_seek.gd": {
       "mode": "100644",
@@ -1048,7 +1048,7 @@
     },
     "app/tests/test_queue_store.gd": {
       "mode": "100644",
-      "sha256": "8b70070926609bdd3e23ce294b2eeb4494990d8fa88b3cedaff6d3978c008615"
+      "sha256": "dd454d0246fcf35faf2846b4dfce8273d1d7cabf39731411059a65770deca0e9"
     },
     "app/tests/test_real_native_codec.gd": {
       "mode": "100644",
@@ -1164,7 +1164,7 @@
     },
     "app/tests/test_user_library_store.gd": {
       "mode": "100644",
-      "sha256": "3b6d53ca211cc512d94cad021c955ea924bc0887e8e599d395e300b4662f1c7b"
+      "sha256": "1367ca118b7813fb8036b2c17df7dc28d5ab445eb0fbe2ebe947acc495d69a96"
     },
     "app/tests/test_visual_performance_budgets.gd": {
       "mode": "100644",
@@ -1252,7 +1252,7 @@
     },
     "docs/OFFLINE-COPYING.md": {
       "mode": "100644",
-      "sha256": "d23b3d8fdba2cacb7a9b2b0c8c95c101bd80954b06c6db01cb9be55db4adff9a"
+      "sha256": "392213b26898b2f80dda5085a04786ae1c6e70fe21bc7bcd6491da48ee3931a2"
     },
     "docs/OFFLINE-LIBRARY.md": {
       "mode": "100644",
@@ -1264,7 +1264,7 @@
     },
     "docs/RELEASE.md": {
       "mode": "100644",
-      "sha256": "63b54c79664226b09dec71cdc3b9aa2a955e3c3e2d3b94945267844f506380b9"
+      "sha256": "583d1c98709b42b8a759d2540c8e09d02eddc8f910721529ec18a7f3d74a5776"
     },
     "docs/SECURE-TOKEN-LIFECYCLE.md": {
       "mode": "100644",
@@ -1276,7 +1276,7 @@
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
-      "sha256": "e82d1125c18b8ae5f4960dbb851ab3b6f592dc154954d7837d0e820f55211e58"
+      "sha256": "5fd349aad927b3a2af6b6fbceca1947504ab42d3904354a0740a68d520fbaab0"
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
@@ -1284,7 +1284,7 @@
     },
     "docs/WEB-REMOTE.md": {
       "mode": "100644",
-      "sha256": "23e335d050fbe985c422bbe409d3e1de516e8497874b5290bd5b748737b9a4db"
+      "sha256": "2bcf3908a4b62d805bdf344d3840637caf97a3c373e04aaeaf1043f3ce1d4588"
     },
     "docs/WEBCAM-GESTURES.md": {
       "mode": "100644",
@@ -1984,7 +1984,7 @@
     },
     "tools/test_offline_save.py": {
       "mode": "100644",
-      "sha256": "d8e04fe5910641a95759e9196357fea79d05110e2d6207452e1f53352fa747fa"
+      "sha256": "c152bd1bcda5e07ca6686801cc9c7803ef75ec624e3aa7bb61a9777d0276283f"
     },
     "tools/test_preview_import_completion.py": {
       "mode": "100644",
@@ -1998,10 +1998,6 @@
   "project": "Kinegra Amp",
   "schema": 1,
   "scope": "Current Kinegra Amp source, build tools and regression tests. Generated outputs, personal media, credentials and signing material are excluded.",
-  "source_update": {
-    "android_apk_rebuilt": false,
-    "scope": "Current source has a single-line Kinegra Amp header and a regenerated synthetic desktop preview. Released 1.0.10 artifacts remain unchanged at their release tag."
-  },
-  "version": "1.0.10",
-  "version_code": 86
+  "version": "1.0.15",
+  "version_code": 91
 }
