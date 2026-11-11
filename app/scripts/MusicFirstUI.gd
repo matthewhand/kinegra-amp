@@ -1576,18 +1576,18 @@ func _process(delta):
         var ma_selected = playback_context=="catalog"
         var ma_preview = playback_context=="preview"
         var ma_local = playback_context=="ma"
-        var fresh_local = ma_local and app._sendspin_fresh()
+        var tv_state=app._tv_playback_status() if ma_local else ""
+        var fresh_local=tv_state=="playing"
         var fresh_preview = false
         if ma_preview and app.native_transport != null and app.native_transport.ma_preview_mode and app.native_stream_engine != null and app.analysis_owner == app.native_stream_engine and app.native_stream_engine.active:
             var age = OS.get_ticks_msec() - app.native_stream_engine.last_pcm_at
             fresh_preview = app.native_stream_engine.last_pcm_at >= 0 and age >= 0 and age <= 500
-        var tv_buffering=ma_local and not app._tv_pause_waiting() and _sendspin_is_buffering()
-        var tv_idle="PAUSE REQUESTED / MA IDLE" if app._tv_pause_waiting() else "KINEGRA AMP / WAITING FOR AUDIO"
-        var hero_state = "PLAYING HERE / LIVE AUDIO" if fresh_local else (tv_idle if ma_local else ("PLAYING  /  MA SHORT PREVIEW" if fresh_preview else ("MA PREVIEW  /  WAITING FOR AUDIO" if ma_preview else ("CATALOG SELECTION  /  NO PLAYBACK" if ma_selected else ""))))
+        var tv_buffering=ma_local and _sendspin_is_buffering()
+        var hero_state = _tv_status_text() if ma_local else ("PLAYING  /  MA SHORT PREVIEW" if fresh_preview else ("MA PREVIEW  /  WAITING FOR AUDIO" if ma_preview else ("CATALOG SELECTION  /  NO PLAYBACK" if ma_selected else "")))
         var hero_playing=(offline_visible and local.is_playing()) or fresh_preview or (fresh_local and not tv_buffering)
         if hero_playing and track_hero.get("render_budget_fps")==0:
             hero_state="PLAYING / VISUALS OFF" if not app.visuals_enabled else "PLAYING / AUDIO FIRST"
-        if tv_buffering: hero_state="BUFFERING AUDIO…"
+        if tv_buffering and tv_state=="waiting": hero_state="BUFFERING AUDIO…"
         if ma_preview and track_hero.source_label != null:
             track_hero.source_label.text = "MUSIC ASSISTANT  /  SHORT PREVIEW"
         var fraction=local.progress_fraction() if offline_visible else 0.0
@@ -1605,11 +1605,11 @@ func _process(delta):
     _sync_transport()
     _fit_stage_button_labels()
     # Never pretend MA catalogue metadata has a local progress position.
-    if source_label == null or not source_label.text.begins_with("OFFLINE MUSIC"):
+    if playback_context!="offline":
         var current=_current_tv_metadata() if _tv_mode() else {}
         _update_buffer_progress(current)
         playback_progress.value=100.0*current.position/current.duration if current.get("timeline",false) else 0.0
-        clock_label.text=(_clock(current.position)+" / "+_clock(current.duration)) if current.get("timeline",false) else (("LIVE / NO DURATION" if app._sendspin_fresh() else "WAITING") if _tv_mode() else "NO TIMELINE")
+        clock_label.text=(_clock(current.position)+" / "+_clock(current.duration)) if current.get("timeline",false) else (("LIVE / NO DURATION" if app._tv_playback_status()=="playing" else "") if _tv_mode() else "NO TIMELINE")
         return
     _clear_buffer_progress()
     playback_progress.value = local.progress_fraction() * 100.0
@@ -1620,7 +1620,6 @@ func _sync_transport():
     var tv=_tv_mode()
     queue_button.text="QUEUE" if tv else "QUEUE (%d)" % app.offline_music.upcoming_queue.size()
     var available=app._queue_controls_available() if tv else false
-    var connected=not app._sendspin_controls().empty() if tv else false
     tv_pause_button.visible=true
     previous_button.disabled=tv and not available
     next_button.disabled=tv and not available
@@ -1639,7 +1638,7 @@ func _sync_transport():
         play_button.text="PLAY"
         play_button.hint_tooltip="Play local music. Use Pause to pause it."
         stop_button.text="STOP"
-    var active=app._sendspin_fresh() if tv else app.offline_music.is_playing()
+    var active=app._tv_playback_status()=="playing" if tv else app.offline_music.is_playing()
     TransportStyle.apply(play_button,active)
     if app.ma_panel!=null: app.ma_panel.set_playback_active(active and tv)
     var seekable=app._tv_seek_available() if tv else true
@@ -1659,6 +1658,9 @@ func show_tv_queue_snapshot(snapshot):
     _tv_snapshot_at=OS.get_ticks_msec()
     _tv_snapshot_session=app.sendspin_facade
     _refresh_tv_presentation()
+    if snapshot.get("item_count",-1)==0:
+        tv_queue_label.hide()
+        return
     var next=str(snapshot.get("next","")).strip_edges()
     if not str(snapshot.get("current_id","")).empty() and snapshot.get("current_id")==snapshot.get("next_id"):next=""
     tv_queue_label.text="NEXT: "+(next if not next.empty() else "NONE REPORTED")
@@ -1670,34 +1672,47 @@ func _remember_playlist_context(name,ids):
 
 func _current_tv_metadata():
     if app==null or app.sendspin_facade!=_tv_snapshot_session:return {}
-    return _tv_presentation.current(_tv_snapshot,_tv_snapshot_at,OS.get_ticks_msec(),app._sendspin_fresh(),OS.get_unix_time())
+    return _tv_presentation.current(_tv_snapshot,_tv_snapshot_at,OS.get_ticks_msec(),app._tv_playback_status()=="playing",OS.get_unix_time())
 
 func _clear_tv_metadata():
     _tv_display.clear()
     var message="Choose music" if _tv_snapshot_at<0 else "Waiting for track information"
-    if _tv_snapshot_at>=0 and OS.get_ticks_msec()-_tv_snapshot_at<=10000 and _tv_snapshot.get("state","") in ["idle","stopped"] and str(_tv_snapshot.get("current","")).empty():message="Queue is empty"
+    if _tv_snapshot_at>=0 and app.sendspin_facade==_tv_snapshot_session and OS.get_ticks_msec()-_tv_snapshot_at<=10000:
+        var count=_tv_snapshot.get("item_count",-1)
+        if count==0 or (count==-1 and _tv_snapshot.get("state","") in ["idle","stopped"] and str(_tv_snapshot.get("current","")).empty()):
+            message="Queue is empty"
     now_title.text=message
     now_title.hint_tooltip=message
     _set_fullscreen_track(message,"","MUSIC ASSISTANT","")
-    if _tv_snapshot_at<0 and fullscreen_track_artist!=null:fullscreen_track_artist.text="Press Play to resume your queue"
+    if fullscreen_track_artist!=null:
+        fullscreen_track_artist.text="Press Play to resume your queue" if _tv_snapshot_at<0 else "MUSIC ASSISTANT"
+        fullscreen_track_artist.hint_tooltip=fullscreen_track_artist.text
     _set_artwork_descriptor({},"tv|waiting")
-    if track_hero!=null:track_hero.set_track(artwork.texture,message,"MUSIC ASSISTANT / PLAYING HERE")
+    if track_hero!=null:track_hero.set_track(artwork.texture,message,"MUSIC ASSISTANT")
+
+func _tv_status_text():
+    match app._tv_playback_status():
+        "playing": return "PLAYING HERE"
+        "waiting": return "WAITING FOR AUDIO"
+        "error": return app.tv_playback_error
+        "paused": return "PAUSED"
+    return ""
 
 func _refresh_tv_presentation():
+    var state=_tv_status_text()
+    source_label.text="MUSIC ASSISTANT" if state.empty() else "MUSIC ASSISTANT  •  "+state
+    if not app.tv_playback_error.empty():show_status(app.tv_playback_error)
     var current=_current_tv_metadata()
     if current.empty():
         _clear_tv_metadata()
         return
     _tv_display=current
-    if app._sendspin_fresh():
-        set_playback_context("ma")
-        source_label.text="MUSIC ASSISTANT  •  PLAYING HERE"
     now_title.text=current.title
     now_title.hint_tooltip=current.title
     var context_label=playlist_context.label(current.album,playlist_context.playlist(str(_tv_snapshot.get("library_track_id",""))))
-    _set_fullscreen_track(current.title,current.artist,"MUSIC ASSISTANT / PLAYING HERE",current.album,context_label)
+    _set_fullscreen_track(current.title,current.artist,"MUSIC ASSISTANT",current.album,context_label)
     _set_artwork_descriptor(_tv_snapshot.get("artwork_descriptor",{}),"tv|"+str(_tv_snapshot.get("current_id","")))
-    if track_hero!=null:track_hero.set_track(artwork.texture,current.title,"MUSIC ASSISTANT / PLAYING HERE")
+    if track_hero!=null:track_hero.set_track(artwork.texture,current.title,"MUSIC ASSISTANT")
 
 func _fit_stage_button_labels():
     if _stage_font==null: return
@@ -1755,10 +1770,11 @@ func _update_fullscreen_playback():
         message = "SELECTION / NO PLAYBACK"
     elif playback_context=="ma":
         var current=_current_tv_metadata()
-        message="TV PLAYER / LIVE AUDIO" if app._sendspin_fresh() else ("MA IDLE" if current.get("state","") in ["paused","idle","stopped"] else "TV PLAYER / WAITING FOR AUDIO")
+        message=app.tv_playback_error if not app.tv_playback_error.empty() else _tv_status_text()
+        if message.empty():message="PRESS PLAY"
         if current.get("timeline",false):
             message+="  /  "+("" if current.get("advancing",false) else "LAST REPORTED ")+_clock(current.position)+" / "+_clock(current.duration)
-        elif app._sendspin_fresh():message+="  /  NO DURATION REPORTED"
+        elif app._tv_playback_status()=="playing":message+="  /  NO DURATION REPORTED"
     elif playback_context=="preview":
         var fresh = false
         if app.native_transport != null and app.native_transport.ma_preview_mode and app.native_stream_engine != null and app.analysis_owner == app.native_stream_engine and app.native_stream_engine.active:
@@ -1768,7 +1784,8 @@ func _update_fullscreen_playback():
     fullscreen_playback.hint_tooltip = message
     if cover_target==1 and playback_context=="ma":
         var current=_current_tv_metadata()
-        var state="Playing" if app._sendspin_fresh() else ("Paused" if current.get("state","") in ["paused","idle"] else "Waiting")
+        var state=app.tv_playback_error if not app.tv_playback_error.empty() else _tv_status_text()
+        if state.empty():state="Press Play"
         message=state+"  "+_clock(current.position)+" / "+_clock(current.duration) if current.get("timeline",false) else state
         fullscreen_track_artist.text=fullscreen_track_artist.text.split("  /  ")[0]
     fullscreen_playback.text = message
@@ -1814,7 +1831,7 @@ func _seek_direction(seconds):
         if app._tv_seek_available():app._sendspin_command("seek_backward" if seconds<0 else "seek_forward")
         else:show_status("SEEK NEEDS FRESH PLAYING TRACK TIMING")
         return
-    if source_label == null or not source_label.text.begins_with("OFFLINE MUSIC"):
+    if playback_context!="offline":
         show_status("SEEK UNAVAILABLE FOR THIS SOURCE")
         return
     if app._seek_offline(seconds):

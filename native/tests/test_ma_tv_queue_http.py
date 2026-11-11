@@ -71,7 +71,7 @@ def run(mode):
         success=mode in ("pause","play","resume-play","read","raw-pause","raw-play","raw-read","items","raw-items","bad-count-play")
         assert ("MAIN_QUEUE_OK=True" if main else ("FIXTURE_OK=True" if success else "FIXTURE_OK=False")) in result.stdout,(mode,result.stdout)
         if not main: assert "FIXTURE_CREDENTIAL_RELEASED=True" in result.stdout,(mode,result.stdout)
-        expected={"resume-play":"player_queues/resume","empty-play":"player_queues/get","bad-count-play":"player_queues/play","pause":"player_queues/pause","play":"player_queues/play","read":"player_queues/get","denied":"player_queues/pause","main-pause":"player_queues/pause","main-play":"player_queues/play","main-read":"player_queues/get","main-items":"player_queues/items","main-raw-items":"player_queues/items","main-busy-items":"player_queues/items","main-busy-close":"player_queues/get","eof-command":"player_queues/pause","truncated-command":"player_queues/pause","server-error-command":"player_queues/pause","stall-command":"player_queues/pause","main-eof-command":"player_queues/pause","items":"player_queues/items","raw-items":"player_queues/items","items-wrong":"player_queues/items","items-too-many":"player_queues/items","raw-pause":"player_queues/pause","raw-play":"player_queues/play","raw-read":"player_queues/get","main-raw-pause":"player_queues/pause","main-raw-read":"player_queues/get","wrong-queue":"player_queues/get","wrong-message":"player_queues/pause","owner-after-send":"player_queues/pause"}.get(mode)
+        expected={"resume-play":"player_queues/resume","empty-play":"player_queues/get","bad-count-play":"player_queues/play","pause":"player_queues/pause","play":"player_queues/play","read":"player_queues/get","denied":"player_queues/pause","main-pause":"player_queues/pause","main-play":"player_queues/resume","main-read":"player_queues/get","main-items":"player_queues/items","main-raw-items":"player_queues/items","main-busy-items":"player_queues/items","main-busy-close":"player_queues/get","eof-command":"player_queues/pause","truncated-command":"player_queues/pause","server-error-command":"player_queues/pause","stall-command":"player_queues/pause","main-eof-command":"player_queues/pause","items":"player_queues/items","raw-items":"player_queues/items","items-wrong":"player_queues/items","items-too-many":"player_queues/items","raw-pause":"player_queues/pause","raw-play":"player_queues/play","raw-read":"player_queues/get","main-raw-pause":"player_queues/pause","main-raw-read":"player_queues/get","wrong-queue":"player_queues/get","wrong-message":"player_queues/pause","owner-after-send":"player_queues/pause"}.get(mode)
         commands=[x[0] for x in server.requests]
         wanted=["players/all", "player_queues/get", "players/all", "player_queues/items"] if mode=="main-busy-items" else (["players/all",expected] if expected else ["players/all"])
         if mode=="main-preempt-read-pause": wanted=["players/all","player_queues/get","players/all","player_queues/pause"]
@@ -93,7 +93,12 @@ def run(mode):
         if mode=="empty-play":assert "YOUR QUEUE IS EMPTY / CHOOSE MUSIC" in result.stdout and "player_queues/play" not in commands
         if mode=="read": assert "FIXTURE_CURRENT=Synthetic Track" in result.stdout
         if not main and mode in ("eof-discovery","stall-discovery","eof-command","truncated-command","server-error-command","stall-command"):
-            expected_detail="MUSIC ASSISTANT CONNECTION FAILED" if mode.endswith("discovery") else "PLAYBACK COMMAND RESULT UNKNOWN / CHECK QUEUE"
+            if mode=="server-error-command":
+                expected_detail="Music Assistant server error (HTTP 503)."
+            elif mode.endswith("discovery"):
+                expected_detail="MUSIC ASSISTANT CONNECTION FAILED"
+            else:
+                expected_detail="PLAYBACK COMMAND RESULT UNKNOWN / CHECK QUEUE"
             assert "FIXTURE_DETAIL="+expected_detail in result.stdout,(mode,result.stdout)
         print("TV_QUEUE_HTTP_PASS_"+mode)
     finally:

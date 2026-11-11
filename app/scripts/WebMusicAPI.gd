@@ -193,7 +193,12 @@ func _players_ready(_players):
     active.phase="mutation"
     active.sent=true # An ambiguous HTTP result must never cause an automatic retry.
     var accepted=catalog.play_local_selection(active.client,active.item) if active.kind=="play" else catalog.enqueue_local_media(active.client,active.media)
-    if not accepted:_finish(false,{},"The queue request could not start. Check Queue before retrying.")
+    if not accepted:
+        _finish(false,{},"The queue request could not start. Check Queue before retrying.")
+    elif active.kind=="play":
+        app.music_ui.set_playback_context("ma")
+        app.music_ui.invalidate_tv_queue()
+        app._watch_tv_audio(true)
 
 func _catalog_state(state,_detail):
     if active.empty():return
@@ -201,9 +206,6 @@ func _catalog_state(state,_detail):
         if active.kind=="play":
             app._arm_playback_recovery()
             app._prepare_stream_visuals()
-            app.music_ui.set_playback_context("ma")
-            app.music_ui.invalidate_tv_queue()
-            app._watch_tv_audio()
         if app.tv_queue_timer!=null:app.tv_queue_timer.start(.25)
         _finish(true,{},"Play requested in Kinegra Amp." if active.kind=="play" else "Added to Queue.")
     elif state in ["auth_expired","permission_denied","disconnected","malformed_reply","command_failed","stale_reply","unsafe_route","invalid_request","selection_expired","busy"]:
@@ -216,6 +218,8 @@ func _catalog_state(state,_detail):
             return
         var detail="Result unknown: check Queue before retrying." if active.get("sent",false) else "Music Assistant could not complete this library read after a retry. Check its connection and try again."
         if state in ["auth_expired","permission_denied"]:detail="Music Assistant rejected library access. Reconnect the library on the TV."
+        elif state=="command_failed":detail=_detail
+        if active.kind=="play" and active.get("sent",false):app._set_tv_playback_error(detail)
         _finish(false,{},detail)
 
 func _playlist_context(name,ids):

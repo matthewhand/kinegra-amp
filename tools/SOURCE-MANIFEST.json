@@ -384,7 +384,7 @@
     },
     "app/export_presets.cfg": {
       "mode": "100644",
-      "sha256": "80aeb1eadfd602b6b0e17fdb9bf065e91674191dd3e56263aaecd57e4b4f0290"
+      "sha256": "33c6ae7433c526bb3ba73cf67063e970cfb89444f4a6241be312fa893b51b6ee"
     },
     "app/native/TegraCodec.gdnlib": {
       "mode": "100644",
@@ -396,7 +396,7 @@
     },
     "app/project.godot": {
       "mode": "100644",
-      "sha256": "29f76ba507e4190d341ffeefe3131da02c4fb1f0841a722e776abe12dc48ff43"
+      "sha256": "2d6985b4999ac140747eb2394bb3b50124df4239748d67cb0515511c551cf35f"
     },
     "app/scripts/AdaptiveVisuals.gd": {
       "mode": "100644",
@@ -484,11 +484,11 @@
     },
     "app/scripts/MACatalog.gd": {
       "mode": "100644",
-      "sha256": "0552c65fcba5ac2550ef83669bb4ada8996d2b5a0ae9b5d42218e8530033662f"
+      "sha256": "7b557624f3979aec6ada0c81515719df9dc3489cc1d9523261f2473811e4836a"
     },
     "app/scripts/MAPresentationState.gd": {
       "mode": "100644",
-      "sha256": "7ca552360a3d2d1a0b6b0fb25dfefd2141d8033ae1c0f0113e07f4573e0cf1f9"
+      "sha256": "e8da0c426af0ecd9f46478c6793aca4dff905ce977b6829017e643debe3eba35"
     },
     "app/scripts/MAPreviewRoute.gd": {
       "mode": "100644",
@@ -500,15 +500,15 @@
     },
     "app/scripts/MASetupPanel.gd": {
       "mode": "100644",
-      "sha256": "37225d4c0134cbdf105ac71f608d977e4bd9f5690f894db3330ae05956e06ccb"
+      "sha256": "b1755c7d12d0f217d82aadcf2fd855804e8b0a4155361533ae792f95d2884fe6"
     },
     "app/scripts/MATvQueueRequest.gd": {
       "mode": "100644",
-      "sha256": "727678c2e6653229f1720a764875e4fcbb75c4c8124a65d9ec840908f27b1fca"
+      "sha256": "13d6212b79ae2161ba85fc309bc98812380c182e22e9710dfeedc6786bb5bb74"
     },
     "app/scripts/Main.gd": {
       "mode": "100644",
-      "sha256": "f69870c0ebdd8eef7720be8b331bb0239a4ff0badbd14b13112113ba3ca8988d"
+      "sha256": "2287d43158fd324488d7867e188029c7bbf6d21b3a27c741bbb87576e1953810"
     },
     "app/scripts/ModalFocus.gd": {
       "mode": "100644",
@@ -516,7 +516,7 @@
     },
     "app/scripts/MusicFirstUI.gd": {
       "mode": "100644",
-      "sha256": "ec259faba804674d56e91a1a83670b8a4ef100894b282d5d2349ae08eb1892ad"
+      "sha256": "cb6bc698d15c191d6b92a32d12c65a5867d05ff0f96686fca47bcefdca4e19d4"
     },
     "app/scripts/MusicUiMemory.gd": {
       "mode": "100644",
@@ -564,7 +564,7 @@
     },
     "app/scripts/PlaybackRecovery.gd": {
       "mode": "100644",
-      "sha256": "39a43cfee24d5dace88d8c8bc1ab9fa085ccb16cbc393a098ad586a202313c4f"
+      "sha256": "dbd8fde22459445037166801ded3edb0f04a623e3e4a807b59f998ac96a73dab"
     },
     "app/scripts/PlaylistContext.gd": {
       "mode": "100644",
@@ -600,7 +600,7 @@
     },
     "app/scripts/SendspinPlaybackRuntime.gd": {
       "mode": "100644",
-      "sha256": "70645705c5f80c0967b1095b8b8e1842dbda552dbd2230f396031e8d75dd8824"
+      "sha256": "31f2a949424fde6e2941c4f43fe3617f3b7181da53c33887019ab9b05d7a046c"
     },
     "app/scripts/StageLayout.gd": {
       "mode": "100644",
@@ -652,7 +652,7 @@
     },
     "app/scripts/WebMusicAPI.gd": {
       "mode": "100644",
-      "sha256": "1c6807ebf58b710cfdc669728df4bd7ca261522433ff3f799ef520a06b7e48f0"
+      "sha256": "46f4164fa32c3af74f3a0af398ecc3ce7da66c95a2af9f8a1ef47dba1ed95569"
     },
     "app/scripts/WebRemote.gd": {
       "mode": "100644",
@@ -780,7 +780,7 @@
     },
     "app/tests/test_direct_play_resume.gd": {
       "mode": "100644",
-      "sha256": "394e276a36c9ce5972c6a0b9a9cff9f21413eef65ea151173cec86a26d2787f7"
+      "sha256": "26fdd8773836e8c46b369ba3f57a721495d4316505f89ca88019655eccfd052d"
     },
     "app/tests/test_drawer_modal_focus.gd": {
       "mode": "100644",
@@ -904,7 +904,7 @@
     },
     "app/tests/test_ma_tv_queue_main.gd": {
       "mode": "100644",
-      "sha256": "a7eaacf2db9fc2fe8fcec23ad140618e46b4644a6addb8a2f7d14b95552bdcbe"
+      "sha256": "d1783c58634d0c1c67e287341bb32e3f606c82c7098bd0eb789d6d09fc6cb3ea"
     },
     "app/tests/test_main_ram_session_boundary.gd": {
       "mode": "100644",
@@ -1016,7 +1016,7 @@
     },
     "app/tests/test_playback_recovery.gd": {
       "mode": "100644",
-      "sha256": "8e8069c0e5ba72fd4695b08aa74f5ce5e3e0e746b86660475db64ca122be5f20"
+      "sha256": "0313b1dab0b3823d0ff26f08c7bb7f6e2ace5b9abb6805267caa946b03c12e08"
     },
     "app/tests/test_playlist_context.gd": {
       "mode": "100644",
@@ -1100,11 +1100,11 @@
     },
     "app/tests/test_sendspin_runtime.gd": {
       "mode": "100644",
-      "sha256": "f7eb1fa17b8f109d394c40f9e03629f13f241331b540a0cb24f098072818d933"
+      "sha256": "fb1746b3d2edb71168129c8f1c29cfd28a017177f7a44ee7c52012f383cf4175"
     },
     "app/tests/test_sendspin_tv_transport.gd": {
       "mode": "100644",
-      "sha256": "9446f70e7a5815f2c3419c2d4def195109b7b11fdf3c28520cd16509b1eb1a90"
+      "sha256": "5c31dd404d5c26f068f86a6cb4d18fec5fc610a7f921da6e673419f48ff6fb34"
     },
     "app/tests/test_settings_control_reachability.gd": {
       "mode": "100644",
@@ -1140,11 +1140,11 @@
     },
     "app/tests/test_tv_reconnect_integration.gd": {
       "mode": "100644",
-      "sha256": "ac00656a77a5159dfdb61f73d3ca02bb78fdec102e6fd878c2b14c208fe6cbb2"
+      "sha256": "7ad3934accf0c53ddaa43a697f9dc3953bbbdc7db368a88bcaba4fc0fd9815c1"
     },
     "app/tests/test_tv_recovery.gd": {
       "mode": "100644",
-      "sha256": "5285ccc103921d848be651456717fa8d9aac2b772d788e4cad7c9de91513716d"
+      "sha256": "75648c00321f5b018bdb33dac863747a55c91eb2320e694de771d940ba792996"
     },
     "app/tests/test_tv_seek_pointer.gd": {
       "mode": "100644",
@@ -1480,7 +1480,7 @@
     },
     "native/tests/test_ma_tv_queue_http.py": {
       "mode": "100644",
-      "sha256": "a1e2cd52d1c0d7df10bfad492bd3f77579106245c02bbf23a102d9a58ba63384"
+      "sha256": "10c7aa5f44e859d0b22e628d3d4d77603dc6a90dfeba7f6a5bdcb1b53b2ed540"
     },
     "native/tests/test_native.py": {
       "mode": "100644",

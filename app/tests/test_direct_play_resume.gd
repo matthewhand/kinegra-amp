@@ -41,6 +41,7 @@ class MainFixture:
     var starts=[]
     var transport=[]
     var offline_starts=0
+    var recovery_dispatch=false
     func _start_sendspin_player(endpoint,trusted):
         if sendspin_facade!=null and sendspin_facade.runtime.active:return
         starts.append({"endpoint":endpoint,"trusted":trusted})
@@ -48,6 +49,7 @@ class MainFixture:
         _on_sendspin_state("connecting","Synthetic connection in progress",facade)
     func _sendspin_command(command,argument=null):
         if command=="play":
+            recovery_dispatch=recovery_restarting
             transport.append(command)
             return true
         return ._sendspin_command(command,argument)
@@ -166,13 +168,18 @@ func run():
         paired(facade,true);deliver_players();yield(self,"idle_frame")
         check(catalog.writes.empty() and app.transport.empty(),"library_"+reason+"_suppresses_late_deferred_play")
         check(panel.connect_play_item.empty(),"library_"+reason+"_releases_pending_intent")
-    seed_session();app.music_ui._toggle();app.music_ui._toggle()
+    seed_session()
+    catalog.close()
+    check(not app._library_credential(false).empty(),"drawer_close_keeps_authorized_session_credential")
+    app.music_ui._toggle();app.music_ui._toggle()
     check(app.starts.size()==1 and not app.pending_queue_resume.empty() and app.transport.empty(),"main_play_connects_once_and_keeps_resume_intent")
     facade=app.sendspin_facade
-    paired(facade,false);app._continue_queue_resume()
-    check(app.transport.empty(),"main_resume_waits_for_verified_own_route")
-    catalog.route_ready=true;deliver_players();deliver_players()
+    paired(facade,false);app._continue_queue_resume();deliver_players()
+    check(catalog.resolve_local_player(panel.sendspin_player_id).empty(),"drawer_has_no_route_cache")
     check(app.transport==["play"] and app.pending_queue_resume.empty() and app.offline_starts==0,"main_play_resumes_own_queue_once_without_builtin_fallback")
+    app.transport.clear()
+    app.music_ui._toggle()
+    check(app.transport==["play"] and not app.music_ui.ma_drawer.visible,"paired_play_uses_session_credential_without_reopening_drawer")
     for reason in ["back","stop","disconnect","cancel","server_change","origin","epoch","endpoint","client","facade","timeout"]:
         seed_session();app._play_music_assistant();facade=app.sendspin_facade
         check(facade!=null and not app.pending_queue_resume.empty(),"resume_"+reason+"_intent_is_armed")
@@ -180,6 +187,13 @@ func run():
         paired(facade,true);deliver_players();yield(self,"idle_frame")
         check(app.transport.empty() and catalog.writes.empty(),"resume_"+reason+"_suppresses_late_play")
         check(app.pending_queue_resume.empty(),"resume_"+reason+"_releases_pending_intent")
+    seed_session()
+    app.recovery_restarting=true
+    app._play_music_assistant()
+    app.recovery_restarting=false
+    paired(app.sendspin_facade,false)
+    app._continue_queue_resume()
+    check(app.transport==["play"] and app.recovery_dispatch and not app.recovery_restarting,"deferred_recovery_resume_preserves_retry_budget")
     check(app.offline_starts==0 and not app.offline_music.is_playing(),"all_recovery_paths_never_start_builtin_samples")
     app._cancel_requested_play();stop_timers();app.sendspin_facade=null;app.queue_free()
     print("DIRECT_PLAY_CHECKS=",checks," FAILURES=",failures.size())

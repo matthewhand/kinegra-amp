@@ -55,7 +55,12 @@ func step():
     if not status.get("pairing_window",false):pairing_confirmation_pending=false
     if status["paired"]:
         connection_deadline_ms=0
-    elif connection_deadline_ms>0:
+    else:
+        # A session that loses its authenticated peer must get a new
+        # deadline, just like the first connection.
+        if connection_deadline_ms==0:
+            connection_deadline_ms=OS.get_ticks_msec()+CONNECT_TIMEOUT_MS
+            pairing_started=false
         if not pairing_started and (not current_pairing_code.empty() or status.get("pairing_window",false)):
             pairing_started=true
             connection_deadline_ms=OS.get_ticks_msec()+PAIRING_TIMEOUT_MS

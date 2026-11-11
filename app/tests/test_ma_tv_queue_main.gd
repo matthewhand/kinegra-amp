@@ -62,9 +62,10 @@ func run():
         app.music_ui._open_queue()
         if OS.get_environment("TVQ_MODE")=="main-busy-close": app.music_ui._close_queue()
     elif OS.get_environment("TVQ_MODE")=="main-play":
-        app.music_ui.source_label.text="OFFLINE MUSIC  •  PRIVATE TRACKS"
+        app._on_library_credentials_authorized(app.ma_panel.catalog.token,app.ma_panel._credential_endpoint())
+        app.ma_panel.catalog.close()
         app.music_ui._toggle()
-        preemption_ok=app.music_ui.source_label.text=="MUSIC ASSISTANT  •  PLAYING HERE" and app.music_ui.now_title.text=="Waiting for track information" and not app.tv_audio_wait_timer.is_stopped()
+        preemption_ok=app.music_ui.source_label.text=="MUSIC ASSISTANT  •  WAITING FOR AUDIO" and not app.tv_audio_wait_timer.is_stopped()
 
     else:
         app.music_ui._pause_tv()
@@ -89,6 +90,8 @@ func run():
         ok=ok and app.music_ui.queue_view=="tv" and app.music_ui.tv_queue_items.size()==2 and not app.music_ui.queue_clear_button.disabled and app.music_ui.queue_clear_button.visible and app.music_ui.tv_clear_dialog.visible and app.music_ui.queue_close_button.visible and app.music_ui.queue_button.text=="QUEUE" and app.offline_music.upcoming_queue==original
         app.music_ui.tv_clear_dialog.hide()
         ok=ok and not app.music_ui.queue_toggle_button.is_visible_in_tree() and app.music_ui.queue_view=="tv"
+    elif mode=="main-play":
+        ok=ok and app.tv_queue_last_action=="play" and app._tv_playback_status()=="waiting" and not app.offline_music.is_playing()
     elif OS.get_environment("TVQ_MODE")=="main-eof-command":
         ok=ok and app.music_ui.status_label.text=="PLAYBACK COMMAND RESULT UNKNOWN / CHECK QUEUE" and not app.offline_music.is_playing()
     else:

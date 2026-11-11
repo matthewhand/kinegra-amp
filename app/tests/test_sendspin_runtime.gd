@@ -56,6 +56,18 @@ func run():
     check(runtime.begin(adapter,sink,vault,"ws://fixture"),"restart_after_stop")
     adapter.tick_ok=false
     check(not runtime.step() and not runtime.active and adapter.closes==2 and runtime.state=="error","transport_failure_stops")
+    adapter.tick_ok=true
+    check(runtime.begin(adapter,sink,vault,"ws://fixture"),"open_after_transport_failure")
+    adapter.status_value.paired=true
+    check(runtime.step() and runtime.connection_deadline_ms==0,"paired_session_clears_deadline")
+    adapter.status_value.paired=false
+    check(runtime.step() and runtime.state=="connecting" and runtime.connection_deadline_ms>OS.get_ticks_msec(),"lost_peer_rearms_reconnect_deadline")
+    adapter.status_value.paired=true
+    check(runtime.step() and runtime.state=="paired" and runtime.connection_deadline_ms==0,"recovered_peer_clears_deadline")
+    adapter.status_value.paired=false
+    runtime.step()
+    runtime.connection_deadline_ms=OS.get_ticks_msec()
+    check(not runtime.step() and not runtime.active and runtime.state=="error","unrecovered_peer_expires_and_can_be_retried")
     runtime.queue_free()
     print("RUNTIME_FAILURES=",failures.size())
     quit(0 if failures.empty() else 1)

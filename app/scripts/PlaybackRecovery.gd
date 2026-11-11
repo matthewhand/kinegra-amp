@@ -28,7 +28,7 @@ func step(now,owner,pcm_at,buffering,busy,queue_state,queue_fresh):
     if queue_fresh and queue_state in ["paused","idle","stopped"]:
         cancel()
         return ""
-    if pcm_at>=0:
+    if pcm_at>=since and pcm_at<=now:
         if pcm_at>last_data:last_data=pcm_at
         had_audio=true
     var fresh=last_data>=0 and now-last_data<1000 and not buffering

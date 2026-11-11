@@ -72,7 +72,7 @@ func _send_mutation(command, value=null):
     if not catalog.local_queue_request(client_id,command,value) and active:
         _finish(false,{},"TV output route could not be verified")
 
-func _on_state(state, _detail):
+func _on_state(state, detail):
     if not active: return
     if state=="queue_accepted":
         if _owner_is_current(): _finish(true,{},"Music Assistant accepted the queue command")
@@ -85,6 +85,7 @@ func _on_state(state, _detail):
         elif state in ["disconnected","malformed_reply","stale_reply"] and command_may_have_been_sent: reason="PLAYBACK COMMAND RESULT UNKNOWN / CHECK QUEUE"
         elif state=="disconnected": reason="MUSIC ASSISTANT CONNECTION FAILED"
         elif state=="unsafe_route": reason="PLAYBACK ROUTE NOT VERIFIED"
+        elif state=="command_failed": reason=detail
         _finish(false,{},reason)
 
 func _on_snapshot(value):

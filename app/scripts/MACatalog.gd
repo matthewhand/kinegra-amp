@@ -435,6 +435,15 @@ func _complete(result, response_code, _headers, body, request_epoch):
     if request_context.get("kind")=="playlist_items" and (result==HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED or body.size()>MAX_REPLY):
         _state("malformed_reply","Playlist exceeds the 2 MiB response limit; no tracks loaded. Browse this collection in Music Assistant.")
         return
+    var kind = request_context.get("kind", "")
+    if result == HTTPRequest.RESULT_SUCCESS and kind in ["play","local_queue_action","enqueue"] and response_code >= 400 and response_code <= 599:
+        # The server can put file paths and credentials in an error body.
+        # Use the actual HTTP status with a bounded, client-owned description.
+        var message = "Music Assistant rejected the request (HTTP %d)." % response_code
+        if response_code >= 500:
+            message = "Music Assistant server error (HTTP %d)." % response_code
+        _state("command_failed",message)
+        return
     if result != HTTPRequest.RESULT_SUCCESS or response_code != 200 or body.size() > MAX_REPLY:
         _state("disconnected", ("Queue result unknown. Check the queue before adding again." if request_context.get("kind")=="enqueue" else "Play result unknown. Check Queue before retrying.") if request_context.get("kind") in ["enqueue","play"] else "MA request failed, timed out or exceeded its reply limit; retry or Cancel")
         return
@@ -443,15 +452,15 @@ func _complete(result, response_code, _headers, body, request_epoch):
         _state("malformed_reply", ("Queue result unknown. Check the queue before adding again." if request_context.get("kind")=="enqueue" else "Play result unknown. Check Queue before retrying.") if request_context.get("kind") in ["enqueue","play"] else "MA returned invalid metadata")
         return
     var value = parsed.result
-    var kind = request_context.get("kind", "")
     if typeof(value) == TYPE_DICTIONARY:
-        if value.has("error") or value.get("success", true) == false:
-            _state("command_failed", "Music Assistant declined the request")
-            return
         if value.has("message_id"):
             if str(value["message_id"]) != request_context.get("message_id"):
                 _state("stale_reply", ("Queue result unknown. Check the queue before adding again." if request_context.get("kind")=="enqueue" else "Play result unknown. Check Queue before retrying.") if request_context.get("kind") in ["enqueue","play"] else "Rejected an obsolete MA reply")
                 return
+        if value.has("error") or value.has("error_code") or value.get("success", true) == false:
+            _state("command_failed", "Music Assistant declined the request")
+            return
+        if value.has("message_id"):
             value = value.get("result")
     if kind == "offline_page":
         if typeof(value)!=TYPE_ARRAY or value.size()>request_context.get("limit",0):

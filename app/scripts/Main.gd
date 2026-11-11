@@ -35,7 +35,10 @@ var tv_queue_timer = null
 var tv_reconnect_timer = null
 var tv_audio_wait_timer = null
 var tv_reconnect_waiting = false
-var tv_audio_seen = false
+var tv_audio_requested = false
+var tv_audio_since = -1
+var tv_previous_generation = -1
+var tv_playback_error = ""
 var tv_queue_last_action = ""
 var tv_queue_state = ""
 var tv_queue_timing={}
@@ -251,27 +254,30 @@ func _cancel_requested_play(cancel_recovery=true):
 	var pending=not pending_queue_resume.empty() or (ma_panel!=null and not ma_panel.connect_play_item.empty())
 	cancel_pending_resume()
 	if ma_panel!=null:ma_panel.cancel_pending_play()
-	if pending:stream_warmup_budget.reset()
+	if pending:
+		stream_warmup_budget.reset()
+		_reset_tv_audio()
 
 func _play_music_assistant():
 	if music_ui==null or ma_panel==null:return false
 	music_ui.set_playback_context("ma")
 	if not pending_queue_resume.empty():return true
-	if ma_panel.library_disconnected or ma_panel.catalog.token.empty():
+	if _library_credential().empty():
 		music_ui._open_library()
-		if ma_panel.catalog.token.empty():
+		if _library_credential(false).empty():
 			ma_panel.emit_signal("configuration_requested","library")
 			music_ui.show_status("CONNECT YOUR MUSIC LIBRARY")
 			return false
-	if not _sendspin_controls().empty() and _queue_controls_available():
+	if not _sendspin_controls().empty() and ma_panel.sendspin_paired:
 		return _sendspin_command("play")
-	pending_queue_resume={"epoch":ma_panel.catalog.epoch,"origin":ma_panel._credential_endpoint(),"deadline":OS.get_ticks_msec()+150000}
+	pending_queue_resume={"epoch":ma_panel.catalog.epoch,"origin":ma_panel._credential_endpoint(),"deadline":OS.get_ticks_msec()+150000,"recovery":recovery_restarting}
 	_prepare_stream_visuals()
 	music_ui.show_status("PREPARING PLAYBACK…")
 	if not ma_panel._sendspin_start() or ma_panel.playback_state=="error":
 		_cancel_requested_play()
 		ma_panel.emit_signal("configuration_requested","playback")
 		return false
+	_watch_tv_audio(false,false)
 	pending_queue_resume["client"]=ma_panel._playback_client_id()
 	pending_queue_resume["facade"]=sendspin_facade
 	pending_queue_resume["endpoint"]=ma_panel.sendspin_endpoint.text.strip_edges()
@@ -285,9 +291,15 @@ func _continue_queue_resume():
 	if pending_queue_resume.get("facade")!=sendspin_facade or pending_queue_resume.get("client","").empty() or pending_queue_resume.get("client")!=ma_panel._playback_client_id() or pending_queue_resume.get("endpoint")!=ma_panel.sendspin_endpoint.text.strip_edges():
 		_cancel_requested_play()
 		return
-	if _sendspin_controls().empty() or not _queue_controls_available() or ma_panel.catalog.resolve_local_player(ma_panel.sendspin_player_id).empty():return
-	pending_queue_resume.clear() # A mutation is sent once, never automatically retried.
-	if _sendspin_command("play"):
+	# The queue operation fetches and verifies the exact route itself. The
+	# drawer may be closed, with an empty or expired player list.
+	if not _queue_controls_available():return
+	# An asynchronous recovery resume keeps the current retry budget.
+	recovery_restarting=pending_queue_resume.recovery
+	pending_queue_resume.clear()
+	var started=_sendspin_command("play")
+	recovery_restarting=false
+	if started:
 		music_ui._close_library()
 		music_ui.play_button.grab_focus()
 
@@ -937,7 +949,7 @@ func _close_sendspin_analysis():
 	if tv_reconnect_timer!=null: tv_reconnect_timer.stop()
 	if tv_audio_wait_timer!=null: tv_audio_wait_timer.stop()
 	tv_reconnect_waiting=false
-	tv_audio_seen=false
+	_reset_tv_audio()
 	tv_queue_last_action=""
 	tv_queue_state=""
 	tv_queue_timing.clear()
@@ -969,9 +981,6 @@ func _on_pcm_observed(source_epoch, _rms, _playback_ms, _latency_ms, owner):
 		return
 	live_audio = true
 	demo = false
-	if sendspin_facade!=null and is_instance_valid(sendspin_facade) and owner==sendspin_facade.sink:
-		tv_audio_seen=true
-		if tv_audio_wait_timer!=null: tv_audio_wait_timer.stop()
 
 func _on_stream_message(msg):
 	detail_label.text = "  " + msg
@@ -1100,6 +1109,10 @@ func _toggle_offline_shuffle():
 
 func _process(delta):
 	_continue_queue_resume()
+	if tv_audio_requested and _tv_audio_ready():
+		tv_audio_requested=false
+		if tv_audio_wait_timer!=null:tv_audio_wait_timer.stop()
+		if music_ui!=null and music_ui._tv_mode():music_ui.show_status("")
 	_update_playback_recovery()
 	_update_stream_warmup()
 	_refresh_pose_control_budget()
@@ -1422,7 +1435,7 @@ func _on_sendspin_state(state,detail,facade):
 		_cancel_requested_play(false)
 		stream_warmup_budget.reset()
 	if state=="error" and music_ui!=null:
-		music_ui.show_status("PLAYBACK ERROR / CHECK LIBRARY SETTINGS")
+		_set_tv_playback_error("Playback connection failed. Check Music Assistant.")
 
 func _reconnect_tv():
 	if ma_panel!=null and ma_panel.library_disconnected:
@@ -1458,11 +1471,54 @@ func _on_tv_reconnect_timeout():
 	_stop_audio()
 	if music_ui!=null: music_ui.show_status("PLAYBACK CONNECTION TIMED OUT / RETRY")
 func _on_tv_audio_wait_timeout():
-	if not tv_audio_seen and sendspin_facade!=null and is_instance_valid(sendspin_facade) and music_ui!=null and music_ui._tv_mode():
-		music_ui.show_status("NO AUDIO / CHOOSE PLAY TO RETRY")
-func _watch_tv_audio():
-	tv_audio_seen=false
-	if tv_audio_wait_timer!=null: tv_audio_wait_timer.start(10.0)
+	if tv_audio_requested and tv_playback_error.empty() and not _tv_audio_ready() and music_ui!=null and music_ui._tv_mode():
+		music_ui.show_status("Still waiting for audio. Press Play to retry.")
+
+func _tv_sink():
+	if not is_instance_valid(sendspin_facade):return null
+	var sink=sendspin_facade.sink
+	return sink if is_instance_valid(sink) and sink==analysis_owner else null
+
+func _tv_audio_ready():
+	var sink=_tv_sink()
+	if sink==null or not sink.active or sink.buffering or sink.reported_frames<=0:
+		return false
+	if sink.stream_generation==tv_previous_generation or sink.last_data_at<max(0,tv_audio_since):
+		return false
+	var age=OS.get_ticks_msec()-sink.last_data_at
+	return age>=0 and age<=750
+
+func _tv_playback_status():
+	if not tv_playback_error.empty():return "error"
+	if _tv_audio_ready():return "playing"
+	if tv_audio_requested:return "waiting"
+	if tv_queue_state=="paused":return "paused"
+	if tv_queue_last_action in ["pause","stop","clear"]:return "idle"
+	if tv_queue_state in ["playing","buffering"]:return "waiting"
+	return "idle"
+
+func _reset_tv_audio():
+	tv_audio_requested=false
+	tv_audio_since=-1
+	tv_previous_generation=-1
+	tv_playback_error=""
+	if tv_audio_wait_timer!=null:tv_audio_wait_timer.stop()
+
+func _watch_tv_audio(require_new_stream=false, start_timer=true):
+	_reset_tv_audio()
+	tv_queue_last_action=""
+	tv_audio_requested=true
+	tv_audio_since=OS.get_ticks_msec()
+	var sink=_tv_sink()
+	if require_new_stream and sink!=null and sink.active:
+		tv_previous_generation=sink.stream_generation
+	if start_timer and tv_audio_wait_timer!=null:tv_audio_wait_timer.start(10.0)
+	if music_ui!=null and music_ui._tv_mode():music_ui.show_status("")
+
+func _set_tv_playback_error(detail):
+	_reset_tv_audio()
+	tv_playback_error=detail
+	if music_ui!=null and music_ui._tv_mode():music_ui.show_status(detail)
 
 func _stop_sendspin_player():
 	stream_warmup_budget.reset()
@@ -1546,14 +1602,8 @@ func _request_tv_queue(command,argument=null):
 			tv_queue_pending_session=sendspin_facade
 		if command in ["play","next","previous"]:
 			music_ui.set_playback_context("ma")
-			# Both the library and main transport enter the same source mode.
-			# A request is not proof of playback or of the highlighted title.
-			if not music_ui.source_label.text.begins_with("MUSIC ASSISTANT  •  PLAYING HERE"):
-				music_ui.source_label.text="MUSIC ASSISTANT  •  PLAYING HERE"
-				music_ui.now_title.text="Waiting for track information"
-				music_ui._set_fullscreen_track("Waiting for track information","","MUSIC ASSISTANT / PLAYING HERE")
-				if music_ui.track_hero!=null: music_ui.track_hero.set_track(music_ui.artwork.texture,"Waiting for track information","MUSIC ASSISTANT / PLAYING HERE")
-			_watch_tv_audio()
+			_watch_tv_audio(command!="play")
+			music_ui._refresh_tv_presentation()
 			if tv_queue_timer!=null: tv_queue_timer.start(0.25)
 	return started
 func _on_tv_queue_result(ok,action,snapshot,detail,operation):
@@ -1561,12 +1611,13 @@ func _on_tv_queue_result(ok,action,snapshot,detail,operation):
 	if not ok:
 		if not action in ["read","items"]:playback_recovery.cancel()
 		stream_warmup_budget.reset()
-		if action in ["play","next","previous"] and tv_audio_wait_timer!=null:tv_audio_wait_timer.stop()
+		if action in ["play","next","previous"]:_set_tv_playback_error(detail)
 	var empty_queue=not ok and operation.get("failure_reason")=="queue_empty"
 	var auth_rejected=not ok and operation.get("failure_reason")=="auth_failed"
 	tv_queue_request=null
 	operation.queue_free()
 	if empty_queue and music_ui!=null:
+		_reset_tv_audio()
 		music_ui._open_library()
 		music_ui.show_status("YOUR QUEUE IS EMPTY / CHOOSE MUSIC")
 		return
@@ -1584,12 +1635,14 @@ func _on_tv_queue_result(ok,action,snapshot,detail,operation):
 		if sendspin_facade!=null and sendspin_facade.runtime!=null and sendspin_facade.runtime.has_method("invalidate_buffer_measurement"):
 			sendspin_facade.runtime.invalidate_buffer_measurement()
 		music_ui._clear_buffer_progress()
-	if ok and action in ["read","items"]:
+	if ok and action=="read":
 		tv_queue_timing=snapshot.duplicate(true)
 		tv_queue_timing_read_at=OS.get_ticks_msec()
 	if action=="read":
 		if ok:
 			tv_queue_state=str(snapshot.get("state",""))
+			if tv_queue_state in ["paused","idle","stopped"]:
+				tv_queue_last_action=""
 			music_ui.show_tv_queue_snapshot(snapshot)
 		elif music_ui.tv_queue_label!=null and music_ui._tv_mode():
 			music_ui.tv_queue_label.text="QUEUE INFO UNAVAILABLE"
@@ -1598,14 +1651,13 @@ func _on_tv_queue_result(ok,action,snapshot,detail,operation):
 		music_ui.show_tv_queue_items(snapshot.get("items",[]) if ok else [],ok,detail)
 	elif ok:
 		tv_queue_last_action=action
-		if action in ["pause","stop","clear"] and tv_audio_wait_timer!=null: tv_audio_wait_timer.stop()
-		elif action in ["play","next","previous"]: _watch_tv_audio()
+		if action in ["pause","stop","clear"]:_reset_tv_audio()
 		if action in ["next","previous"]:
 			music_ui.now_title.text="Changing track…"
-			music_ui._set_fullscreen_track("Changing track…","","MUSIC ASSISTANT / PLAYING HERE")
-			if music_ui.track_hero!=null: music_ui.track_hero.set_track(music_ui.artwork.texture,"Changing track…","MUSIC ASSISTANT / PLAYING HERE")
+			music_ui._set_fullscreen_track("Changing track…","","MUSIC ASSISTANT")
+			if music_ui.track_hero!=null: music_ui.track_hero.set_track(music_ui.artwork.texture,"Changing track…","MUSIC ASSISTANT")
 			music_ui.tv_queue_label.hide()
-		music_ui.show_status("QUEUE REQUEST ACCEPTED / POSITION UNVERIFIED")
+		if not action in ["play","next","previous"]:music_ui.show_status("QUEUE REQUEST ACCEPTED / POSITION UNVERIFIED")
 		if tv_queue_timer!=null: tv_queue_timer.start(0.25)
 	else:
 		music_ui.show_status(detail)
@@ -1619,8 +1671,6 @@ func _tv_seek_available():
 	var age=OS.get_ticks_msec()-tv_queue_timing_read_at
 	return _queue_controls_available() and age>=0 and age<=5000 and tv_queue_policy.seek_target(tv_queue_timing,0,OS.get_unix_time(),OS.get_ticks_msec())>=0
 
-func _tv_pause_waiting():
-	return tv_queue_last_action=="pause" and tv_queue_state=="idle" and not _sendspin_fresh()
 func _refresh_tv_queue():
 	if tv_queue_timer!=null: tv_queue_timer.start(3.0)
 	if sendspin_facade!=null and is_instance_valid(sendspin_facade): _request_tv_queue("read")
@@ -1648,12 +1698,10 @@ func _on_sendspin_play_here(item):
 	if sendspin_facade.runtime.has_method("invalidate_buffer_measurement"):sendspin_facade.runtime.invalidate_buffer_measurement()
 	music_ui.set_playback_context("ma")
 	music_ui.invalidate_tv_queue()
-	music_ui.source_label.text="MUSIC ASSISTANT  •  PLAYING HERE"
 	music_ui.now_title.text="Waiting for track information"
-	music_ui.show_status("PREPARING SELECTED MUSIC…")
 	music_ui._close_library()
 	music_ui.play_button.grab_focus()
-	_watch_tv_audio()
+	_watch_tv_audio(true)
 	if tv_queue_timer!=null:tv_queue_timer.start(0.25)
 	return true
 
@@ -1942,8 +1990,9 @@ func web_remote_snapshot():
     if music_ui==null:return {"title":"", "source":"Kinegra Amp", "state":"starting"}
     var local=music_ui.playback_context=="offline"
     var state="playing" if local and offline_music.is_playing() else "paused or stopped"
-    if not local:state=music_ui._current_tv_metadata().get("state","waiting")
-    return {"title":music_ui.now_title.text.substr(0,512),"source":"Offline library" if local else "Music Assistant","state":state,"detail":music_ui.status_label.text.substr(0,160)}
+    if not local:state=_tv_playback_status()
+    var detail=music_ui.status_label.text if local or tv_playback_error.empty() else tv_playback_error
+    return {"title":music_ui.now_title.text.substr(0,512),"source":"Offline library" if local else "Music Assistant","state":state,"detail":detail.substr(0,160)}
 
 func web_remote_control(action):
     if music_ui==null or not action in ["play","pause","previous","next","stop"]:return false
@@ -1999,7 +2048,7 @@ func _update_playback_recovery():
 	var busy=not pending_queue_resume.empty() or tv_queue_request!=null or _web_queue_busy() or ma_panel.catalog.request_node!=null or ma_panel.playback_state=="connecting"
 	var action=playback_recovery.step(now,_recovery_binding(),data_at,buffering,busy,tv_queue_state,fresh_queue)
 	if action=="exhausted":
-		music_ui.show_status("Streaming is unavailable / Retry Play or use Offline Library")
+		_set_tv_playback_error("No audio received. Retry Play or use Offline Library.")
 	elif action=="reconnect":
 		print("SHIELDAMP_RECOVERY attempt=",playback_recovery.attempts)
 		music_ui.show_status("Audio stalled / reconnecting and refilling…")
@@ -2013,6 +2062,9 @@ func _arm_playback_recovery():
 	recovery_client_id=ma_panel._playback_client_id()
 	if not recovery_client_id.empty():playback_recovery.play_intent(_recovery_binding(),OS.get_ticks_msec())
 
-func _recovery_catalog_state(state,_detail):
+func _recovery_catalog_state(state,detail):
 	if state=="play_requested":_arm_playback_recovery()
 	elif state in ["auth_expired","permission_denied"]:playback_recovery.cancel()
+	elif ma_panel.catalog.request_context.get("kind")=="play" and state in ["command_failed","disconnected","malformed_reply","stale_reply"]:
+		playback_recovery.cancel()
+		_set_tv_playback_error(detail)

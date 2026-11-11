@@ -23,6 +23,8 @@ func run():
     check(policy.step(40000,"changed",-1,true,false,"playing",true)=="" and not policy.armed,"changed_origin_or_identity_cancels")
     policy.play_intent("owner",0)
     check(policy.step(40000,"owner",-1,true,true,"playing",true)=="","pending_mutation_is_never_repeated")
+    policy.play_intent("owner",20000)
+    check(policy.step(28000,"owner",19000,true,false,"playing",true)=="" and not policy.had_audio,"old_stream_pcm_does_not_shorten_startup_grace")
     policy.cancel()
     check(policy.step(80000,"owner",-1,true,false,"playing",true)=="","explicit_cancel_stays_cancelled")
     policy.play_intent("owner",0)

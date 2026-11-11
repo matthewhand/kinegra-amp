@@ -971,7 +971,7 @@ func _play_on_player():
         connect_play_epoch=catalog.epoch
         connect_play_origin=_credential_endpoint()
         connect_play_deadline=OS.get_ticks_msec()+150000
-        status_label.text="Preparing playback… Approve pairing if asked; your selection will play."
+        status_label.text="Waiting for audio. Approve pairing if asked."
         if playback_owner!=null:playback_owner._prepare_stream_visuals()
         if not _sendspin_start():
             cancel_pending_play()
