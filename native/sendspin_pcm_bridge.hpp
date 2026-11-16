@@ -128,10 +128,14 @@ public:
     }
     // The Godot consumer drains this queue. Generation lets it discard any
     // staging buffer retained across end/start; queue is flushed at each.
-    size_t read(uint8_t* out, size_t max_bytes, uint64_t* generation) {
+    size_t read(uint8_t* out, size_t max_bytes, uint64_t* generation,
+                const uint64_t* expected_generation = nullptr) {
         if (!out || !generation || max_bytes < frame_bytes) return 0;
         std::lock_guard<std::mutex> guard(mutex_);
         *generation = generation_;
+        if (expected_generation &&
+            (!active_ || waiting_clear_ || *expected_generation != generation_))
+            return 0;
         size_t amount = std::min(max_bytes - max_bytes % frame_bytes, size_);
         const size_t first = std::min(amount, capacity - head_);
         std::memcpy(out, queue_.data() + head_, first);

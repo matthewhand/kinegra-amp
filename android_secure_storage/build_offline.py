@@ -18,9 +18,10 @@ def build_plugin(engine,android,javac,target):
         with ZipFile(engine) as aar:(work/"godot.jar").write_bytes(aar.read("classes.jar"))
         src=ROOT/"src/main/java/au/local/shieldamp"
         subprocess.run([str(javac),"--release","8","-cp",str(work/"godot.jar")+os.pathsep+str(android),"-d",str(classes),*[str(p) for p in sorted(src.glob("*.java"))]],check=True)
-        host_tests=("TokenMigrationTest","TokenCredentialRecordTest","TokenForgetTest","SnapshotCommitTest","SelfTaskCleanerTest","OfflineFileImporterTest","OfflineImportSessionTest","OfflineLibraryAdmissionTest","OfflineCatalogSyntaxTest")
+        host_tests=("TokenMigrationTest","TokenCredentialRecordTest","TokenForgetTest","SnapshotCommitTest","SelfTaskCleanerTest","OfflineFileImporterTest","OfflineImportSessionTest","OfflineLibraryAdmissionTest","OfflineCatalogSyntaxTest","SendspinSpectrumTest")
         subprocess.run([str(javac),"--release","8","-cp",str(classes),"-d",str(classes),*[str(ROOT/"tests"/(name+".java")) for name in host_tests]],check=True)
-        for name in host_tests:subprocess.run([str(java),"-cp",str(classes),"au.local.shieldamp."+name],check=True)
+        for name in host_tests:
+            subprocess.run([str(java),"-cp",str(classes),"au.local.shieldamp."+name],check=True)
         def add(archive,name,content):
             info=ZipInfo(name,(1980,1,1,0,0,0));info.external_attr=0o644<<16;info.compress_type=ZIP_DEFLATED;archive.writestr(info,content)
         jar=io.BytesIO()

@@ -17,6 +17,9 @@ public final class ShieldAmpTokenStore extends GodotPlugin {
     /** Verified Godot 3.6.3 lifecycle hook; only this package's old Godot tasks. */
     @Override public void onMainResume(){
         super.onMainResume();
+        activityResumed = true;
+        AmpPlaybackService.setActivityVisible(true);
+        AmpPlaybackService.setActivityPlaybackAllowed(true);
         Activity activity=getActivity();if(activity==null)return;
         android.content.ComponentName current=activity.getComponentName();
         if(current==null||!"com.godot.game.GodotApp".equals(current.getClassName()))return;
@@ -42,6 +45,63 @@ public final class ShieldAmpTokenStore extends GodotPlugin {
             android.util.Log.i("ShieldAmp","STALE_TASKS_PRUNED="+removed);
         }
     }
+    private volatile boolean keepPlayingInBackground = true;
+    private volatile boolean activityResumed = true;
+
+    /** Music Assistant playback can use the Android media service from API 26. */
+    @UsedByGodot public boolean backgroundPlaybackAvailable() {
+        return android.os.Build.VERSION.SDK_INT >= 26;
+    }
+
+    @UsedByGodot public boolean setKeepPlayingInBackground(boolean enabled) {
+        keepPlayingInBackground = enabled;
+        AmpPlaybackService.setActivityPlaybackAllowed(enabled || activityResumed);
+        return true;
+    }
+
+    @Override public void onMainPause() {
+        super.onMainPause();
+        activityResumed = false;
+        AmpPlaybackService.setActivityVisible(false);
+        AmpPlaybackService.setActivityPlaybackAllowed(keepPlayingInBackground);
+    }
+
+    @UsedByGodot public boolean setBackgroundPlaybackGain(int percent) {
+        return backgroundPlaybackAvailable() && AmpPlaybackService.setAppGainPercent(percent);
+    }
+
+    @UsedByGodot public boolean setBackgroundPlaybackAnalysisEnabled(boolean enabled) {
+        if (!backgroundPlaybackAvailable()) return false;
+        AmpPlaybackService.setAnalysisRequested(enabled);
+        return true;
+    }
+
+    @UsedByGodot public String backgroundPlaybackAnalysis() {
+        return backgroundPlaybackAvailable() ? AmpPlaybackService.analysisSnapshot() : "";
+    }
+
+    @UsedByGodot public String backgroundPlaybackSnapshot() {
+        return AmpPlaybackService.playbackSnapshot();
+    }
+
+    @UsedByGodot public boolean connectBackgroundSendspin(String endpoint) {
+        Activity activity = getActivity();
+        return backgroundPlaybackAvailable() && activity != null &&
+                AmpPlaybackService.connectSendspin(activity, endpoint);
+    }
+
+    @UsedByGodot public boolean backgroundPlaybackCommand(String command, int argument) {
+        Activity activity = getActivity();
+        if (!backgroundPlaybackAvailable() || activity == null || command == null) return false;
+        switch (command) {
+            case "play": case "pause": case "stop": case "previous": case "next":
+            case "seek": case "permit": case "confirm":
+                return AmpPlaybackService.command(activity, command, argument);
+            default:
+                return false;
+        }
+    }
+
     private final OfflineImportController offlineImport=new OfflineImportController();
     @UsedByGodot public boolean beginOfflineImport(String directory){return offlineImport.begin(getActivity(),directory);}
     @UsedByGodot public boolean cancelOfflineImport(){return offlineImport.cancel();}

@@ -6,6 +6,7 @@ var native_stream_engine = null
 var native_transport = null
 var analysis_owner = null
 var sendspin_facade = null
+const AndroidSendspinFacade = preload("res://scripts/AndroidSendspinServiceFacade.gd")
 var tv_queue_request = null
 var tv_queue_pending_session = null
 var _library_session_token=""
@@ -46,8 +47,11 @@ var tv_queue_timing_read_at=-1
 var tv_queue_policy=preload("res://scripts/MAQueuePolicy.gd").new()
 var analysis_frame = preload("res://scripts/AnalysisFrame.gd").new()
 var analysis_epoch = 0
+var android_analysis_generation = -1
 var analysis_label = null
 var reduced_motion = null
+var keep_playing_in_background = true
+var background_playback_toggle = null
 var codec_choice = null
 var metronome_bpm = null
 var command_grid = null
@@ -279,6 +283,7 @@ func _play_music_assistant():
 		return false
 	_watch_tv_audio(false,false)
 	pending_queue_resume["client"]=ma_panel._playback_client_id()
+	pending_queue_resume["wait_for_android_identity"]=_uses_android_sendspin() and pending_queue_resume["client"].empty()
 	pending_queue_resume["facade"]=sendspin_facade
 	pending_queue_resume["endpoint"]=ma_panel.sendspin_endpoint.text.strip_edges()
 	return true
@@ -288,7 +293,23 @@ func _continue_queue_resume():
 	if ma_panel==null or ma_panel.library_disconnected or OS.get_ticks_msec()>=pending_queue_resume.deadline or ma_panel.catalog.epoch!=pending_queue_resume.epoch or ma_panel._credential_endpoint()!=pending_queue_resume.origin:
 		_cancel_requested_play()
 		return
-	if pending_queue_resume.get("facade")!=sendspin_facade or pending_queue_resume.get("client","").empty() or pending_queue_resume.get("client")!=ma_panel._playback_client_id() or pending_queue_resume.get("endpoint")!=ma_panel.sendspin_endpoint.text.strip_edges():
+	if not is_instance_valid(sendspin_facade) or pending_queue_resume.get("facade")!=sendspin_facade or pending_queue_resume.get("endpoint")!=ma_panel.sendspin_endpoint.text.strip_edges():
+		_cancel_requested_play()
+		return
+	var client_id=ma_panel._playback_client_id()
+	if pending_queue_resume.get("wait_for_android_identity",false):
+		if not _uses_android_sendspin() or not sendspin_facade.active:
+			_cancel_requested_play()
+			return
+		var state=sendspin_facade.status()
+		if not ma_panel.sendspin_paired or state.get("paired",false)!=true:
+			return
+		if client_id.empty() or client_id!=ma_panel.sendspin_player_id:
+			_cancel_requested_play()
+			return
+		pending_queue_resume["client"]=client_id
+		pending_queue_resume["wait_for_android_identity"]=false
+	if client_id.empty() or pending_queue_resume.get("client")!=client_id:
 		_cancel_requested_play()
 		return
 	# The queue operation fetches and verifies the exact route itself. The
@@ -324,6 +345,8 @@ func _on_library_credentials_closed(reason):
 	# Drawer/focus loss is not revoking authenticated origin-bound RAM access.
 	# The catalog/artwork listeners still discard their own copied credentials.
 	if reason in ["library_closed","focus_lost"]:return
+	# The catalog discarded its copies; an Android player may stay paired offscreen.
+	if reason == "inactive" and _uses_android_sendspin() and sendspin_facade.active: return
 	if reason!="inactive":_clear_library_session()
 	var pending_write=tv_queue_request!=null and is_instance_valid(tv_queue_request) and not tv_queue_request.get("action") in ["read","items"]
 	var owned=sendspin_facade!=null and is_instance_valid(sendspin_facade) and sendspin_facade.sink!=null and analysis_owner==sendspin_facade.sink
@@ -376,9 +399,12 @@ func _restore_app_volume():
 
 func _apply_app_gain():
 	var bus=AudioServer.get_bus_index("Milkdrop")
-	if bus<0:return
-	AudioServer.set_bus_volume_db(bus,app_volume_db)
-	AudioServer.set_bus_mute(bus,app_volume_percent==0)
+	if bus>=0:
+		AudioServer.set_bus_volume_db(bus,app_volume_db)
+		AudioServer.set_bus_mute(bus,app_volume_percent==0)
+	var platform = _background_playback_platform()
+	if platform != null:
+		platform.setBackgroundPlaybackGain(app_volume_percent)
 
 func set_app_volume(value):
 	if not typeof(value) in [TYPE_INT,TYPE_REAL] or is_nan(float(value)) or is_inf(float(value)):return false
@@ -554,6 +580,7 @@ func _build_ui():
 		Input.connect("joy_connection_changed", self, "_joy_changed")
 	var addr_row = VBoxContainer.new()
 	settings_box.add_child(addr_row)
+	_build_background_playback_setting(addr_row)
 	backing_dancers = CheckBox.new()
 	backing_dancers.text = "Backing dancers"
 	backing_dancers.hint_tooltip = "Add two synthetic backing dancers. Save Setup remembers this choice."
@@ -647,7 +674,9 @@ func _build_ui():
 	_button(settings_box, "LICENSES & NOTICES", "_show_licenses")
 	# TV remote can navigate controls with D-pad.
 	var setup = ConfigFile.new()
+	var background_saved = true
 	if setup.load("user://installation.cfg") == OK:
+		background_saved = setup.get_value("installation", "keep_playing_in_background", true)
 		backing_dancers.pressed = bool(setup.get_value("installation", "backing_dancers", false))
 		var saved_reactivity=setup.get_value("installation","music_reactivity",1)
 		if typeof(saved_reactivity)==TYPE_INT and saved_reactivity>=0 and saved_reactivity<SENSITIVITY_LEVELS.size():_select_music_reactivity(saved_reactivity)
@@ -664,7 +693,41 @@ func _build_ui():
 		large_text.pressed = bool(setup.get_value("installation", "large_text", false))
 		_restore_gesture_setup(setup)
 		_set_large_text(large_text.pressed)
+	_set_keep_playing_in_background(background_saved if typeof(background_saved) == TYPE_BOOL else true)
+	if background_playback_toggle != null:
+		background_playback_toggle.set_pressed_no_signal(keep_playing_in_background)
 	entity_edit.grab_focus()
+
+func _background_playback_platform():
+	if OS.get_name() != "Android" or not Engine.has_singleton("ShieldAmpTokenStore"):
+		return null
+	var platform = Engine.get_singleton("ShieldAmpTokenStore")
+	# The APK verifies this Java API. Godot 3 JNISingleton does not reflect its methods.
+	var available = platform.backgroundPlaybackAvailable()
+	return platform if typeof(available) == TYPE_BOOL and available else null
+
+func _build_background_playback_setting(parent):
+	if _background_playback_platform() == null:
+		return
+	background_playback_toggle = CheckBox.new()
+	background_playback_toggle.text = "Keep Music Assistant playing in the background"
+	background_playback_toggle.hint_tooltip = "Keep Music Assistant playing when you leave Amp. Save Setup remembers this choice."
+	background_playback_toggle.rect_min_size.y = 52
+	parent.add_child(background_playback_toggle)
+	background_playback_toggle.connect("toggled", self, "_set_keep_playing_in_background")
+
+func _set_keep_playing_in_background(enabled):
+	var platform = _background_playback_platform()
+	if platform != null:
+		var acknowledged = platform.setKeepPlayingInBackground(enabled)
+		if typeof(acknowledged) != TYPE_BOOL or not acknowledged:
+			if background_playback_toggle != null:
+				background_playback_toggle.set_pressed_no_signal(keep_playing_in_background)
+			if detail_label != null:
+				detail_label.text = "Could not change background playback."
+			return false
+	keep_playing_in_background = enabled
+	return true
 
 func _device_info_text(model, platform, version, controllers):
 	var clean_model = str(model).strip_edges().replace("\n", " ").replace("\r", " ").substr(0, 100)
@@ -741,6 +804,7 @@ func _apply_visual_budget(state):
 	if music_ui!=null and music_ui.track_hero!=null and music_ui.track_hero.has_method("set_render_budget"):
 		music_ui.track_hero.set_render_budget(30 if level==2 else (10 if level==1 else 0))
 	_budget_spectrum(level>0)
+	if _uses_android_sendspin():sendspin_facade.set_analysis_enabled(level>0)
 	frame_metrics.reset()
 	visual_update_elapsed=1.0
 
@@ -780,15 +844,21 @@ func _prepare_stream_visuals():
 	_apply_visual_budget(visual_governor.snapshot())
 	_update_visual_quality_status()
 
+func _sendspin_buffer_stats(now, include_runtime_buffering=false):
+	if _uses_android_sendspin():return sendspin_facade.buffer_stats(now)
+	if sendspin_facade==null or not is_instance_valid(sendspin_facade) or sendspin_facade.sink==null or not sendspin_facade.sink.active:
+		return {}
+	var audio=sendspin_facade.sink.buffer_stats().duplicate()
+	audio.active=true
+	audio.generation=sendspin_facade.sink.stream_generation
+	if include_runtime_buffering and sendspin_facade.runtime!=null:
+		audio.buffering=audio.buffering or sendspin_facade.runtime.buffering
+	return audio
+
 func _update_stream_warmup():
-	var audio={}
-	if sendspin_facade!=null and is_instance_valid(sendspin_facade) and sendspin_facade.sink!=null and sendspin_facade.sink.active:
-		audio=sendspin_facade.sink.buffer_stats().duplicate()
-		audio.active=true
-		audio.generation=sendspin_facade.sink.stream_generation
-		audio.buffering=audio.buffering or (sendspin_facade.runtime!=null and sendspin_facade.runtime.buffering)
+	var now=OS.get_ticks_msec()
 	var was_holding=stream_warmup_budget.holding
-	stream_warmup_budget.observe(OS.get_ticks_msec(),audio)
+	stream_warmup_budget.observe(now,_sendspin_buffer_stats(now,true))
 	_apply_visual_budget(visual_governor.snapshot())
 	if was_holding!=stream_warmup_budget.holding:
 		_update_visual_quality_status()
@@ -797,11 +867,7 @@ func _update_headroom():
 	var now=OS.get_ticks_msec()
 	var platform=Engine.get_singleton("ShieldAmpTokenStore") if Engine.has_singleton("ShieldAmpTokenStore") else null
 	_sample_app_load(platform,now)
-	var audio={}
-	if sendspin_facade!=null and is_instance_valid(sendspin_facade) and sendspin_facade.sink!=null and sendspin_facade.sink.active:
-		audio=sendspin_facade.sink.buffer_stats().duplicate()
-		audio.active=true
-		audio.generation=sendspin_facade.sink.stream_generation
+	var audio=_sendspin_buffer_stats(now)
 	var pacing=frame_metrics.snapshot()
 	if pacing.count>=30:
 		_apply_visual_budget(visual_governor.observe(now,pacing.p95_ms,pacing.late_ratio,audio,app_cpu_percent,thermal_status,display_refresh_hz))
@@ -911,6 +977,7 @@ func finish_native_audio():
 		native_stream_engine.end_stream()
 
 func _reset_analysis():
+	android_analysis_generation = -1
 	fft_envelope.reset()
 	analysis_epoch += 1
 	analysis_frame.begin_epoch(analysis_epoch)
@@ -941,7 +1008,12 @@ func _on_sendspin_invalidated(source):
 		live_audio=false
 		_reset_analysis()
 
+func _uses_android_sendspin():
+	return is_instance_valid(sendspin_facade) and sendspin_facade.get_script() == AndroidSendspinFacade
+
 func _sendspin_fresh():
+	if _uses_android_sendspin():
+		return _android_sendspin_audio_ready()
 	return sendspin_facade!=null and is_instance_valid(sendspin_facade) and analysis_owner!=null and is_instance_valid(analysis_owner) and analysis_owner==sendspin_facade.sink and analysis_owner.active and analysis_owner.last_pcm_at>=0 and OS.get_ticks_msec()-analysis_owner.last_pcm_at<=500
 
 func _close_sendspin_analysis():
@@ -1140,6 +1212,13 @@ func _update_visuals(delta):
 	var real_local_pcm = local_pcm != null and local_pcm.active and local_pcm.audio != null and local_pcm.audio.playing
 	var real_local_audio = real_offline_music or real_local_pcm
 	elapsed += delta
+	var now_ms=OS.get_ticks_msec()
+	var android_pcm={}
+	if not demo and visual_quality_level>0 and _uses_android_sendspin():
+		android_pcm=sendspin_facade.analysis_sample(now_ms)
+		if not android_pcm.empty() and android_analysis_generation!=android_pcm.generation:
+			_reset_analysis()
+			android_analysis_generation=android_pcm.generation
 	var raw_bands = []
 	for i in range(16):
 		var next_value = 0.0
@@ -1147,6 +1226,8 @@ func _update_visuals(delta):
 			# Explicitly synthetic demonstration, not a claimed spectrum.
 			var pulse = max(0.0, sin(elapsed * 3.3 - float(i) * 0.41))
 			next_value = 0.09 + pulse * (0.3 + 0.3 * sin(float(i) * 0.6 + elapsed))
+		elif not android_pcm.empty():
+			next_value = clamp(android_pcm.bands[i] * 16.0, 0.0, 1.0)
 		elif live_audio and spectrum != null and visual_quality_level>0:
 			var lo = 20.0 * pow(500.0, float(i) / 16.0)
 			var hi = 20.0 * pow(500.0, float(i + 1) / 16.0)
@@ -1155,11 +1236,13 @@ func _update_visuals(delta):
 		raw_bands.append(next_value)
 	fft = fft_envelope.apply(raw_bands, delta)
 	analysis_frame.configure_metronome(metronome_bpm.value if metronome_bpm != null else 0)
-	if not demo and analysis_owner != null and analysis_owner.active and analysis_owner.last_pcm_at >= 0:
+	if not android_pcm.empty():
+		var queue_ms=clamp(sendspin_facade.status().get("queued_ms",0),0,10000)
+		analysis_frame.publish(analysis_epoch,raw_bands,android_pcm.rms,android_pcm.sample_at,android_pcm.playback_ms,queue_ms)
+	elif not demo and analysis_owner != null and analysis_owner.active and analysis_owner.last_pcm_at >= 0:
 		analysis_frame.publish(analysis_epoch, raw_bands, analysis_owner.last_rms, analysis_owner.last_pcm_at, analysis_owner.playback_time_ms, analysis_owner.queued_latency_ms)
-	var now_ms=OS.get_ticks_msec()
 	var frame = analysis_frame.snapshot(now_ms)
-	var dance_source=not demo and visual_quality_level>0 and (real_local_audio or (analysis_owner!=null and analysis_owner.active and analysis_owner.last_pcm_at>=0 and now_ms-analysis_owner.last_pcm_at<=500))
+	var dance_source=not demo and visual_quality_level>0 and (real_local_audio or not android_pcm.empty() or (analysis_owner!=null and analysis_owner.active and analysis_owner.last_pcm_at>=0 and now_ms-analysis_owner.last_pcm_at<=500))
 	backup_tempo.observe(now_ms,raw_bands,dance_source,analysis_epoch)
 	var tempo_state=backup_tempo.snapshot(now_ms)
 	if not demo and not real_local_audio and frame["source"] != "live_pcm":
@@ -1207,10 +1290,21 @@ func _report_frame_metrics(delta):
 		var pacing = frame_metrics.snapshot()
 		print("SHIELDAMP_HEADROOM level=%d app_cpu_pct=%.1f thermal=%d p95_ms=%.1f" % [visual_quality_level,app_cpu_percent,thermal_status,pacing.p95_ms])
 		print("TEGRA_MILKDROP_METRIC fps_engine=%.1f fps_counted=%.1f frame_p95_ms=%.1f late_ratio=%.3f mode=%s" % [Engine.get_frames_per_second(), float(frame_sample_count) / frame_sample_seconds, pacing["p95_ms"], pacing["late_ratio"], ("demo" if demo else ("live" if live_audio else "idle"))])
-		if sendspin_facade!=null and is_instance_valid(sendspin_facade) and sendspin_facade.sink!=null and sendspin_facade.sink.active:
-			var audio_stats=sendspin_facade.sink.buffer_stats()
-			var pcm_age=OS.get_ticks_msec()-sendspin_facade.sink.last_pcm_at if sendspin_facade.sink.last_pcm_at>=0 else -1
-			print("SHIELDAMP_AUDIO queued_ms=%d underruns=%d rebuffers=%d buffering=%s generation=%d pcm_age_ms=%d rms=%.4f" % [audio_stats.queued_ms,audio_stats.underruns,audio_stats.rebuffers,str(audio_stats.buffering),sendspin_facade.sink.stream_generation,pcm_age,sendspin_facade.sink.last_rms])
+		var now=OS.get_ticks_msec()
+		var audio_stats=_sendspin_buffer_stats(now)
+		if not audio_stats.empty():
+			var pcm_age=-1
+			var rms=0.0
+			if _uses_android_sendspin():
+				var measured=sendspin_facade.analysis_sample(now)
+				if not measured.empty():
+					pcm_age=now-measured.sample_at
+					rms=measured.rms
+			else:
+				var sink=sendspin_facade.sink
+				pcm_age=now-sink.last_pcm_at if sink.last_pcm_at>=0 else -1
+				rms=sink.last_rms
+			print("SHIELDAMP_AUDIO queued_ms=%d underruns=%d rebuffers=%d buffering=%s generation=%d pcm_age_ms=%d rms=%.4f" % [audio_stats.queued_ms,audio_stats.underruns,audio_stats.rebuffers,str(audio_stats.buffering),audio_stats.generation,pcm_age,rms])
 		if pose_visual!=null:
 			print("SHIELDAMP_WEBCAM connected=%s processing=%s polls=%d" % [str(pose_visual.webcam_connected),str(pose_visual.is_processing()),pose_visual.poll_attempts])
 		frame_sample_seconds = 0.0
@@ -1234,6 +1328,7 @@ func _save_setup():
 			detail_label.text = "Invalid media_player entity; setup was not saved"
 			return
 	var config = ConfigFile.new()
+	config.set_value("installation", "keep_playing_in_background", keep_playing_in_background)
 	config.set_value("installation", "backing_dancers", backing_dancers.pressed)
 	config.set_value("installation","webcam_gestures_enabled",gesture_policy.enabled)
 	config.set_value("installation","webcam_gesture_mode",gesture_mode)
@@ -1285,7 +1380,7 @@ func _handle_tv_back(source="input"):
 		offline_music.stop()
 		live_audio = false
 		return
-	if live_audio:
+	if live_audio or (_uses_android_sendspin() and _sendspin_fresh()):
 		_stop_audio()
 		return
 	print("SHIELDAMP_LIFECYCLE event=back_exit")
@@ -1308,8 +1403,10 @@ func _notification(what):
 		if what==MainLoop.NOTIFICATION_APP_PAUSED and offline_music!=null:
 			offline_music.stop()
 		if what==MainLoop.NOTIFICATION_APP_PAUSED:
-			_stop_audio()
-			live_audio = false
+			# The Android service applies the preference without closing the MA session.
+			if not (_uses_android_sendspin() and sendspin_facade.active):
+				_stop_audio()
+				live_audio = false
 	elif what in [MainLoop.NOTIFICATION_APP_RESUMED, MainLoop.NOTIFICATION_WM_FOCUS_IN]:
 		if what == MainLoop.NOTIFICATION_APP_RESUMED: app_is_paused=false
 		else: app_has_focus=true
@@ -1365,23 +1462,44 @@ func _start_sendspin_player(endpoint,trusted):
 			# connecting would erase its paired client identity in the panel.
 			var current=sendspin_facade.client.status() if sendspin_facade.client!=null else {}
 			if typeof(current)==TYPE_DICTIONARY and typeof(current.get("paired"))==TYPE_BOOL and current["paired"] and typeof(current.get("client_id"))==TYPE_STRING and not current["client_id"].empty():
-				var receiving=sendspin_facade.sink!=null and sendspin_facade.sink.get("active")==true
+				var receiving=current.get("presenting",false) if _uses_android_sendspin() else (sendspin_facade.sink!=null and sendspin_facade.sink.get("active")==true)
 				ma_panel.set_sendspin_status("receiving" if receiving else "paired","Playback is already connected",str(current.get("client_id","")))
 			else:
 				ma_panel.set_sendspin_status("connecting","Playback connection is already in progress")
 			return
 		_stop_audio()
-	var facade=load("res://scripts/SendspinExperienceFacade.gd").new()
-	add_child(facade)
-	if not facade.start_experimental(true,endpoint,trusted):
-		facade.queue_free()
-		ma_panel.set_sendspin_status("error","Check the private address, LAN trust, native player and secure storage")
-		return
-	if not attach_sendspin_analysis(facade):
-		facade.stop()
-		facade.queue_free()
-		ma_panel.set_sendspin_status("error","Could not attach the TV player")
-		return
+	var platform = _background_playback_platform()
+	var facade
+	if platform != null:
+		# Validate before replacing a running audio source.
+		var gate = preload("res://scripts/SendspinExperienceFacade.gd").new()
+		var endpoint_allowed = gate._valid_endpoint(endpoint, trusted)
+		gate.free()
+		if not endpoint_allowed:
+			ma_panel.set_sendspin_status("error","Check the private playback address and LAN trust")
+			return
+		_stop_all_music()
+		facade = AndroidSendspinFacade.new()
+		add_child(facade)
+		if not facade.start(endpoint, trusted, platform):
+			facade.queue_free()
+			ma_panel.set_sendspin_status("error","Could not open the Android playback service")
+			return
+		sendspin_facade = facade
+		facade.set_analysis_enabled(visual_quality_level>0)
+		live_audio = false
+	else:
+		facade=load("res://scripts/SendspinExperienceFacade.gd").new()
+		add_child(facade)
+		if not facade.start_experimental(true,endpoint,trusted):
+			facade.queue_free()
+			ma_panel.set_sendspin_status("error","Check the private address, LAN trust, native player and secure storage")
+			return
+		if not attach_sendspin_analysis(facade):
+			facade.stop()
+			facade.queue_free()
+			ma_panel.set_sendspin_status("error","Could not attach the TV player")
+			return
 	if music_ui!=null:music_ui.set_playback_context("ma")
 	facade.runtime.connect("state_changed",self,"_on_sendspin_state",[facade])
 	facade.runtime.connect("pairing_code_changed",self,"_on_sendspin_pairing_code",[facade,facade.runtime])
@@ -1479,7 +1597,15 @@ func _tv_sink():
 	var sink=sendspin_facade.sink
 	return sink if is_instance_valid(sink) and sink==analysis_owner else null
 
+func _android_sendspin_audio_ready():
+	var status = sendspin_facade.status()
+	var age = OS.get_ticks_msec() - status.get("sample_at", -1)
+	return status.get("presenting", false) == true and age >= 0 and age <= 750
+
 func _tv_audio_ready():
+	if _uses_android_sendspin():
+		var state = sendspin_facade.status()
+		return _android_sendspin_audio_ready() and state.get("generation", -1) != tv_previous_generation and state.get("sample_at",-1) >= max(0,tv_audio_since)
 	var sink=_tv_sink()
 	if sink==null or not sink.active or sink.buffering or sink.reported_frames<=0:
 		return false
@@ -1510,7 +1636,9 @@ func _watch_tv_audio(require_new_stream=false, start_timer=true):
 	tv_audio_requested=true
 	tv_audio_since=OS.get_ticks_msec()
 	var sink=_tv_sink()
-	if require_new_stream and sink!=null and sink.active:
+	if require_new_stream and _uses_android_sendspin():
+		tv_previous_generation=sendspin_facade.status().get("generation",-1)
+	elif require_new_stream and sink!=null and sink.active:
 		tv_previous_generation=sink.stream_generation
 	if start_timer and tv_audio_wait_timer!=null:tv_audio_wait_timer.start(10.0)
 	if music_ui!=null and music_ui._tv_mode():music_ui.show_status("")
@@ -1608,6 +1736,9 @@ func _request_tv_queue(command,argument=null):
 	return started
 func _on_tv_queue_result(ok,action,snapshot,detail,operation):
 	if operation!=tv_queue_request: return
+	if ok and action == "play" and _uses_android_sendspin() and not sendspin_facade.command("permit"):
+		ok = false
+		detail = "Music Assistant accepted Play, but Android audio is unavailable."
 	if not ok:
 		if not action in ["read","items"]:playback_recovery.cancel()
 		stream_warmup_budget.reset()
@@ -2041,7 +2172,11 @@ func _update_playback_recovery():
 	var now=OS.get_ticks_msec()
 	var data_at=-1
 	var buffering=true
-	if sendspin_facade!=null and is_instance_valid(sendspin_facade) and sendspin_facade.sink!=null:
+	if _uses_android_sendspin():
+		var status = sendspin_facade.status()
+		if status.get("presenting",false): data_at = status.get("sample_at",-1)
+		buffering = sendspin_facade.buffering
+	elif sendspin_facade!=null and is_instance_valid(sendspin_facade) and sendspin_facade.sink!=null:
 		data_at=sendspin_facade.sink.last_data_at
 		buffering=sendspin_facade.sink.buffering
 	var fresh_queue=tv_queue_timing_read_at>=0 and now-tv_queue_timing_read_at<10000 and now-playback_recovery.since>5000
@@ -2063,7 +2198,11 @@ func _arm_playback_recovery():
 	if not recovery_client_id.empty():playback_recovery.play_intent(_recovery_binding(),OS.get_ticks_msec())
 
 func _recovery_catalog_state(state,detail):
-	if state=="play_requested":_arm_playback_recovery()
+	if state=="play_requested":
+		if _uses_android_sendspin() and not sendspin_facade.command("permit"):
+			_set_tv_playback_error("Music Assistant accepted Play, but Android audio is unavailable.")
+			return
+		_arm_playback_recovery()
 	elif state in ["auth_expired","permission_denied"]:playback_recovery.cancel()
 	elif ma_panel.catalog.request_context.get("kind")=="play" and state in ["command_failed","disconnected","malformed_reply","stale_reply"]:
 		playback_recovery.cancel()

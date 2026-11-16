@@ -54,7 +54,10 @@ int main() {
     assert(b.if_current_generation(b.generation(),[&] { invoked=true; }) && invoked);
     assert(b.snapshot().active && b.snapshot().generation != before_clear && b.snapshot().queued_bytes == 0);
     assert(b.on_audio_write(sample, 8, 0) == 8);
-    assert(b.read(out, sizeof out, &generation) == 8);
+    assert(b.read(out, sizeof out, &generation, &before_clear) == 0);
+    assert(generation == b.generation() && b.queued_bytes() == 8);
+    const auto current = b.generation();
+    assert(b.read(out, sizeof out, &generation, &current) == 8);
     assert(generation == b.generation() && out[0] == 1 && out[7] == 8);
     b.on_stream_end(); b.on_stream_start();
     std::thread a([&] { for (int i=0;i<1000;++i) b.on_audio_write(sample, 8, 0); });

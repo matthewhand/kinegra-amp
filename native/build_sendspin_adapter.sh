@@ -34,7 +34,12 @@ arduino_json=$(sed -n 's/^FETCHCONTENT_SOURCE_DIR_ARDUINOJSON:PATH=//p' "$build_
 flags+=("-DSENDSPIN_ENABLE_MESSAGE_TRACE" "-I$arduino_json/src")
 for role in PLAYER CONTROLLER METADATA ARTWORK COLOR VISUALIZER SOURCE; do flags+=("-DSENDSPIN_ENABLE_$role"); done
 "$compiler" "${flags[@]}" -c "$root/native/godot_sendspin.cpp" -o "$work/adapter.o"
+objects=("$work/adapter.o")
+if [ "$mode" = android ]; then
+    "$compiler" "${flags[@]}" -c "$root/native/android_sendspin_worker.cpp" -o "$work/worker.o"
+    objects+=("$work/worker.o")
+fi
 libs=("$build_dir/libsendspin.a" "$build_dir/libnoise_c.a" "$build_dir/_deps/ixwebsocket-build/libixwebsocket.a" "$build_dir/_deps/micro_flac-build/libmicro_flac.a" "$build_dir/_deps/micro_flac-build/micro-ogg-demuxer/libmicro_ogg_demuxer.a")
 for lib in "${libs[@]}"; do [ -f "$lib" ]; done
-"$compiler" -shared -Wl,--no-undefined -o "$out" "$work/adapter.o" -Wl,--start-group "${libs[@]}" -Wl,--end-group -lz "${extra[@]}"
+"$compiler" -shared -Wl,--no-undefined -o "$out" "${objects[@]}" -Wl,--start-group "${libs[@]}" -Wl,--end-group -lz "${extra[@]}"
 file "$out"
