@@ -62,8 +62,36 @@ def validate_token_dex(dumps):
         if actual!=[signature]:
             raise RuntimeError("Exported APK has incompatible Godot 3 metrics signature for "+method)
 
+    background_api = (
+        ("backgroundPlaybackAvailable", "()Z"),
+        ("setKeepPlayingInBackground", "(Z)Z"),
+        ("backgroundPlaybackSnapshot", "()Ljava/lang/String;"),
+        ("connectBackgroundSendspin", "(Ljava/lang/String;)Z"),
+        ("backgroundPlaybackCommand", "(Ljava/lang/String;I)Z"),
+        ("setBackgroundPlaybackGain", "(I)Z"),
+        ("setBackgroundPlaybackAnalysisEnabled", "(Z)Z"),
+        ("backgroundPlaybackAnalysis", "()Ljava/lang/String;"),
+    )
+    for method, signature in background_api:
+        if [descriptor for name, descriptor in declarations if name == method] != [signature]:
+            raise RuntimeError("Exported APK has incompatible Android playback plugin method " + method)
+
+def validate_playback_service_manifest(text):
+    blocks = re.split(r'(?m)^\s*E: ', text)
+    services = [block for block in blocks if block.startswith("service ") and
+                '"au.local.shieldamp.AmpPlaybackService"' in block]
+    if len(services) != 1:
+        raise RuntimeError("Exported APK lacks one Amp media playback service")
+    service = services[0]
+    if not re.search(r'(?m)^\s*A: android:exported\([^)]*\)=\(type 0x12\)0x0$', service):
+        raise RuntimeError("Amp media playback service must be unexported")
+    if not re.search(r'(?m)^\s*A: android:foregroundServiceType\([^)]*\)=\(type 0x11\)0x2$', service):
+        raise RuntimeError("Amp foreground service must have mediaPlayback type only")
+
 def validate_token_plugin_apk(apk,sdk,env):
-    validate_token_manifest(command([sdk/'aapt','dump','xmltree',apk,'AndroidManifest.xml'],env=env))
+    manifest = command([sdk/'aapt','dump','xmltree',apk,'AndroidManifest.xml'],env=env)
+    validate_token_manifest(manifest)
+    validate_playback_service_manifest(manifest)
     dumps=[]
     with zipfile.ZipFile(apk) as archive, tempfile.TemporaryDirectory(prefix='shieldamp-token-dex-') as temp:
         names=[n for n in archive.namelist() if re.fullmatch(r'classes(?:[2-9][0-9]*)?\.dex',n)]

@@ -42,6 +42,22 @@ class TokenPluginGuardTest(unittest.TestCase):
       type          : '()Ljava/lang/String;'
       name          : 'cancelOfflineImport'
       type          : '()Z'
+      name          : 'backgroundPlaybackAvailable'
+      type          : '()Z'
+      name          : 'setKeepPlayingInBackground'
+      type          : '(Z)Z'
+      name          : 'backgroundPlaybackSnapshot'
+      type          : '()Ljava/lang/String;'
+      name          : 'connectBackgroundSendspin'
+      type          : '(Ljava/lang/String;)Z'
+      name          : 'backgroundPlaybackCommand'
+      type          : '(Ljava/lang/String;I)Z'
+      name          : 'setBackgroundPlaybackGain'
+      type          : '(I)Z'
+      name          : 'setBackgroundPlaybackAnalysisEnabled'
+      type          : '(Z)Z'
+      name          : 'backgroundPlaybackAnalysis'
+      type          : '()Ljava/lang/String;'
 Class #1            -
   Class descriptor  : 'Lunrelated/Example;'
 '''
@@ -54,6 +70,30 @@ Class #1            -
             with self.subTest(method=method):
                 for text in (self.dex.replace(declaration,""),self.dex.replace(declaration,"")+declaration,self.dex.replace(declaration,declaration+declaration),self.dex.replace(declaration,declaration.replace(signature,"()J")),self.dex.replace(declaration,declaration.replace(signature,"()Ljava/lang/Object;"))):
                     with self.assertRaises(RuntimeError):build.validate_token_dex([text])
+    def test_background_playback_jni_returns_exact_values(self):
+        for method in ("backgroundPlaybackAvailable", "setKeepPlayingInBackground",
+                       "backgroundPlaybackSnapshot", "connectBackgroundSendspin", "backgroundPlaybackCommand",
+                       "setBackgroundPlaybackGain", "setBackgroundPlaybackAnalysisEnabled",
+                       "backgroundPlaybackAnalysis"):
+            with self.subTest(method=method), self.assertRaisesRegex(RuntimeError, method):
+                build.validate_token_dex([self.dex.replace("'" + method + "'", "'missing'")])
+        changed = self.dex.replace(
+            "name          : 'backgroundPlaybackAvailable'\n      type          : '()Z'",
+            "name          : 'backgroundPlaybackAvailable'\n      type          : '()I'")
+        with self.assertRaisesRegex(RuntimeError, "backgroundPlaybackAvailable"):
+            build.validate_token_dex([changed])
+
+    def test_media_service_must_be_unique_unexported_and_playback_only(self):
+        service = (' E: service (line=64)\n'
+                   '   A: android:name(0x01010003)="au.local.shieldamp.AmpPlaybackService"\n'
+                   '   A: android:exported(0x01010010)=(type 0x12)0x0\n'
+                   '   A: android:foregroundServiceType(0x01010599)=(type 0x11)0x2\n')
+        build.validate_playback_service_manifest(service)
+        for text in (service + service, service.replace("0x12)0x0", "0x12)0xffffffff"),
+                     service.replace("0x11)0x2", "0x11)0x6"), ""):
+            with self.assertRaises(RuntimeError):
+                build.validate_playback_service_manifest(text)
+
     def test_valid_config(self):
         build.validate_token_export_config('custom_build/use_custom_build=true\nplugins/ShieldAmpTokenStore=true\n')
     def test_prebuilt_or_disabled_config_rejected(self):

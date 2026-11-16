@@ -5,5 +5,6 @@ public abstract class GodotPlugin {
     public GodotPlugin(org.godotengine.godot.Godot godot){this.godot=godot;}
     protected android.app.Activity getActivity(){return godot.getActivity();}
     public void onMainResume(){}
+    public void onMainPause(){}
     public abstract String getPluginName();
 }

@@ -28,7 +28,7 @@
     },
     "android_secure_storage/build_offline.py": {
       "mode": "100644",
-      "sha256": "07b1b8dd7df67a7ed654b0d06033435543e68d781e3ed9d67e4b7ce734a0f923"
+      "sha256": "dfd83cc6916cefb19a64b1f9833228529f4fe312a80fe456f4d537a49269b4a8"
     },
     "android_secure_storage/proof/README.md": {
       "mode": "100644",
@@ -64,7 +64,7 @@
     },
     "android_secure_storage/proof/security_lifecycle/stubs/org/godotengine/godot/plugin/GodotPlugin.java": {
       "mode": "100644",
-      "sha256": "042fea11632bc8f0972b11aa8dbc0510d4e330b77270c0a42ddbefcf257cccf2"
+      "sha256": "6e1ea54be03688afedc24ccb7e7357b42b7fa7b6ac92c452e911ec491421607a"
     },
     "android_secure_storage/proof/security_lifecycle/stubs/org/godotengine/godot/plugin/UsedByGodot.java": {
       "mode": "100644",
@@ -72,7 +72,11 @@
     },
     "android_secure_storage/src/main/AndroidManifest.xml": {
       "mode": "100644",
-      "sha256": "1b8b9b8cb08e812a8f9a9c5cf39ae12556b4cc0e06f73266450e8741d0d02f10"
+      "sha256": "90ed23d00a1236f83d4fe8ec17ec4407b740e2deee11a12a3f358100ae5e256a"
+    },
+    "android_secure_storage/src/main/java/au/local/shieldamp/AmpPlaybackService.java": {
+      "mode": "100644",
+      "sha256": "3a282a49397740df1a320058ac7e93ac82bada0db95bd81169310bf070acd70c"
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/AndroidSendspinVault.java": {
       "mode": "100644",
@@ -81,6 +85,10 @@
     "android_secure_storage/src/main/java/au/local/shieldamp/AndroidTokenVault.java": {
       "mode": "100644",
       "sha256": "cef77a984fa633a7b121ae46875dedd6fdcc972008884d1cb36544ad04c61db0"
+    },
+    "android_secure_storage/src/main/java/au/local/shieldamp/NativeSendspinWorker.java": {
+      "mode": "100644",
+      "sha256": "5b70ed9fb7b96bee545d494b8bbc9f985f86b25b949f964303598dd87116aa36"
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/OfflineCatalogJson.java": {
       "mode": "100644",
@@ -106,9 +114,21 @@
       "mode": "100644",
       "sha256": "039bdbe50ca219c066a51d92658505f149340d3c556646f1ab49bef65bbd9427"
     },
+    "android_secure_storage/src/main/java/au/local/shieldamp/SendspinAudioTrack.java": {
+      "mode": "100644",
+      "sha256": "42abb0f9c6e996dd516277a09d52120259a039040863bde3b1f4a89014c92788"
+    },
+    "android_secure_storage/src/main/java/au/local/shieldamp/SendspinSpectrum.java": {
+      "mode": "100644",
+      "sha256": "7428c505fe3ea460cd27047999c7079d02121fc3880b9e6bfcee6767c963d112"
+    },
+    "android_secure_storage/src/main/java/au/local/shieldamp/ServiceSendspinVault.java": {
+      "mode": "100644",
+      "sha256": "657c2b831da126dc0f1e65546676978fa16098f0be381f1e9e35218ad936dfe7"
+    },
     "android_secure_storage/src/main/java/au/local/shieldamp/ShieldAmpTokenStore.java": {
       "mode": "100644",
-      "sha256": "2a54862e5c58d856d147bfa2586c8a3f1baf1fb469396b6d56dd533117eb309e"
+      "sha256": "8986d8704810ab72ea2421ae9a9cb421801e1462cba7de0beb031202be754d0a"
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/SnapshotCommit.java": {
       "mode": "100644",
@@ -153,6 +173,10 @@
     "android_secure_storage/tests/SelfTaskCleanerTest.java": {
       "mode": "100644",
       "sha256": "82644e5ce8b4da034de415735f75761490c3e832b2552691a2a1a347bf4a6c23"
+    },
+    "android_secure_storage/tests/SendspinSpectrumTest.java": {
+      "mode": "100644",
+      "sha256": "0bd07edef34e1af1f72f44e179e41665c3a25af8ade0dec91090cfa94b863232"
     },
     "android_secure_storage/tests/SnapshotCommitTest.java": {
       "mode": "100644",
@@ -384,7 +408,7 @@
     },
     "app/export_presets.cfg": {
       "mode": "100644",
-      "sha256": "e88381b056aa6efdaefa8f42aca0cd15cf74857a773878535ce44d5f79398804"
+      "sha256": "c11f8e2d5dafc64d02605cc30aeacc4e4f934f5f351fa7d233948d3f165b4c59"
     },
     "app/native/TegraCodec.gdnlib": {
       "mode": "100644",
@@ -396,7 +420,7 @@
     },
     "app/project.godot": {
       "mode": "100644",
-      "sha256": "29f452070ee45502121ad645cc8f17d1f67816423e1931ae3590cc15aec66b7d"
+      "sha256": "b4fcc7838f1b000e8f202b5477d48d28568dbdc8f447df9775a3236734a8c9d4"
     },
     "app/scripts/AdaptiveVisuals.gd": {
       "mode": "100644",
@@ -405,6 +429,10 @@
     "app/scripts/AnalysisFrame.gd": {
       "mode": "100644",
       "sha256": "7da1f0d6039d3d6b0f3f4e4f9c5bccd2672990a2d1ba2ee9d1d85729e54251d2"
+    },
+    "app/scripts/AndroidSendspinServiceFacade.gd": {
+      "mode": "100644",
+      "sha256": "3a8314ca1c85ab09bf397e431298c15656fa6a2db25dfdcc43b82ce179fbdfe9"
     },
     "app/scripts/AndroidSendspinVaultAdapter.gd": {
       "mode": "100644",
@@ -508,7 +536,7 @@
     },
     "app/scripts/Main.gd": {
       "mode": "100644",
-      "sha256": "2287d43158fd324488d7867e188029c7bbf6d21b3a27c741bbb87576e1953810"
+      "sha256": "b5e564ca59ce8117def05c8027356ff078149cc66be1785cd67499d497d32b51"
     },
     "app/scripts/ModalFocus.gd": {
       "mode": "100644",
@@ -709,6 +737,10 @@
     "app/tests/test_analysis_frame.gd": {
       "mode": "100644",
       "sha256": "c365f1c0abfa1a99c08a39345f53b0efff0e5550e0f94fa733471bf34a6f8474"
+    },
+    "app/tests/test_android_sendspin_service_facade.gd": {
+      "mode": "100644",
+      "sha256": "476e2271d87a7b273ff9bfb1ce2a6a3abfeccc587acf3f6b0e0d36f923a9bd55"
     },
     "app/tests/test_artwork_off_layout.gd": {
       "mode": "100644",
@@ -1064,7 +1096,7 @@
     },
     "app/tests/test_scratch_upgrade_settings.gd": {
       "mode": "100644",
-      "sha256": "9901ee318ed211762dc43654ab69935043110ac5f173d3fd4fa4c61240f29b82"
+      "sha256": "3feaa0080c32d366667cb3dcebe44b0fbf43fdbe593a1453a1f2d97a9f19a48a"
     },
     "app/tests/test_sendspin_bridge_pump.gd": {
       "mode": "100644",
@@ -1326,6 +1358,14 @@
       "mode": "100644",
       "sha256": "54bb32f0ba572423901029a86310ba2c88026457bb79295394347398bdf641be"
     },
+    "native/android_sendspin_vault.hpp": {
+      "mode": "100644",
+      "sha256": "4158a1660c4e9e9f37457c5b9c882e99bc64773a480fa533644de24cf8d2e92d"
+    },
+    "native/android_sendspin_worker.cpp": {
+      "mode": "100644",
+      "sha256": "403916679d3a61a53c3ba1b6fcc2a21da3c54f97801e57b832a457e2b974c884"
+    },
     "native/build_godot.sh": {
       "mode": "100644",
       "sha256": "7ab8303f6109c4ec9ced5c5bfa9397a62094d1d342136e8195add121761fdb78"
@@ -1336,7 +1376,7 @@
     },
     "native/build_sendspin_adapter.sh": {
       "mode": "100755",
-      "sha256": "8360e564c9e999747e1c0eef7db5c88e2c9960a652ae2110bcb329249a912caf"
+      "sha256": "c05344078fe71dce6de3d29090039c3acc9a47d39e240ed5ccd8d0167a5f600c"
     },
     "native/build_sendspin_android.sh": {
       "mode": "100755",
@@ -1352,7 +1392,7 @@
     },
     "native/godot_sendspin.cpp": {
       "mode": "100644",
-      "sha256": "a19b9497eac9f4682330996ca4f421bd382be4ad9726e0bc6be0ddfe2187cd50"
+      "sha256": "35db044406da67760edc4726bde604087004bd777467808a0a0b6fc1bf3dc4d6"
     },
     "native/godot_sendspin_vault.hpp": {
       "mode": "100644",
@@ -1400,11 +1440,15 @@
     },
     "native/sendspin_pcm_bridge.hpp": {
       "mode": "100644",
-      "sha256": "45ea2892dc83ffb756a7d186d454b17ecca2a4b68b98b1ff1ac1010bd00417af"
+      "sha256": "6602ba6fc29d73cc4591d4162b6429cc63acdc01a6cc627e34e60c72b693cfc0"
     },
     "native/sendspin_secure_persistence.hpp": {
       "mode": "100644",
       "sha256": "041fd02a5e33648395da35162b30ccd86f30ab9bdcabab71318b62c094b0c76d"
+    },
+    "native/sendspin_session.hpp": {
+      "mode": "100644",
+      "sha256": "e8a7f3c423312373d5b42c9460b868a020d82c3e52327133a1970388790380ab"
     },
     "native/sendspin_startup_buffer.hpp": {
       "mode": "100644",
@@ -1452,7 +1496,7 @@
     },
     "native/tests/sendspin_pcm_bridge_test.cpp": {
       "mode": "100644",
-      "sha256": "bd3877db5f7c09af5c75f4d7358cd9146274926ce19a9b6c704eefe557e3c34a"
+      "sha256": "68bd3d8e2d62cf82584bd78ddff0014a150f58387c2ff9e774e509fba790546a"
     },
     "native/tests/test_android_vault_adapter.gd": {
       "mode": "100644",
@@ -1728,7 +1772,7 @@
     },
     "packaging/android_checks.py": {
       "mode": "100644",
-      "sha256": "891a56c7164fbb2fe8c976005e44a6bf0dbdab93f609c6cc1514791f5296e015"
+      "sha256": "42390b6485479932539d796b702bba24ae98b209922621472e4980e127b150f0"
     },
     "packaging/arm_noise_gate.py": {
       "mode": "100644",
@@ -1804,7 +1848,7 @@
     },
     "packaging/test_shieldamp_token_packaging.py": {
       "mode": "100644",
-      "sha256": "23a20b75478677e4e21fc0032ebacd2c3b3c207cdb4992c87b9e5e046e915d16"
+      "sha256": "05e2e77f25f405b84f0c46941794af112b4bfd65d94c6a056ea341c45b14d8b7"
     },
     "packaging/test_tv_banner_manifest.py": {
       "mode": "100644",
