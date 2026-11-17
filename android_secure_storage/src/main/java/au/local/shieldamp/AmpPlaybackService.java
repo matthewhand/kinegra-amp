@@ -19,6 +19,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.SystemClock;
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import org.json.JSONArray;
@@ -41,6 +43,7 @@ public final class AmpPlaybackService extends Service {
     private static final AtomicReference<Request> pending = new AtomicReference<>();
     private static final String IDLE = "{\"source\":\"none\",\"state\":\"idle\"}";
     private static volatile String snapshot = IDLE;
+    private static volatile String localSnapshot = IDLE;
     private static volatile AmpPlaybackService activeInstance;
     private static volatile boolean activityAllowsPlayback = true;
     private static volatile int appGainPercent = 100;
@@ -53,10 +56,13 @@ public final class AmpPlaybackService extends Service {
         final long presentedAtNs;
         final SendspinSpectrum.Sample window;
 
-        Analysis(long generation, long presentedAtNs, SendspinSpectrum.Sample window) {
+        final double playbackMs;
+
+        Analysis(long generation, long presentedAtNs, SendspinSpectrum.Sample window, double playbackMs) {
             this.generation = generation;
             this.presentedAtNs = presentedAtNs;
             this.window = window;
+            this.playbackMs = playbackMs;
         }
     }
 
@@ -81,7 +87,7 @@ public final class AmpPlaybackService extends Service {
             JSONObject sample = new JSONObject();
             sample.put("generation", current.generation);
             sample.put("age_ms", ageNs / 1000000L);
-            sample.put("playback_ms", current.window.frame * 1000.0 / 48000);
+            sample.put("playback_ms", current.playbackMs);
             sample.put("rms", (double) current.window.rms);
             sample.put("bands", bands);
             return sample.toString();
@@ -112,14 +118,53 @@ public final class AmpPlaybackService extends Service {
         final String id = UUID.randomUUID().toString();
         final String endpoint;
 
-        Request(String endpoint) { this.endpoint = endpoint; }
+        final LocalFileQueue.Plan local;
+
+        Request(String endpoint, LocalFileQueue.Plan local) {
+            this.endpoint = endpoint;
+            this.local = local;
+        }
     }
 
     /** Called from the visible Activity to open the verified Music Assistant endpoint. */
     static boolean connectSendspin(Context context, String endpoint) {
         if (endpoint == null || endpoint.length() < 10 || endpoint.length() > 512)
             return false;
-        return start(context, new Request(endpoint));
+        return start(context, new Request(endpoint, null));
+    }
+
+    static boolean playLocal(Context context, String raw) {
+        LocalFileQueue.Plan plan = LocalFileQueue.Plan.parse(raw);
+        return plan != null && start(context, new Request(null, plan));
+    }
+
+    static String localPlaybackSnapshot() { return localSnapshot; }
+
+    static boolean updateLocalQueue(String raw) {
+        LocalFileQueue.Plan plan = LocalFileQueue.Plan.parse(raw);
+        AmpPlaybackService service = activeInstance;
+        if (plan == null || service == null) return false;
+        return service.owner.post(() -> {
+            if (!service.destroyed && service.local != null) service.local.update(plan);
+        });
+    }
+
+    static boolean localCommand(int token, String command, int argument) {
+        if ("stop".equals(command)) {
+            Request request = pending.get();
+            if (request != null && request.local != null && request.local.token == token) {
+                pending.compareAndSet(request, null);
+            }
+        }
+        AmpPlaybackService service = activeInstance;
+        if (service == null) return false;
+        return service.owner.post(() -> {
+            LocalFileQueue current = service.local;
+            if (!service.destroyed && current != null && current.token() == token) {
+                service.dispatch(command, argument);
+                if (service.local == current) service.publishLocal();
+            }
+        });
     }
 
     private static boolean start(Context context, Request request) {
@@ -137,7 +182,7 @@ public final class AmpPlaybackService extends Service {
     static String playbackSnapshot() { return snapshot; }
 
     static boolean command(Context context, String command, int argument) {
-        if (snapshot.equals(IDLE)) return false;
+        if (snapshot.equals(IDLE) || snapshot.contains("\"source\":\"local\"")) return false;
         try {
             context.startService(new Intent(context, AmpPlaybackService.class).setAction(COMMAND)
                     .putExtra(COMMAND_NAME, command).putExtra(COMMAND_VALUE, argument));
@@ -153,6 +198,10 @@ public final class AmpPlaybackService extends Service {
     private AudioFocusRequest focus;
     private MediaSession mediaSession;
     private NativeSendspinWorker sendspin;
+    private LocalFileQueue local;
+    private int localToken;
+    private long lastLocalPublication;
+    private final Runnable localTick = this::runLocalTick;
     private long sendspinOpened;
     private long lastSendspinPublication;
     private long lastAnalysisPublication;
@@ -191,6 +240,9 @@ public final class AmpPlaybackService extends Service {
             @Override public void onPlay() { resumePlayback(); }
             @Override public void onPause() { pausePlayback(); }
             @Override public void onStop() { stopPlayback(); }
+            @Override public void onSeekTo(long at) {
+                if (at >= 0 && at <= Integer.MAX_VALUE) dispatch("seek", (int) at);
+            }
             @Override public void onSkipToNext() { dispatch("next", -1); }
             @Override public void onSkipToPrevious() { dispatch("previous", -1); }
         }, owner);
@@ -216,7 +268,10 @@ public final class AmpPlaybackService extends Service {
             Request request = pending.get();
             if (request != null && request.id.equals(intent.getStringExtra(REQUEST_ID))
                     && pending.compareAndSet(request, null)) {
-                owner.post(() -> startSendspin(request.endpoint, startId));
+                owner.post(() -> {
+                    if (request.local == null) startSendspin(request.endpoint, startId);
+                    else startLocal(request.local, startId);
+                });
             } else {
                 owner.post(() -> {
                     if (!hasSource() && pending.get() == null) stopSelfResult(startId);
@@ -228,14 +283,83 @@ public final class AmpPlaybackService extends Service {
                 if (destroyed || !hasSource() || STOP.equals(action)) stopPlayback();
                 else if (PAUSE.equals(action)) pausePlayback();
                 else if (RESUME.equals(action)) resumePlayback();
-                else if (COMMAND.equals(action) && intent != null)
+                else if (COMMAND.equals(action) && intent != null && sendspin != null)
                     dispatch(intent.getStringExtra(COMMAND_NAME), intent.getIntExtra(COMMAND_VALUE, -1));
             });
         }
         return START_NOT_STICKY;
     }
 
-    private boolean hasSource() { return sendspin != null; }
+    private boolean hasSource() { return sendspin != null || local != null; }
+
+    private void startLocal(LocalFileQueue.Plan plan, int startId) {
+        if (destroyed) return;
+        activeStartId = startId;
+        clearSource();
+        localToken = plan.token;
+        lastLocalPublication = lastAnalysisPublication = 0;
+        try {
+            File directory = new File(getFilesDir().getCanonicalFile(), "offline_music");
+            local = new LocalFileQueue(directory, plan, appGainPercent);
+            established = true;
+            mediaSession.setActive(true);
+            resumePlayback();
+            runLocalTick();
+        } catch (IOException | RuntimeException unavailable) {
+            failLocal();
+        }
+    }
+
+    private void runLocalTick() {
+        if (destroyed || local == null) return;
+        try {
+            boolean analyze = activityVisible && analysisRequested;
+            local.tick(analyze);
+            long now = SystemClock.elapsedRealtime();
+            if (latestAnalysis != null && (!analyze || latestAnalysis.generation != local.currentGeneration()))
+                latestAnalysis = null;
+            if (analyze && now - lastAnalysisPublication >= 50) {
+                SendspinSpectrum.Sample window = local.analysisSample();
+                latestAnalysis = window == null ? null :
+                        new Analysis(local.currentGeneration(), local.analysisTimeNs(), window, local.positionMs());
+                lastAnalysisPublication = now;
+            }
+            if (now - lastLocalPublication >= 250 || !local.active()) {
+                publishLocal();
+                lastLocalPublication = now;
+            }
+            if (!local.active()) {
+                clearSource();
+                stopSelfResult(activeStartId);
+                return;
+            }
+            owner.postDelayed(localTick, focused ? 10 : 100);
+        } catch (IOException | RuntimeException unavailable) {
+            failLocal();
+        }
+    }
+
+    private void publishLocal() {
+        if (local == null) return;
+        try {
+            JSONObject current = local.snapshot();
+            localSnapshot = current.toString();
+            publish(current);
+        } catch (JSONException invalid) {
+            throw new IllegalStateException("Could not describe offline playback", invalid);
+        }
+    }
+
+    private void failLocal() {
+        if (local != null) {
+            local.fail();
+            publishLocal();
+        } else {
+            localSnapshot = "{\"source\":\"local\",\"state\":\"error\",\"token\":" + localToken + "}";
+        }
+        clearSource();
+        stopSelfResult(activeStartId);
+    }
 
     private void startSendspin(String endpoint, int startId) {
         if (destroyed) return;
@@ -274,7 +398,7 @@ public final class AmpPlaybackService extends Service {
             if (analyze && now - lastAnalysisPublication >= 50) {
                 SendspinSpectrum.Sample window = sendspin.analysisSample();
                 latestAnalysis = window == null ? null :
-                        new Analysis(sendspin.currentGeneration(), sendspin.reportedAtNs(), window);
+                        new Analysis(sendspin.currentGeneration(), sendspin.reportedAtNs(), window, window.frame * 1000.0 / 48000);
                 lastAnalysisPublication = now;
             }
             if (now - lastSendspinPublication >= 250) {
@@ -308,6 +432,27 @@ public final class AmpPlaybackService extends Service {
 
     private void dispatch(String action, int argument) {
         if (destroyed || !hasSource() || action == null) return;
+        if (local != null) {
+            try {
+                switch (action) {
+                    case "play": resumePlayback(); break;
+                    case "pause": pausePlayback(); break;
+                    case "stop": stopPlayback(); break;
+                    case "seek": local.seek(argument); break;
+                    case "next": case "previous":
+                        if (obtainFocus()) {
+                            local.play();
+                            local.navigate("next".equals(action) ? 1 : -1, false);
+                        }
+                        break;
+                    default: break;
+                }
+                latestAnalysis = null;
+            } catch (IOException | RuntimeException unavailable) {
+                failLocal();
+            }
+            return;
+        }
         switch (action) {
             case "play": resumePlayback(); break;
             case "pause": pausePlayback(); break;
@@ -334,7 +479,13 @@ public final class AmpPlaybackService extends Service {
     }
 
     private void applyAppGain() {
-        if (destroyed || sendspin == null) return;
+        if (destroyed) return;
+        if (local != null) {
+            try { local.setGain(appGainPercent); }
+            catch (RuntimeException unavailable) { failLocal(); }
+            return;
+        }
+        if (sendspin == null) return;
         try {
             sendspin.setAppGainPercent(appGainPercent);
         } catch (RuntimeException unavailable) {
@@ -352,6 +503,14 @@ public final class AmpPlaybackService extends Service {
         if (destroyed || !hasSource() || !established) return;
         boolean hadFocus = focused;
         if (!obtainFocus()) return;
+        if (local != null) {
+            try {
+                if (!local.play() && !hadFocus) releaseFocus();
+            } catch (RuntimeException unavailable) {
+                failLocal();
+            }
+            return;
+        }
         if (sendspin.command("play", -1)) {
             owner.removeCallbacks(pauseTimeout);
             sendspin.permitPlayback(true);
@@ -362,6 +521,14 @@ public final class AmpPlaybackService extends Service {
 
     private void pausePlayback() {
         if (destroyed || !hasSource()) return;
+        if (local != null) {
+            try { local.pause(); }
+            catch (RuntimeException unavailable) { failLocal(); return; }
+            latestAnalysis = null;
+            releaseFocus();
+            publishLocal();
+            return;
+        }
         sendspin.permitPlayback(false);
         sendspin.command("pause", -1);
         latestAnalysis = null;
@@ -371,6 +538,10 @@ public final class AmpPlaybackService extends Service {
     }
 
     private void stopPlayback() {
+        if (local != null) {
+            local.stop();
+            publishLocal();
+        }
         if (sendspin != null) {
             sendspin.permitPlayback(false);
             sendspin.command("stop", -1);
@@ -382,6 +553,10 @@ public final class AmpPlaybackService extends Service {
     private void clearSource() {
         owner.removeCallbacks(pauseTimeout);
         owner.removeCallbacks(sendspinTick);
+        owner.removeCallbacks(localTick);
+        LocalFileQueue offline = local;
+        local = null;
+        if (offline != null) offline.close();
         previousMode = "";
         established = false;
         snapshot = IDLE;
@@ -416,11 +591,12 @@ public final class AmpPlaybackService extends Service {
         if (state.optBoolean("can_pause")) actions |= PlaybackState.ACTION_PAUSE;
         if (state.optBoolean("can_play") && state.optBoolean("can_pause"))
             actions |= PlaybackState.ACTION_PLAY_PAUSE;
+        if (state.optBoolean("can_seek")) actions |= PlaybackState.ACTION_SEEK_TO;
         if (state.optBoolean("can_next")) actions |= PlaybackState.ACTION_SKIP_TO_NEXT;
         if (state.optBoolean("can_previous")) actions |= PlaybackState.ACTION_SKIP_TO_PREVIOUS;
         if (previousMode.isEmpty()) {
             mediaSession.setMetadata(new MediaMetadata.Builder()
-                    .putString(MediaMetadata.METADATA_KEY_TITLE, "Music Assistant").build());
+                    .putString(MediaMetadata.METADATA_KEY_TITLE, local == null ? "Music Assistant" : "Offline Library").build());
         }
         mediaSession.setPlaybackState(new PlaybackState.Builder()
                 .setActions(actions)

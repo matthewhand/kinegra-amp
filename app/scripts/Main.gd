@@ -170,13 +170,15 @@ func _ready():
 	ma_panel.connect("credential_session_closed",self,"_on_library_credentials_closed")
 	ma_panel.connect("credential_session_authorized",self,"_on_library_credentials_authorized")
 	ma_panel.session_credential_provider=self
-	# Private Omega Prime music and the Music Assistant-first TV stage.
+	# The offline library and the Music Assistant-first TV stage.
 	# Neither source autoplays; built-in synthetic audio is never started.
 	offline_music = load("res://scripts/OfflineMusic.gd").new()
+	offline_music.android_playback = _background_playback_platform()
 	add_child(offline_music)
 	offline_music.set_volume(app_volume_db)
 	offline_music.connect("track_changed", self, "_on_offline_track")
 	offline_music.connect("music_state_changed", self, "_on_offline_state")
+	offline_music.connect("local_playback_failed",self,"_on_local_playback_failed")
 	# Explicit local-only PCM16 -> speaker/FFT capability, never autoplay.
 	local_pcm = load("res://scripts/LocalPcmPlayer.gd").new()
 	add_child(local_pcm)
@@ -710,8 +712,8 @@ func _build_background_playback_setting(parent):
 	if _background_playback_platform() == null:
 		return
 	background_playback_toggle = CheckBox.new()
-	background_playback_toggle.text = "Keep Music Assistant playing in the background"
-	background_playback_toggle.hint_tooltip = "Keep Music Assistant playing when you leave Amp. Save Setup remembers this choice."
+	background_playback_toggle.text = "Keep playing in background"
+	background_playback_toggle.hint_tooltip = "Keep Music Assistant or local files playing when you leave Amp. Save Setup remembers this choice."
 	background_playback_toggle.rect_min_size.y = 52
 	parent.add_child(background_playback_toggle)
 	background_playback_toggle.connect("toggled", self, "_set_keep_playing_in_background")
@@ -805,6 +807,8 @@ func _apply_visual_budget(state):
 		music_ui.track_hero.set_render_budget(30 if level==2 else (10 if level==1 else 0))
 	_budget_spectrum(level>0)
 	if _uses_android_sendspin():sendspin_facade.set_analysis_enabled(level>0)
+	elif offline_music != null and offline_music.android_playback != null:
+		offline_music.android_playback.setBackgroundPlaybackAnalysisEnabled(level>0)
 	frame_metrics.reset()
 	visual_update_elapsed=1.0
 
@@ -1075,9 +1079,9 @@ func _play_offline_music():
 	# Explicit user-initiated bundled music, never synthetic tones.
 	_stop_audio()
 	if offline_music != null:
-		if offline_music.player == null or offline_music.player.stream == null:
+		if not offline_music.has_selected_track():
 			if music_ui != null:
-				music_ui.show_status("NO LOCAL TRACK  /  RESTORE SAMPLES IN OFFLINE LIBRARY")
+				music_ui.show_status("Choose a track in Offline Library.")
 		else:
 			offline_music.play()
 		live_audio = offline_music.is_playing()
@@ -1115,10 +1119,17 @@ func _stop_all_music():
 	if music_ui != null:
 		music_ui.show_status("STOPPED  •  READY FOR MUSIC")
 
+func _on_local_playback_failed():
+	if music_ui != null and music_ui.playback_context == "offline":
+		music_ui.show_status("Could not play this offline file. Choose another track or press Play to retry.")
+
 func _on_offline_track(name):
 	# Catalog maintenance cannot steal the active streaming presentation.
 	if music_ui != null and (music_ui.playback_context=="offline" or offline_music.is_playing()):
 		music_ui.show_offline_track(name, offline_music.is_playing())
+	if offline_music.is_android_playback():
+		_reset_analysis()
+		offline_music.android_playback.setBackgroundPlaybackAnalysisEnabled(visual_quality_level>0)
 	if title_label != null:
 		title_label.text = "  " + str(name)
 
@@ -1214,8 +1225,9 @@ func _update_visuals(delta):
 	elapsed += delta
 	var now_ms=OS.get_ticks_msec()
 	var android_pcm={}
-	if not demo and visual_quality_level>0 and _uses_android_sendspin():
-		android_pcm=sendspin_facade.analysis_sample(now_ms)
+	if not demo and visual_quality_level>0:
+		if _uses_android_sendspin(): android_pcm=sendspin_facade.analysis_sample(now_ms)
+		elif offline_music != null: android_pcm=offline_music.android_analysis_sample(now_ms)
 		if not android_pcm.empty() and android_analysis_generation!=android_pcm.generation:
 			_reset_analysis()
 			android_analysis_generation=android_pcm.generation
@@ -1237,7 +1249,7 @@ func _update_visuals(delta):
 	fft = fft_envelope.apply(raw_bands, delta)
 	analysis_frame.configure_metronome(metronome_bpm.value if metronome_bpm != null else 0)
 	if not android_pcm.empty():
-		var queue_ms=clamp(sendspin_facade.status().get("queued_ms",0),0,10000)
+		var queue_ms=clamp(sendspin_facade.status().get("queued_ms",0),0,10000) if _uses_android_sendspin() else 0
 		analysis_frame.publish(analysis_epoch,raw_bands,android_pcm.rms,android_pcm.sample_at,android_pcm.playback_ms,queue_ms)
 	elif not demo and analysis_owner != null and analysis_owner.active and analysis_owner.last_pcm_at >= 0:
 		analysis_frame.publish(analysis_epoch, raw_bands, analysis_owner.last_rms, analysis_owner.last_pcm_at, analysis_owner.playback_time_ms, analysis_owner.queued_latency_ms)
@@ -1305,6 +1317,10 @@ func _report_frame_metrics(delta):
 				pcm_age=now-sink.last_pcm_at if sink.last_pcm_at>=0 else -1
 				rms=sink.last_rms
 			print("SHIELDAMP_AUDIO queued_ms=%d underruns=%d rebuffers=%d buffering=%s generation=%d pcm_age_ms=%d rms=%.4f" % [audio_stats.queued_ms,audio_stats.underruns,audio_stats.rebuffers,str(audio_stats.buffering),audio_stats.generation,pcm_age,rms])
+		if offline_music != null and offline_music.is_android_playback():
+			var local_sample = offline_music.android_analysis_sample(OS.get_ticks_msec())
+			if not local_sample.empty():
+				print("SHIELDAMP_LOCAL_AUDIO playback_ms=%d pcm_age_ms=%d rms=%.4f" % [local_sample.playback_ms,OS.get_ticks_msec()-local_sample.sample_at,local_sample.rms])
 		if pose_visual!=null:
 			print("SHIELDAMP_WEBCAM connected=%s processing=%s polls=%d" % [str(pose_visual.webcam_connected),str(pose_visual.is_processing()),pose_visual.poll_attempts])
 		frame_sample_seconds = 0.0
@@ -1401,10 +1417,11 @@ func _notification(what):
 			pose_suspended_mode=pose_visual.mode
 			pose_visual.set_enabled(false)
 		if what==MainLoop.NOTIFICATION_APP_PAUSED and offline_music!=null:
-			offline_music.stop()
+			offline_music.suspend_for_background()
 		if what==MainLoop.NOTIFICATION_APP_PAUSED:
 			# The Android service applies the preference without closing the MA session.
-			if not (_uses_android_sendspin() and sendspin_facade.active):
+			var service_local = offline_music != null and offline_music.is_android_playback()
+			if not service_local and not (_uses_android_sendspin() and sendspin_facade.active):
 				_stop_audio()
 				live_audio = false
 	elif what in [MainLoop.NOTIFICATION_APP_RESUMED, MainLoop.NOTIFICATION_WM_FOCUS_IN]:

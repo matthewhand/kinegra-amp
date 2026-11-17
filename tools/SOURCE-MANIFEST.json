@@ -1,6 +1,6 @@
 {
   "application": "Kinegra Amp",
-  "code": 92,
+  "code": 98,
   "files": {
     ".gitattributes": {
       "mode": "100644",
@@ -76,7 +76,7 @@
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/AmpPlaybackService.java": {
       "mode": "100644",
-      "sha256": "3a282a49397740df1a320058ac7e93ac82bada0db95bd81169310bf070acd70c"
+      "sha256": "648cc6e6e0a4b07f5279579ef625a1aa14eef7f4391df2f96ec4df0265b4d414"
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/AndroidSendspinVault.java": {
       "mode": "100644",
@@ -85,6 +85,14 @@
     "android_secure_storage/src/main/java/au/local/shieldamp/AndroidTokenVault.java": {
       "mode": "100644",
       "sha256": "cef77a984fa633a7b121ae46875dedd6fdcc972008884d1cb36544ad04c61db0"
+    },
+    "android_secure_storage/src/main/java/au/local/shieldamp/LocalFileOutput.java": {
+      "mode": "100644",
+      "sha256": "e793622d40581247fa72f5b2cc52f982ebf518234f8d9471b058e536b72ee610"
+    },
+    "android_secure_storage/src/main/java/au/local/shieldamp/LocalFileQueue.java": {
+      "mode": "100644",
+      "sha256": "b4a40ac5a556635d7331d6a92dca40c67ef87b3d1919f2ae0fbca87267f3c6f9"
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/NativeSendspinWorker.java": {
       "mode": "100644",
@@ -120,7 +128,7 @@
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/SendspinSpectrum.java": {
       "mode": "100644",
-      "sha256": "7428c505fe3ea460cd27047999c7079d02121fc3880b9e6bfcee6767c963d112"
+      "sha256": "e83df499fb33284ebaa391022be210cee56d9df800ec0dd39ff4cccf54dc412a"
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/ServiceSendspinVault.java": {
       "mode": "100644",
@@ -128,7 +136,7 @@
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/ShieldAmpTokenStore.java": {
       "mode": "100644",
-      "sha256": "8986d8704810ab72ea2421ae9a9cb421801e1462cba7de0beb031202be754d0a"
+      "sha256": "eef3a2aa7faf7948eac5a54b40744237ae7aa1e2f9fb4e2b848b7cfde9de9b13"
     },
     "android_secure_storage/src/main/java/au/local/shieldamp/SnapshotCommit.java": {
       "mode": "100644",
@@ -176,7 +184,7 @@
     },
     "android_secure_storage/tests/SendspinSpectrumTest.java": {
       "mode": "100644",
-      "sha256": "0bd07edef34e1af1f72f44e179e41665c3a25af8ade0dec91090cfa94b863232"
+      "sha256": "d6bb3b4a54cb5b54888e64ebb6d02ae3aa1c32e8c148a21fc00c586df44b8c2b"
     },
     "android_secure_storage/tests/SnapshotCommitTest.java": {
       "mode": "100644",
@@ -408,7 +416,7 @@
     },
     "app/export_presets.cfg": {
       "mode": "100644",
-      "sha256": "c11f8e2d5dafc64d02605cc30aeacc4e4f934f5f351fa7d233948d3f165b4c59"
+      "sha256": "2fedb6692c77da5bdd933b25237099bad420daa2f272c8acccd920638d2f1b55"
     },
     "app/native/TegraCodec.gdnlib": {
       "mode": "100644",
@@ -420,7 +428,7 @@
     },
     "app/project.godot": {
       "mode": "100644",
-      "sha256": "b4fcc7838f1b000e8f202b5477d48d28568dbdc8f447df9775a3236734a8c9d4"
+      "sha256": "bc1befe89f92758522a41d75abe3009d1607c5d1c1235082c1a0e7619173430c"
     },
     "app/scripts/AdaptiveVisuals.gd": {
       "mode": "100644",
@@ -430,9 +438,13 @@
       "mode": "100644",
       "sha256": "7da1f0d6039d3d6b0f3f4e4f9c5bccd2672990a2d1ba2ee9d1d85729e54251d2"
     },
+    "app/scripts/AndroidPlaybackAnalysis.gd": {
+      "mode": "100644",
+      "sha256": "a8da40e5972bc6c2c6ff57bffa8914555ebe88e1cff3a0ebc7b90a9607f512e2"
+    },
     "app/scripts/AndroidSendspinServiceFacade.gd": {
       "mode": "100644",
-      "sha256": "3a8314ca1c85ab09bf397e431298c15656fa6a2db25dfdcc43b82ce179fbdfe9"
+      "sha256": "efd93b00e3c62425dda94ae906cda03902c7e37548a0ce5424bff86f278c882b"
     },
     "app/scripts/AndroidSendspinVaultAdapter.gd": {
       "mode": "100644",
@@ -500,7 +512,7 @@
     },
     "app/scripts/LocalPlaylists.gd": {
       "mode": "100644",
-      "sha256": "f3cb3c489a1a685ff2e9abd55579ba83dbaaee4d7d2b471173dc74ff366c1538"
+      "sha256": "6d600af5b72ed8b457fc6d5c712b44743a28a32e81bdd96e78b267d3b035b824"
     },
     "app/scripts/MAArtworkController.gd": {
       "mode": "100644",
@@ -536,7 +548,7 @@
     },
     "app/scripts/Main.gd": {
       "mode": "100644",
-      "sha256": "b5e564ca59ce8117def05c8027356ff078149cc66be1785cd67499d497d32b51"
+      "sha256": "7ed1cd8949f9214a749550c183863b44173ade482341ad934a016b0dea0c9011"
     },
     "app/scripts/ModalFocus.gd": {
       "mode": "100644",
@@ -568,7 +580,7 @@
     },
     "app/scripts/OfflineMusic.gd": {
       "mode": "100644",
-      "sha256": "d6b77ce44f3a8371db7cc6199a944f10411f74971f01e534ccfd3af492086c3a"
+      "sha256": "125511380c53c616c036c3ca8e9445dfb1961eb7e2f13f486e5555afcc14b9f7"
     },
     "app/scripts/OfflinePcmStaging.gd": {
       "mode": "100644",
@@ -737,6 +749,10 @@
     "app/tests/test_analysis_frame.gd": {
       "mode": "100644",
       "sha256": "c365f1c0abfa1a99c08a39345f53b0efff0e5550e0f94fa733471bf34a6f8474"
+    },
+    "app/tests/test_android_offline_playback.gd": {
+      "mode": "100644",
+      "sha256": "718814ea624f22c303ae5b080ec298d98e4a24bd89e43b775b4a48a525a99191"
     },
     "app/tests/test_android_sendspin_service_facade.gd": {
       "mode": "100644",
@@ -1772,7 +1788,7 @@
     },
     "packaging/android_checks.py": {
       "mode": "100644",
-      "sha256": "42390b6485479932539d796b702bba24ae98b209922621472e4980e127b150f0"
+      "sha256": "e8991256c8cc2c502a01219545dc79ab97abe7a9509fb016b6d27fab537fc4fd"
     },
     "packaging/arm_noise_gate.py": {
       "mode": "100644",
@@ -1848,7 +1864,7 @@
     },
     "packaging/test_shieldamp_token_packaging.py": {
       "mode": "100644",
-      "sha256": "05e2e77f25f405b84f0c46941794af112b4bfd65d94c6a056ea341c45b14d8b7"
+      "sha256": "b1c417d402d99d9ccb75d7616b39b83f0a09fbe59877df2841fb238a92a3066b"
     },
     "packaging/test_tv_banner_manifest.py": {
       "mode": "100644",
@@ -2042,6 +2058,6 @@
   "project": "Kinegra Amp",
   "schema": 1,
   "scope": "Current Kinegra Amp source, build tools and regression tests. Generated outputs, personal media, credentials and signing material are excluded.",
-  "version": "1.0.16",
-  "version_code": 92
+  "version": "1.0.18",
+  "version_code": 98
 }

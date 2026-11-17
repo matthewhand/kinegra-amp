@@ -48,7 +48,7 @@ public final class ShieldAmpTokenStore extends GodotPlugin {
     private volatile boolean keepPlayingInBackground = true;
     private volatile boolean activityResumed = true;
 
-    /** Music Assistant playback can use the Android media service from API 26. */
+    /** Android media service available from API 26. */
     @UsedByGodot public boolean backgroundPlaybackAvailable() {
         return android.os.Build.VERSION.SDK_INT >= 26;
     }
@@ -88,6 +88,23 @@ public final class ShieldAmpTokenStore extends GodotPlugin {
         Activity activity = getActivity();
         return backgroundPlaybackAvailable() && activity != null &&
                 AmpPlaybackService.connectSendspin(activity, endpoint);
+    }
+
+    @UsedByGodot public boolean playBackgroundLocal(String plan) {
+        Activity activity = getActivity();
+        return backgroundPlaybackAvailable() && activity != null && AmpPlaybackService.playLocal(activity, plan);
+    }
+
+    @UsedByGodot public String backgroundLocalSnapshot() {
+        return AmpPlaybackService.localPlaybackSnapshot();
+    }
+
+    @UsedByGodot public boolean updateBackgroundLocal(String plan) {
+        return backgroundPlaybackAvailable() && AmpPlaybackService.updateLocalQueue(plan);
+    }
+
+    @UsedByGodot public boolean backgroundLocalCommand(int token, String command, int argument) {
+        return backgroundPlaybackAvailable() && AmpPlaybackService.localCommand(token, command, argument);
     }
 
     @UsedByGodot public boolean backgroundPlaybackCommand(String command, int argument) {

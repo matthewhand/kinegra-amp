@@ -58,6 +58,14 @@ class TokenPluginGuardTest(unittest.TestCase):
       type          : '(Z)Z'
       name          : 'backgroundPlaybackAnalysis'
       type          : '()Ljava/lang/String;'
+      name          : 'playBackgroundLocal'
+      type          : '(Ljava/lang/String;)Z'
+      name          : 'backgroundLocalSnapshot'
+      type          : '()Ljava/lang/String;'
+      name          : 'updateBackgroundLocal'
+      type          : '(Ljava/lang/String;)Z'
+      name          : 'backgroundLocalCommand'
+      type          : '(ILjava/lang/String;I)Z'
 Class #1            -
   Class descriptor  : 'Lunrelated/Example;'
 '''
@@ -74,7 +82,8 @@ Class #1            -
         for method in ("backgroundPlaybackAvailable", "setKeepPlayingInBackground",
                        "backgroundPlaybackSnapshot", "connectBackgroundSendspin", "backgroundPlaybackCommand",
                        "setBackgroundPlaybackGain", "setBackgroundPlaybackAnalysisEnabled",
-                       "backgroundPlaybackAnalysis"):
+                       "backgroundPlaybackAnalysis", "playBackgroundLocal", "backgroundLocalSnapshot",
+                       "updateBackgroundLocal", "backgroundLocalCommand"):
             with self.subTest(method=method), self.assertRaisesRegex(RuntimeError, method):
                 build.validate_token_dex([self.dex.replace("'" + method + "'", "'missing'")])
         changed = self.dex.replace(

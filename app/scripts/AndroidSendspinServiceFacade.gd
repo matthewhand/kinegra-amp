@@ -76,39 +76,14 @@ func _read_analysis():
     _analysis = {}
     if not active or not _analysis_requested or not _snapshot.get("presenting", false) or not is_instance_valid(_platform):
         return
-    var raw = _platform.backgroundPlaybackAnalysis()
-    if typeof(raw) != TYPE_STRING or raw.empty() or raw.length() > 1024:
-        return
-    var parsed = JSON.parse(raw)
-    if parsed.error != OK or typeof(parsed.result) != TYPE_DICTIONARY:
-        return
-    var result = parsed.result
-    var generation = _nonnegative_int(result.get("generation"), -1)
-    var age = _nonnegative_int(result.get("age_ms"), -1)
-    var now = OS.get_ticks_msec()
-    var position_ms = result.get("playback_ms")
-    var rms = result.get("rms")
-    var bands = result.get("bands")
-    if generation < 0 or generation != _snapshot.generation or age < 0 or age > 500 or age > now:
-        return
-    if not _in_range(position_ms, 0.0, 9007199254740991.0) or not _in_range(rms, 0.0, 1.0):
-        return
-    if typeof(bands) != TYPE_ARRAY or bands.size() != 16:
-        return
-    for value in bands:
-        if not _in_range(value, 0.0, 1.0):
-            return
-    _analysis = {"generation": generation, "sample_at": now - age, "playback_ms": position_ms,
-        "rms": rms, "bands": bands}
+    _analysis = preload("res://scripts/AndroidPlaybackAnalysis.gd").read(
+        _platform.backgroundPlaybackAnalysis(), _snapshot.generation, OS.get_ticks_msec())
 
 func analysis_sample(now_ms):
     if not _snapshot.get("presenting", false) or _analysis.get("generation", -1) != _snapshot.get("generation", -1):
         return {}
     var age = now_ms - _analysis.get("sample_at", -1000)
     return _analysis if age >= 0 and age <= 500 else {}
-
-func _in_range(value, minimum, maximum):
-    return typeof(value) in [TYPE_INT, TYPE_REAL] and not is_nan(float(value)) and not is_inf(float(value)) and value >= minimum and value <= maximum
 
 func refresh():
     if not active:
