@@ -177,6 +177,11 @@ func cycle_repeat():
     repeat_index = (repeat_index + 1) % REPEAT.size()
     return repeat_name()
 
+func playback_order(current):
+    if not shuffle_enabled: return indices()
+    if not _deck_matches(current): _reset_deck(current)
+    return _deck.duplicate()
+
 func step_track(current, direction, automatic=false):
     var ordered = indices()
     if ordered.empty() or not _valid_track(current) or not direction in [-1, 1]:

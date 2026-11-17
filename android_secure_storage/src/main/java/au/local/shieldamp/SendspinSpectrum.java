@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 /** Stereo spectrum of the PCM that has reached the AudioTrack playback head. */
 final class SendspinSpectrum {
-    private static final int SAMPLE_RATE = 48000;
+    private final int channels;
     private static final int WINDOW_SIZE = 2048;
     private static final int RETAINED_FRAMES = 65536;
     private static final int RING_MASK = RETAINED_FRAMES - 1;
@@ -36,7 +36,10 @@ final class SendspinSpectrum {
         }
     }
 
-    SendspinSpectrum() {
+    SendspinSpectrum() { this(48000, 2); }
+
+    SendspinSpectrum(int sampleRate, int channels) {
+        this.channels = channels;
         double windowSum = 0.0;
         int shift = Integer.numberOfLeadingZeros(WINDOW_SIZE - 1);
         for (int i = 0; i < WINDOW_SIZE; i++) {
@@ -52,7 +55,9 @@ final class SendspinSpectrum {
         }
         for (int i = 0; i <= BAND_COUNT; i++) {
             double hz = 20.0 * Math.pow(BAND_RATIO, i);
-            bandStarts[i] = (int) Math.ceil(hz * WINDOW_SIZE / SAMPLE_RATE);
+            // Keep paired bins strictly below Nyquist; higher bands stay empty.
+            bandStarts[i] = Math.min(WINDOW_SIZE / 2,
+                    (int) Math.ceil(hz * WINDOW_SIZE / sampleRate));
         }
     }
 
@@ -62,7 +67,8 @@ final class SendspinSpectrum {
     }
 
     void append(ByteBuffer pcm, int startByte, int writtenBytes, long firstFrame) {
-        int frameCount = writtenBytes / 4;
+        int frameBytes = channels * 2;
+        int frameCount = writtenBytes / frameBytes;
         if (frameCount == 0) {
             return;
         }
@@ -70,12 +76,12 @@ final class SendspinSpectrum {
             firstRetained = firstFrame;
         }
         int skip = Math.max(0, frameCount - RETAINED_FRAMES);
-        int offset = startByte + skip * 4;
+        int offset = startByte + skip * frameBytes;
         int ringIndex = (int) (firstFrame + skip) & RING_MASK;
         for (int i = skip; i < frameCount; i++) {
             left[ringIndex] = littleEndian(pcm, offset);
-            right[ringIndex] = littleEndian(pcm, offset + 2);
-            offset += 4;
+            right[ringIndex] = channels == 2 ? littleEndian(pcm, offset + 2) : left[ringIndex];
+            offset += frameBytes;
             ringIndex = (ringIndex + 1) & RING_MASK;
         }
         nextFrame = firstFrame + frameCount;

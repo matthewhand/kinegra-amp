@@ -71,6 +71,10 @@ def validate_token_dex(dumps):
         ("setBackgroundPlaybackGain", "(I)Z"),
         ("setBackgroundPlaybackAnalysisEnabled", "(Z)Z"),
         ("backgroundPlaybackAnalysis", "()Ljava/lang/String;"),
+        ("playBackgroundLocal", "(Ljava/lang/String;)Z"),
+        ("backgroundLocalSnapshot", "()Ljava/lang/String;"),
+        ("updateBackgroundLocal", "(Ljava/lang/String;)Z"),
+        ("backgroundLocalCommand", "(ILjava/lang/String;I)Z"),
     )
     for method, signature in background_api:
         if [descriptor for name, descriptor in declarations if name == method] != [signature]:

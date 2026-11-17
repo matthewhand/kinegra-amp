@@ -3,6 +3,7 @@ extends Node
 # Four unavailable legacy slots preserve imported-track and saved-queue indices.
 signal track_changed(title)
 signal music_state_changed(playing)
+signal local_playback_failed
 signal playlist_changed(name)
 signal favorite_changed(is_favorite)
 signal repeat_changed(mode)
@@ -18,6 +19,16 @@ var queue_load_blocked = false
 const TITLES = ["Legacy track 1", "Legacy track 2", "Legacy track 3", "Legacy track 4"]
 const SOURCES = []
 var player = null
+var android_playback = null
+var _native_token = 0
+var _token_counter = 0
+var _native_state = {}
+var _native_deadline = 0
+var _native_poll = 0.0
+var _native_analysis_after = 0
+var _native_analysis = {}
+var _queue_occurrences = []
+var _next_occurrence = 0
 var track_index = 0
 var sample_store = null
 var user_library = preload("res://scripts/UserLibraryStore.gd").new()
@@ -114,7 +125,7 @@ func _load_track():
     # Imported Ogg resources loop by default. Never mutate the shared asset.
     # Completion and shuffle/repeat are controlled by this player instead.
     player.stream = null
-    if not available(track_index): return
+    if not available(track_index) or _uses_android_file(track_index): return
     if track_index >= 4:
         player.stream = user_library.load_track(track_index - 4)
     elif sample_store != null:
@@ -143,6 +154,7 @@ func _refresh_availability():
 func refresh_user_library():
     var result = user_library.refresh()
     _refresh_availability()
+    _update_native_queue()
     emit_signal("library_changed")
     return result
 
@@ -169,6 +181,7 @@ func remove_library_track(index):
         _load_track()
     else:
         _refresh_availability()
+    _update_native_queue()
     emit_signal("library_changed")
     return true
 
@@ -183,7 +196,109 @@ func restore_bundled_tracks():
     emit_signal("library_changed")
     return restored
 
+func has_selected_track():
+    return _uses_android_file(track_index) or (player != null and player.stream != null)
+
+func _uses_android_file(index):
+    return android_playback != null and index >= 4 and available(index)
+
+func is_android_playback():
+    return _native_token != 0
+
+func _queue_entry_id():
+    _next_occurrence += 1
+    return _next_occurrence
+
+func _sync_occurrences():
+    while _queue_occurrences.size() < upcoming_queue.size():
+        _queue_occurrences.append(_queue_entry_id())
+
+func _plan(selected_occurrence = 0):
+    _sync_occurrences()
+    var files = []
+    for index in range(4, track_count()):
+        if available(index): files.append([index,user_library.slots[index - 4].file])
+    var queue = []
+    for at in range(upcoming_queue.size()):
+        if _uses_android_file(upcoming_queue[at]):
+            queue.append([_queue_occurrences[at],upcoming_queue[at]])
+    var order = []
+    for index in playlists.playback_order(track_index):
+        if _uses_android_file(index): order.append(index)
+    return JSON.print({"token":_native_token,"selected":track_index,"selected_occurrence":selected_occurrence,
+        "files":files,"queue":queue,"order":order,"repeat":playlists.repeat_name(),"shuffle":playlists.shuffle_enabled})
+
+func _native_command(command, argument = 0):
+    return _native_token != 0 and android_playback.backgroundLocalCommand(_native_token,command,argument) == true
+
+func _update_native_queue():
+    if _native_token != 0:
+        android_playback.updateBackgroundLocal(_plan())
+
+func _start_native(occurrence = 0):
+    _token_counter += 1
+    _native_token = _token_counter
+    _native_deadline = OS.get_ticks_msec() + 5000
+    _native_state = {}
+    _native_analysis_after = 0
+    _native_analysis = {}
+    _native_poll = 0.0
+    if android_playback.playBackgroundLocal(_plan(occurrence)) != true:
+        _native_token = 0
+        emit_signal("local_playback_failed")
+        return false
+    emit_signal("track_changed",current_title())
+    return true
+
+func _refresh_native():
+    if _native_token == 0: return
+    var raw = android_playback.backgroundLocalSnapshot()
+    var decoded = JSON.parse(raw) if typeof(raw) == TYPE_STRING and raw.length() <= 120000 else null
+    var state = decoded.result if decoded != null and decoded.error == OK and typeof(decoded.result) == TYPE_DICTIONARY else {}
+    if state.get("source") != "local" or state.get("token") != _native_token:
+        if _native_deadline != 0 and OS.get_ticks_msec() >= _native_deadline:
+            stop()
+            emit_signal("local_playback_failed")
+        return
+    _native_deadline = 0
+    var previous = is_playing()
+    _native_state = state
+    var consumed = {}
+    for serial in state.get("consumed",[]):
+        consumed[int(serial)] = true
+    var changed = false
+    for at in range(_queue_occurrences.size()-1,-1,-1):
+        if consumed.has(_queue_occurrences[at]):
+            upcoming_queue.remove(at)
+            _queue_occurrences.remove(at)
+            changed = true
+    if changed: _changed_queue()
+    var index = int(state.get("track",-1))
+    if index != track_index and _uses_android_file(index):
+        track_index = index
+        emit_signal("track_changed",current_title())
+        emit_signal("favorite_changed",playlists.is_favorite(index))
+    var terminal = state.get("state") in ["stopped","error"]
+    if terminal: _native_token = 0
+    if previous != is_playing() or terminal:
+        emit_signal("music_state_changed",is_playing())
+    if state.get("state") == "error": emit_signal("local_playback_failed")
+
+func android_analysis_sample(now_ms):
+    if not is_android_playback() or not is_playing(): return {}
+    var generation = _native_state.get("generation")
+    if now_ms >= _native_analysis_after:
+        _native_analysis_after = now_ms + 50
+        _native_analysis = preload("res://scripts/AndroidPlaybackAnalysis.gd").read(
+            android_playback.backgroundPlaybackAnalysis(), generation, now_ms)
+    if _native_analysis.get("generation") != generation or now_ms - _native_analysis.get("sample_at",-1000) > 500:
+        return {}
+    return _native_analysis
+
 func play():
+    if _uses_android_file(track_index):
+        if is_android_playback(): return _native_command("play")
+        return _start_native()
     if player == null or player.stream == null:
         return false
     if player.playing:
@@ -199,14 +314,20 @@ func play():
     emit_signal("music_state_changed", is_playing())
     return is_playing()
 
-func _process(_delta):
+func _process(delta):
+    if _native_token != 0:
+        _native_poll -= delta
+        if _native_poll <= 0:
+            _native_poll = 0.2
+            _refresh_native()
+        return
     if _pending_play_until_ms == 0:
         return
     if is_playing():
         _pending_play_until_ms = 0
         _advance_on_natural_finish = true
         if _pending_queue_index >= 0 and not upcoming_queue.empty() and upcoming_queue[0] == _pending_queue_index:
-            upcoming_queue.pop_front()
+            _pop_queue()
             _changed_queue()
         _pending_queue_index = -1
         emit_signal("music_state_changed", true)
@@ -216,9 +337,13 @@ func _process(_delta):
         _pending_queue_index = -1
 
 func is_playing():
+    if is_android_playback(): return _native_state.get("state") == "playing"
     return player != null and player.playing and not player.stream_paused
 
 func toggle():
+    if is_android_playback() and is_playing():
+        _native_command("pause")
+        return false
     if is_playing():
         _advance_on_natural_finish = false
         _pending_play_until_ms = 0
@@ -228,6 +353,10 @@ func toggle():
     return play()
 
 func stop():
+    if is_android_playback():
+        _native_command("stop")
+        _native_token = 0
+        _native_state = {}
     _advance_on_natural_finish = false
     _pending_play_until_ms = 0
     _pending_queue_index = -1
@@ -241,6 +370,7 @@ func select_track(index):
         return false
     if not available(index):
         return false
+    if is_android_playback(): stop()
     _advance_on_natural_finish = false
     player.stop()
     track_index = index
@@ -277,6 +407,8 @@ func restore_queue():
             queue_save_ok = false
             return false
     upcoming_queue=data["items"].duplicate()
+    _queue_occurrences.clear()
+    _sync_occurrences()
     return true
 
 func _save_queue():
@@ -290,12 +422,19 @@ func _save_queue():
 func _changed_queue():
     _save_queue()
     emit_signal("queue_changed")
+func _pop_queue():
+    upcoming_queue.pop_front()
+    if not _queue_occurrences.empty(): _queue_occurrences.pop_front()
+
 func queue_track(index):
     if typeof(index)!=TYPE_INT or index<0 or index>=track_count() or not available(index) or upcoming_queue.size()>=MAX_QUEUE:
         return false
     _pending_queue_index = -1 # An edit invalidates a pending reservation.
+    _sync_occurrences()
     upcoming_queue.append(index)
+    _queue_occurrences.append(_queue_entry_id())
     _changed_queue()
+    _update_native_queue()
     return true
 
 func replace_queue(items):
@@ -306,6 +445,9 @@ func replace_queue(items):
         queue_save_ok=false
         return false
     upcoming_queue=items.duplicate()
+    _queue_occurrences.clear()
+    _sync_occurrences()
+    _update_native_queue()
     _pending_queue_index=-1
     queue_save_ok=true
     emit_signal("queue_changed")
@@ -315,8 +457,11 @@ func queue_remove(position):
     if typeof(position)!=TYPE_INT or position<0 or position>=upcoming_queue.size():
         return false
     _pending_queue_index = -1
+    _sync_occurrences()
     upcoming_queue.remove(position)
+    _queue_occurrences.remove(position)
     _changed_queue()
+    _update_native_queue()
     return true
 
 func queue_move(position,direction):
@@ -329,13 +474,20 @@ func queue_move(position,direction):
     var item=upcoming_queue[position]
     upcoming_queue[position]=upcoming_queue[dest]
     upcoming_queue[dest]=item
+    _sync_occurrences()
+    var occurrence = _queue_occurrences[position]
+    _queue_occurrences[position] = _queue_occurrences[dest]
+    _queue_occurrences[dest] = occurrence
     _changed_queue()
+    _update_native_queue()
     return true
 
 func queue_clear():
     _pending_queue_index = -1
     upcoming_queue.clear()
+    _queue_occurrences.clear()
     _changed_queue()
+    _update_native_queue()
 
 # 0: empty, 1: started or pending, -1: audio failed (keep queued item).
 func _play_queued():
@@ -344,11 +496,16 @@ func _play_queued():
     while not upcoming_queue.empty():
         var index=upcoming_queue[0]
         if not available(index):
-            upcoming_queue.pop_front()
+            _pop_queue()
             _changed_queue()
             continue
+        if _uses_android_file(index):
+            _sync_occurrences()
+            track_index = index
+            _load_track()
+            return 1 if _start_native(_queue_occurrences[0]) else -1
         if select_track(index):
-            upcoming_queue.pop_front()
+            _pop_queue()
             _changed_queue()
             return 1
         if _pending_play_until_ms > 0:
@@ -358,6 +515,7 @@ func _play_queued():
     return 0
 
 func next_track():
+    if is_android_playback(): return _native_command("next")
     var queued=_play_queued()
     if queued!=0:
         return queued>0
@@ -365,6 +523,7 @@ func next_track():
     return select_track(index) if index >= 0 else false
 
 func previous_track():
+    if is_android_playback(): return _native_command("previous")
     var index = playlists.step_track(track_index, -1)
     return select_track(index) if index >= 0 else false
 
@@ -405,27 +564,32 @@ func toggle_favorite():
     persist_preferences()
     emit_signal("favorite_changed", playlists.is_favorite(track_index))
     emit_signal("playlist_changed", playlists.playlist_name())
+    _update_native_queue()
     return favorite
 
 func toggle_shuffle():
     if not playlists.set_shuffle(not playlists.shuffle_enabled, track_index):
         return false
     persist_preferences()
+    _update_native_queue()
     emit_signal("shuffle_changed", playlists.shuffle_enabled)
     return playlists.shuffle_enabled
 
 func cycle_repeat():
     var mode = playlists.cycle_repeat()
     persist_preferences()
+    _update_native_queue()
     emit_signal("repeat_changed", mode)
     return mode
 
 func duration_seconds():
+    if is_android_playback(): return max(0.0,float(_native_state.get("duration_ms",0))/1000.0)
     if player == null or player.stream == null:
         return 0.0
     return max(0.0, float(player.stream.get_length()))
 
 func progress_seconds():
+    if is_android_playback(): return max(0.0,float(_native_state.get("position_ms",0))/1000.0)
     if player == null or not player.playing:
         return 0.0
     return clamp(float(player.get_playback_position()), 0.0, duration_seconds())
@@ -466,13 +630,16 @@ func _on_finished():
     select_track(upcoming)
 
 func suspend_for_background():
-    # Never resume sound implicitly after a real app pause,
-    # including if finished arrives in a subsequent Godot audio callback.
-    stop()
+    # The Android service owns the current background preference.
+    _native_analysis = {}
+    _native_analysis_after = 0
+    if not is_android_playback(): stop()
 
 func _notification(what):
     if what==MainLoop.NOTIFICATION_APP_PAUSED:
         suspend_for_background()
+    elif what==MainLoop.NOTIFICATION_APP_RESUMED:
+        _refresh_native()
 
 # Offline position controls are explicitly guarded against autoplay.
 func seek_relative(offset_seconds):
@@ -481,6 +648,10 @@ func seek_relative(offset_seconds):
     var delta = float(offset_seconds)
     if is_nan(delta) or is_inf(delta):
         return false
+    if is_android_playback():
+        var length = duration_seconds()
+        if length <= 0.5: return false
+        return _native_command("seek",int(clamp(progress_seconds()+delta,0.0,length-0.5)*1000.0))
     if player == null or player.stream == null or not player.playing:
         return false
     var duration = duration_seconds()
