@@ -524,7 +524,7 @@
     },
     "app/scripts/MACatalog.gd": {
       "mode": "100644",
-      "sha256": "7b557624f3979aec6ada0c81515719df9dc3489cc1d9523261f2473811e4836a"
+      "sha256": "e5016b36ae780bc67d7e3343874b47fe3d38cb2ab740930dba92aa287ccdc68f"
     },
     "app/scripts/MAPresentationState.gd": {
       "mode": "100644",
@@ -588,7 +588,7 @@
     },
     "app/scripts/OfflineQueueSave.gd": {
       "mode": "100644",
-      "sha256": "3a5ebeca4177051cf61512a22bb6f69b724469bc6771123abc2f2cc6c9e710aa"
+      "sha256": "c5c619fbd9328a968ee0a4f8b7f3a56d7eb308e20f67cf8cf0bfb19528df8033"
     },
     "app/scripts/OriginalHorizon.gd": {
       "mode": "100644",
@@ -1028,7 +1028,7 @@
     },
     "app/tests/test_offline_queue_save.gd": {
       "mode": "100644",
-      "sha256": "4335683773a8c600c33297b5a1439fa9a06d3a1e7cf66cea17e185883a5f7ce0"
+      "sha256": "c121ecda0b8f5e00df3b18fb52bf648d42763297867d426d4f5d79d78992c8ee"
     },
     "app/tests/test_offline_seek.gd": {
       "mode": "100644",
@@ -1300,7 +1300,7 @@
     },
     "docs/OFFLINE-COPYING.md": {
       "mode": "100644",
-      "sha256": "ea77e8860d4e1d3a839987704dcc1aec6e166a102e6d5ca735dc2176b71cfe3f"
+      "sha256": "765a9af43a64c8694ac6a7bbe1eba1578f2ebcfd10ff9d5addb4578ac53671ea"
     },
     "docs/OFFLINE-LIBRARY.md": {
       "mode": "100644",
@@ -2044,7 +2044,7 @@
     },
     "tools/test_offline_save.py": {
       "mode": "100644",
-      "sha256": "5a5f48af632dd6eb32607743a71d04864da7592633220d0f7b8ec3dda5815b74"
+      "sha256": "c3494f1c6d8760fcb410f6c8176afbfbf2f9b8585fdff72515ffb33ef4d19f38"
     },
     "tools/test_preview_import_completion.py": {
       "mode": "100644",
