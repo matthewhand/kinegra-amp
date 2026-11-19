@@ -580,7 +580,7 @@
     },
     "app/scripts/OfflineMusic.gd": {
       "mode": "100644",
-      "sha256": "125511380c53c616c036c3ca8e9445dfb1961eb7e2f13f486e5555afcc14b9f7"
+      "sha256": "0d78673e0f1dc50f1a3f3694eb3bb456b13d5def7144cc8029c4022befe2b638"
     },
     "app/scripts/OfflinePcmStaging.gd": {
       "mode": "100644",
@@ -1008,11 +1008,11 @@
     },
     "app/tests/test_offline_collection.gd": {
       "mode": "100644",
-      "sha256": "29a6960195bdfba569d82b6efc5f00d832cc0995aa9d04a8f69505389283dc75"
+      "sha256": "bbf6015b67f2120d22fc19aba0a815d05c9e1d4d1614f0464e62a6609f1d187f"
     },
     "app/tests/test_offline_hardening.gd": {
       "mode": "100644",
-      "sha256": "982cdce304186ad4ba143f35982542cdc1ed0ba2772dbd04b80e7520128d1806"
+      "sha256": "430c7c4f6e52ba5596731e692f4dfc32fabefae4cdca8f15b167102f86288089"
     },
     "app/tests/test_offline_import_ui.gd": {
       "mode": "100644",
@@ -1020,7 +1020,7 @@
     },
     "app/tests/test_offline_playback_reliability.gd": {
       "mode": "100644",
-      "sha256": "a77c906b5418106d179597e3e96621f3ce14f320cfa5826b0f58a127cc6d97c8"
+      "sha256": "5bd9f023f7253b5f5440ee71bee4d7c9b6cade6e75720d125b5cb3e7ddc2fcf2"
     },
     "app/tests/test_offline_polish_performance.gd": {
       "mode": "100644",
@@ -1036,7 +1036,7 @@
     },
     "app/tests/test_offline_shuffle.gd": {
       "mode": "100644",
-      "sha256": "3362f85c0c7d885ec82c87d98a2b29eaf3217de85d5a1d7c8dac79c631ec3d1c"
+      "sha256": "1053a2bee1cfdae60e0c9f897f1b3a1ba1a0015abf9d20dafc3cb8852abdff05"
     },
     "app/tests/test_offline_tv_accessibility.gd": {
       "mode": "100644",
