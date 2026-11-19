@@ -170,7 +170,7 @@ func run():
     ck(tv.music_ui.shuffle_button.text=="SHUFFLE: OFF", "restored isolated default text")
     tv.music_ui._toggle_shuffle()
     ck(tv.offline_music.playlists.shuffle_enabled and tv.music_ui.shuffle_button.text=="SHUFFLE: ON", "UI toggles shuffle on")
-    ck(not tv.offline_music.is_playing() and tv.music_ui.library_button.has_focus(), "shuffle never autoplays or steals MA first focus")
+    ck(not tv.offline_music.is_playing() and tv.music_ui.play_button.has_focus(), "shuffle never autoplays or moves startup focus")
     tv.music_ui._toggle_shuffle()
     ck(not tv.offline_music.playlists.shuffle_enabled and tv.music_ui.shuffle_button.text=="SHUFFLE: OFF", "UI toggles shuffle off")
     ck(tv.ma_panel.catalog.token.empty(), "no Music Assistant token action")

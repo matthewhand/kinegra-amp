@@ -23,7 +23,7 @@ func run():
     var ui = app.music_ui
     var music = app.offline_music
     ck(ui.offline_drawer != null and not ui.offline_drawer.visible,"drawer_initially_closed")
-    ck(ui.library_button.has_focus() and not music.is_playing(),"initial_focus_and_silence")
+    ck(ui.play_button.has_focus() and not music.is_playing(),"startup_focuses_play_without_autoplay")
     ui._open_offline_collection()
     ck(ui.offline_drawer.visible and ui.offline_mix_button.has_focus(),"drawer_focus_enters_mix")
     ck(ui.offline_list.get_item_count() == 4 and ui._offline_page_indices == [0,1,2,3],"original_four_slots_unchanged")

@@ -46,24 +46,22 @@ var last_save_ok = true
 # UI edits; the owner can repair/replace that file outside this app.
 var preferences_load_blocked = false
 
+func _read_preferences():
+    var result = playlist_store.read(playlist_path)
+    # Never discard preferences for slots missing from this library.
+    if result.ok and result.found and result.state.favorites.size() > track_count():
+        result.ok = false
+    return result
+
 func restore_preferences():
     # Offline suites opt out explicitly; never read or write real preferences.
     if OS.get_environment("METHEXIS_SOURCE_TEST") == "1" and playlist_path == "user://methexis_omega_playlists.cfg":
         return true
-    var result = playlist_store.read(playlist_path)
-    if not result["ok"]:
-        preferences_load_blocked = true
-        last_save_ok = false
-        return false
-    preferences_load_blocked = false
-    last_save_ok = true
-    if not result["found"]:
-        return true
-    if result["state"].favorites.size() > track_count():
-        preferences_load_blocked = true
-        return false
-    if not playlists.restore(result["state"]):
-        return false
+    var result = _read_preferences()
+    preferences_load_blocked = not result.ok or (result.found and not playlists.restore(result.state))
+    last_save_ok = not preferences_load_blocked
+    if preferences_load_blocked or not result.found:
+        return last_save_ok
     # A saved collection may exclude the default first track. Move the silent
     # selection to a member before creating/loading the audio player.
     var allowed = playlists.indices()
@@ -86,7 +84,7 @@ func persist_preferences():
     # A different process/app version may have changed the file since this
     # player started. Revalidate before replacing it, especially to avoid
     # silently clobbering future-version preferences with older state.
-    var disk = playlist_store.read(playlist_path)
+    var disk = _read_preferences()
     if not disk["ok"]:
         preferences_load_blocked = true
         last_save_ok = false
