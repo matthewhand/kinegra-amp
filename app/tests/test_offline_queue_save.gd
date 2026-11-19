@@ -101,6 +101,14 @@ func run():
             check(saver.discard() and not saver.has_pending() and not saver.saved_indices.empty(),"discard_keeps_completed_files")
     elif mode=="corrupt":
         check(saver.copied==0 and saver.failed==2 and saver.state=="error" and saver.has_pending() and app.offline_music.user_library.slots.empty(),"corrupt_audio_never_enters_library")
+    elif mode=="missing-metadata":
+        check(saver.state=="complete" and saver.copied==31 and saver.skipped==4 and saver.failed==0 and not saver.has_pending(),"missing_metadata_skips_only_affected_entries")
+        var saved_positions=[]
+        for index in range(34):
+            if not index in [1,31,32]:saved_positions.append(index)
+        check(saver.saved_positions==saved_positions and app.offline_music.user_library.slots.size()==2,"copies_keep_original_order_across_page_boundary")
+        saver._restore_checkpoint()
+        check(saver.state=="complete" and saver.skipped==4 and saver.saved_positions==saved_positions,"checkpoint_restores_skipped_entries_and_saved_order")
     elif mode=="failed-one":
         check(saver.state=="partial" and saver.copied==33 and saver.failed==1 and saver.has_pending(),"exhausted_track_does_not_block_remaining_tracks")
         check(saver.begin(),"retry_failed_track_from_saved_snapshot")

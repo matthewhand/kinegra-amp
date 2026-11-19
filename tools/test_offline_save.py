@@ -132,6 +132,11 @@ def main():
                 elif command=='player_queues/items':
                     assert args['queue_id']=='own-wrapper' and 1<=args['limit']<=32
                     value=[{'queue_id':'own-wrapper','queue_item_id':'fictional-'+str(i),'name':'Fictional '+str(i),'media_item':{'provider':'library','item_id':str(i),'media_type':'track'}} for i in range(args['offset'],min(count,args['offset']+args['limit']))]
+                    if mode=='missing-metadata':
+                        for index, row in enumerate(value, args['offset']):
+                            if index==1:row['media_item']=None
+                            if index==31:del row['media_item']['provider']
+                            if index==32:row['media_item']['media_type']='podcast'
                 else:
                     assert args['provider_instance_id_or_domain']=='library'
                     n=int(args['item_id'])
@@ -142,7 +147,7 @@ def main():
         ma=http.server.ThreadingHTTPServer(('127.0.0.1',0),MA);ma.calls=[];ma.items=[];ma.faults={}
         threading.Thread(target=ma.serve_forever,daemon=True).start()
         try:
-            for mode in ['complete','idle','during','cancel','legacy','transient','failed-one','resume-start','resume-finish','stalled-pause','large','slice','legacy-journal','corrupt']:
+            for mode in ['complete','idle','during','cancel','legacy','transient','failed-one','missing-metadata','resume-start','resume-finish','stalled-pause','large','slice','legacy-journal','corrupt']:
                 if os.environ.get('OFFLINE_CASE') and mode not in os.environ['OFFLINE_CASE'].split(','):continue
                 ma.mode=helper.mode=mode
                 ma.items.clear()
@@ -162,6 +167,8 @@ def main():
                     assert ma.faults=={'players/all':1,'music/tracks/get':1} and helper.faults=={'prepare':1,'download':1}
                 if mode=='failed-one':
                     assert ma.items.count('1')==4 and ma.items[-1]=='1' and len(ma.items)==38
+                if mode=='missing-metadata':
+                    assert ma.items==[str(index) for index in range(35) if index not in (1,31,32)]
                 if mode=='resume-start':
                     checkpoint=next((root/'resume').rglob('offline_queue_copy_v1.json'))
                     text=checkpoint.read_text()

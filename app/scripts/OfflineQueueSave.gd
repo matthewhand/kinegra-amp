@@ -145,7 +145,13 @@ func _restore_checkpoint():
     var valid=true
     for i in range(rows.size()):
         var row=rows[i]
-        if typeof(row)!=TYPE_DICTIONARY or typeof(row.get("name"))!=TYPE_STRING or row.name.length()>120 or typeof(row.get("media"))!=TYPE_DICTIONARY or not validator._id(row.media.get("item_id")) or not validator._id(row.media.get("provider")) or (not results[i] in ["","skipped","failed"] and not store._hex(results[i])):
+        if typeof(row)!=TYPE_DICTIONARY or typeof(row.get("name"))!=TYPE_STRING or row.name.length()>120 or typeof(row.get("media"))!=TYPE_DICTIONARY or (not results[i] in ["","skipped","failed"] and not store._hex(results[i])):
+            valid=false
+            break
+        # Unsupported entries stay skipped even if the progress file is missing.
+        if value.version==2 and row.media.empty():
+            results[i]="skipped"
+        elif not validator._id(row.media.get("item_id")) or not validator._id(row.media.get("provider")):
             valid=false
             break
         if value.version==1:
@@ -325,7 +331,7 @@ func _page(value):
     entries=capture_rows.duplicate()
     capture_rows.clear()
     outcomes=[]
-    for _row in entries:outcomes.append("")
+    for row in entries:outcomes.append("skipped" if row.media.empty() else "")
     checkpoint_id=next_id
     checkpoint_binding=next_binding
     download_hash=""

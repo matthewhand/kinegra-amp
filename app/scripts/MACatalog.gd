@@ -468,14 +468,15 @@ func _complete(result, response_code, _headers, body, request_epoch):
             return
         var rows=[]
         for entry in value:
-            if typeof(entry)!=TYPE_DICTIONARY or entry.get("queue_id")!=request_context.get("queue_id") or typeof(entry.get("media_item"))!=TYPE_DICTIONARY:
-                _state("malformed_reply","Offline save supports queued tracks only")
+            if typeof(entry)!=TYPE_DICTIONARY or entry.get("queue_id")!=request_context.get("queue_id"):
+                _state("malformed_reply","Unexpected offline queue entry")
                 return
-            var media=entry.media_item
-            if media.get("media_type")!="track" or not _id(media.get("item_id")) or not _id(media.get("provider")):
-                _state("malformed_reply","Offline save supports queued tracks only")
-                return
-            rows.append({"queue_item_id":str(entry.get("queue_item_id","")),"name":_safe(entry.get("name","Untitled"),120),"media":{"item_id":media.item_id,"provider":media.provider}})
+            # Keep the queue position even when this entry cannot be copied.
+            var item=entry.get("media_item")
+            var media={}
+            if typeof(item)==TYPE_DICTIONARY and item.get("media_type")=="track" and _id(item.get("item_id")) and _id(item.get("provider")):
+                media={"item_id":item.item_id,"provider":item.provider}
+            rows.append({"queue_item_id":str(entry.get("queue_item_id","")),"name":_safe(entry.get("name","Untitled"),120),"media":media})
         _state("offline_ready","Read-only queue snapshot")
         emit_signal("offline_queue_page",rows)
         return
