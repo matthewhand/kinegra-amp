@@ -10,13 +10,13 @@ Play music from Music Assistant or your own files, build a queue with your TV re
 
 ## Install
 
-**[Download 1.0.16 public beta](https://github.com/matthewhand/kinegra-amp/releases/tag/v1.0.16)** · Android 8.0+ · ARM64
+**[Download 1.0.17 public beta](https://github.com/matthewhand/kinegra-amp/releases/tag/v1.0.17)** · Android 8.0+ · ARM64
 
-Sideload `KinegraAmp-1.0.16.apk` onto your SHIELD, or install with ADB:
+Sideload `KinegraAmp-1.0.17.apk` onto your SHIELD, or install with ADB:
 
 ```sh
 adb connect DEVICE_IP:ADB_PORT
-adb install -r KinegraAmp-1.0.16.apk
+adb install -r KinegraAmp-1.0.17.apk
 ```
 
 ## Play music
@@ -30,6 +30,12 @@ Amp is built around [Music Assistant](https://github.com/music-assistant/server)
 Navigate with the remote’s D-pad and OK, or the controller’s D-pad and A. Back/B closes dialogs or exits fullscreen. [Library and queue controls](docs/MA-LIBRARY-REMOTE.md).
 
 For local music, open **Offline Library → Import from USB / Internal Storage** and choose MP3/Ogg files. **Delete Copy** removes an imported copy from Amp. No music is bundled. [Offline library](docs/OFFLINE-LIBRARY.md).
+
+## Background playback
+
+In **1.0.17 beta (build 96)**, **Keep Music Assistant playing in the background** is on by default. Music continues through Android Home and return. Turn the setting off to pause when you leave; playback stays paused when you return until you press Play. Use **Save Setup** to remember this choice after restarting Amp.
+
+Local-file background playback is included in [newer source changes](https://github.com/matthewhand/kinegra-amp/pull/4), after the 1.0.17 release. It is not part of the downloadable 1.0.17 APK.
 
 ## Make it yours
 

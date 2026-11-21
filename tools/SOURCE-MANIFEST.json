@@ -1,6 +1,6 @@
 {
   "application": "Kinegra Amp",
-  "code": 98,
+  "code": 99,
   "files": {
     ".gitattributes": {
       "mode": "100644",
@@ -16,7 +16,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "79cd4cdf17f5588160c72fb4113a71a5acd6a1f23f568d220f7aa836309470e7"
+      "sha256": "75424b35006458c56772b1575be6440c2b9ae3fe38ba3fc0f06288902b58957f"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -416,7 +416,7 @@
     },
     "app/export_presets.cfg": {
       "mode": "100644",
-      "sha256": "2fedb6692c77da5bdd933b25237099bad420daa2f272c8acccd920638d2f1b55"
+      "sha256": "15f0e3ee2b5a9827c82e373f48ff8d81dc87207c002701225482fc42d12a25f9"
     },
     "app/native/TegraCodec.gdnlib": {
       "mode": "100644",
@@ -692,7 +692,7 @@
     },
     "app/scripts/WebMusicAPI.gd": {
       "mode": "100644",
-      "sha256": "46f4164fa32c3af74f3a0af398ecc3ce7da66c95a2af9f8a1ef47dba1ed95569"
+      "sha256": "99e7f229cc5f6aa9a6ca78c120053c9211331f9bd57721a3d191bab354b1d941"
     },
     "app/scripts/WebRemote.gd": {
       "mode": "100644",
@@ -700,7 +700,7 @@
     },
     "app/scripts/WebRemotePage.gd": {
       "mode": "100644",
-      "sha256": "846f8d503f21587c4db5497cb7a4ece8d127020da280c7a3d19635d9cded867c"
+      "sha256": "043fff1666be5d4b8fe060bc6fd9082c0625b7d7178a5c24f34434bdf9a8b958"
     },
     "app/scripts/WebcamGesturePolicy.gd": {
       "mode": "100644",
@@ -1242,9 +1242,13 @@
       "mode": "100644",
       "sha256": "e5eb1f111cf5441c63ef741fd6329872212b8813674bba095af9eafb6c74aa2f"
     },
+    "app/tests/test_web_music_android_play.gd": {
+      "mode": "100644",
+      "sha256": "1a9564a0d80a53829eefee6e9f3b16f5dab504053add12b58a83ba678e84d726"
+    },
     "app/tests/test_web_music_server.gd": {
       "mode": "100644",
-      "sha256": "0b58befd7c32a9435785ce8d8d121c863e7361acf85d11d90d211bdcc7d9a372"
+      "sha256": "7362d2e9f757026d409d172a8fd08ac0984e0ccca9ea5ee7affd43cf14dd822c"
     },
     "app/tests/test_web_remote.gd": {
       "mode": "100644",
@@ -1312,11 +1316,11 @@
     },
     "docs/PRIVACY.md": {
       "mode": "100644",
-      "sha256": "cfbd61a2774ef70747f175bffcaa1375b7642c4cd511d92445d83eb500b6efcf"
+      "sha256": "46369f5ef20cc112fa3a8efc821aa4eea8f5fd9b4b64b360523c01cb8fb4fab7"
     },
     "docs/RELEASE.md": {
       "mode": "100644",
-      "sha256": "9266ed55efc867840a58a08b9c6b633456d48b83b57e5aff357d04e0907f7360"
+      "sha256": "a9cc333379d0632fe016708c5f19eccaea1a33ab3458ff64694bbb7706479053"
     },
     "docs/SECURE-TOKEN-LIFECYCLE.md": {
       "mode": "100644",
@@ -1328,7 +1332,7 @@
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
-      "sha256": "b3a277b63b425004940e2bb4f4bde0f800615e2fc18be5158c63572f376e07a1"
+      "sha256": "7cc42450f8d358e6f2c7aa6c74764f2512f9de1681893e1e32989145d380d3e3"
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
@@ -2063,5 +2067,5 @@
   "schema": 1,
   "scope": "Current Kinegra Amp source, build tools and regression tests. Generated outputs, personal media, credentials and signing material are excluded.",
   "version": "1.0.18",
-  "version_code": 98
+  "version_code": 99
 }
