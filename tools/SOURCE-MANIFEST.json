@@ -680,7 +680,7 @@
     },
     "app/scripts/UserLibraryStore.gd": {
       "mode": "100644",
-      "sha256": "51d491aa9e4e19657b47aa51e7a2147ef84463d2b0c6da2392f63cd847a5de98"
+      "sha256": "40ee4fdcee5f7472cf33e5854c467a376174c491d93c82c94b89a30402021c37"
     },
     "app/scripts/VolumeStore.gd": {
       "mode": "100644",
@@ -870,6 +870,10 @@
       "mode": "100644",
       "sha256": "c5a809f6bf26a5148ab6a4ec3a2761f5a57e641efeddd77d20dec586c5a0da90"
     },
+    "app/tests/test_library_marker_boundary.gd": {
+      "mode": "100644",
+      "sha256": "14c0a6560f78c1edc903d8362a8dff4991e85c431618ce3b3ed012658a0c6ee7"
+    },
     "app/tests/test_local_audio_buffer.gd": {
       "mode": "100644",
       "sha256": "d0c39a2c71d8124ba130733a6580511c3c9e5b24db87343395b191e605796c12"
@@ -1028,7 +1032,7 @@
     },
     "app/tests/test_offline_queue_save.gd": {
       "mode": "100644",
-      "sha256": "c121ecda0b8f5e00df3b18fb52bf648d42763297867d426d4f5d79d78992c8ee"
+      "sha256": "9c6bc1094f58034c3158fd6e42550ccb9caf8c148da667b45652b37220537e33"
     },
     "app/tests/test_offline_seek.gd": {
       "mode": "100644",
@@ -1212,7 +1216,7 @@
     },
     "app/tests/test_user_library_store.gd": {
       "mode": "100644",
-      "sha256": "1367ca118b7813fb8036b2c17df7dc28d5ab445eb0fbe2ebe947acc495d69a96"
+      "sha256": "908ad4d0b9f71da4ad24d79f634fe0b53983fccbb4f62256dde6ac4c37d74294"
     },
     "app/tests/test_visual_performance_budgets.gd": {
       "mode": "100644",
@@ -2044,7 +2048,7 @@
     },
     "tools/test_offline_save.py": {
       "mode": "100644",
-      "sha256": "c3494f1c6d8760fcb410f6c8176afbfbf2f9b8585fdff72515ffb33ef4d19f38"
+      "sha256": "cd49a1ca7873b3ce64ce955878555e8f7286b07c45edd71f4ea7ee25dcccee25"
     },
     "tools/test_preview_import_completion.py": {
       "mode": "100644",

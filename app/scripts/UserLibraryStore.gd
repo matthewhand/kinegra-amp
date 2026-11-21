@@ -183,14 +183,22 @@ func _write_manifest(records):
     var encoded = to_json({"version":1,"slots":records})
     if encoded.to_utf8().size() > MAX_MANIFEST_BYTES: return false
     # Once any slot has been assigned, a lost manifest must not permit reindexing.
+    # First create a committed empty catalog before publishing the assignment
+    # marker: if the initial populated write fails, restart can still recover
+    # verified receipts without treating a never-committed catalog as lost.
     var marker = directory.plus_file("slots-assigned-v1")
     if not records.empty() and not File.new().file_exists(marker):
+        if not File.new().file_exists(path):
+            if not _commit_catalog(path, to_json({"version":1,"slots":[]})): return false
         var flag = File.new()
         if flag.open(marker + ".new", File.WRITE) != OK: return false
         flag.store_string("stable-slots-v1\n")
         var flagged = flag.get_error() == OK
         flag.close()
         if not flagged or Directory.new().rename(marker + ".new", marker) != OK: return false
+    return _commit_catalog(path, encoded)
+
+func _commit_catalog(path, encoded):
     var f = File.new()
     var temp = path + ".new"
     if f.open(temp, File.WRITE) != OK: return false
