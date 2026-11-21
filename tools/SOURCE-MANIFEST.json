@@ -700,7 +700,7 @@
     },
     "app/scripts/WebRemotePage.gd": {
       "mode": "100644",
-      "sha256": "846f8d503f21587c4db5497cb7a4ece8d127020da280c7a3d19635d9cded867c"
+      "sha256": "043fff1666be5d4b8fe060bc6fd9082c0625b7d7178a5c24f34434bdf9a8b958"
     },
     "app/scripts/WebcamGesturePolicy.gd": {
       "mode": "100644",
