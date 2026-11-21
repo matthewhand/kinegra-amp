@@ -24,6 +24,7 @@ def main():
     spec=importlib.util.spec_from_file_location('offline_source',a.source/'clients/offline_source.py')
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     key='synthetic-source-key-1234567890123456'
+    rotated_key='synthetic-rotated-key-1234567890123456'
     with tempfile.TemporaryDirectory(prefix='shieldamp-offline-test-') as temporary:
         root=Path(temporary);music=root/'music';music.mkdir();(music/'Original').mkdir()
         for n in [0,1]:
@@ -70,6 +71,13 @@ def main():
             def do_GET(self):
                 range_header=self.headers.get('Range','')
                 helper.ranges.append((self.path,range_header))
+                if (helper.mode in ['auth-401','auth-403'] and self.path.endswith(long_file['file'])
+                        and range_header.startswith('bytes=1048576-') and not helper.faults.get('auth_denied')
+                        and self.authenticated()):
+                    helper.faults['auth_denied']=1
+                    source.key=rotated_key
+                    self.reply(int(helper.mode[-3:]),{'error':'synthetic expired access'})
+                    return
                 if helper.mode=='legacy':
                     if range_header:del self.headers['Range']
                 if helper.mode=='resume-start' and self.path.endswith(long_file['file']) and range_header.startswith('bytes=1048576-'):
@@ -124,7 +132,7 @@ def main():
                     self.server.faults[command]=self.server.faults.get(command,0)+1
                     self.send_response(503);self.send_header('Content-Length','0');self.end_headers()
                     return
-                count={'corrupt':2,'large':1537,'slice':9001}.get(mode,35)
+                count={'corrupt':2,'large':1537,'slice':9001,'auth-401':4,'auth-403':4}.get(mode,35)
                 if command=='players/all':
                     value=[{'player_id':'own-wrapper','provider':'universal_player','type':'player','available':True,'enabled':True,'active_group':None,'synced_to':None,'group_members':[],'static_group_members':[],'active_output_protocol':None,'output_protocols':[{'output_protocol_id':'own-client','protocol_domain':'sendspin','available':True,'derived_from':None}]}]
                 elif command=='player_queues/get':
@@ -141,28 +149,31 @@ def main():
                     assert args['provider_instance_id_or_domain']=='library'
                     n=int(args['item_id'])
                     path=f'Original/fictional{n%2}.m4a'
-                    if (mode.startswith('resume-') or mode=='stalled-pause') and n%2:path='Original/long.mp3'
+                    if (mode.startswith(('resume-','auth-')) or mode=='stalled-pause') and n%2:path='Original/long.mp3'
                     value={'item_id':str(n),'provider':'library','media_type':'track','provider_mappings':[{'provider_domain':'filesystem_local' if n!=34 else 'unsupported_subscription','item_id':path,'available':True}]}
                 body=json.dumps(value).encode();self.send_response(200);self.send_header('Content-Length',str(len(body)));self.send_header('Content-Type','application/json');self.end_headers();self.wfile.write(body)
         ma=http.server.ThreadingHTTPServer(('127.0.0.1',0),MA);ma.calls=[];ma.items=[];ma.faults={}
         threading.Thread(target=ma.serve_forever,daemon=True).start()
         try:
-            for mode in ['complete','idle','during','cancel','legacy','transient','failed-one','missing-metadata','resume-start','resume-finish','stalled-pause','large','slice','legacy-journal','corrupt']:
+            for mode in ['complete','idle','during','cancel','legacy','transient','failed-one','missing-metadata','resume-start','resume-finish','stalled-pause','large','slice','legacy-journal','auth-401','auth-403','corrupt']:
                 if os.environ.get('OFFLINE_CASE') and mode not in os.environ['OFFLINE_CASE'].split(','):continue
                 ma.mode=helper.mode=mode
                 ma.items.clear()
                 ma.faults.clear()
                 helper.ranges.clear()
                 helper.faults.clear()
+                source.key=key
                 if mode=='corrupt':
                     for file in source.cache.glob('*.mp3'):
                         data=bytearray(file.read_bytes());data[-1]^=1;file.write_bytes(data)
                 env=dict(os.environ,METHEXIS_SOURCE_TEST='0',OFFLINE_MODE=mode,OFFLINE_MA_URL=f'http://127.0.0.1:{ma.server_port}',OFFLINE_SOURCE_URL=helper_url,XDG_DATA_HOME=str(root/('resume' if mode.startswith('resume-') else mode)))
                 env['OFFLINE_STALL_MARKER']=str(root/'stalled-range')
-                p=subprocess.run(['xvfb-run','-a',a.godot,'--path',str(a.app),'--audio-driver','Dummy','--script','res://tests/test_offline_queue_save.gd'],env=env,capture_output=True,text=True,timeout=50)
-                output=p.stdout+p.stderr
-                print(mode,output,flush=True)
-                assert p.returncode==0 and 'SCRIPT ERROR' not in output and 'FAIL_' not in output and 'FAILURES=0' in output
+                for attempt in ([mode,'auth-403-resume'] if mode=='auth-403' else [mode]):
+                    env['OFFLINE_MODE']=attempt
+                    p=subprocess.run(['xvfb-run','-a',a.godot,'--path',str(a.app),'--audio-driver','Dummy','--script','res://tests/test_offline_queue_save.gd'],env=env,capture_output=True,text=True,timeout=50)
+                    output=p.stdout+p.stderr
+                    print(attempt,output,flush=True)
+                    assert p.returncode==0 and 'SCRIPT ERROR' not in output and 'FAIL_' not in output and 'FAILURES=0' in output
                 if mode=='transient':
                     assert ma.faults=={'players/all':1,'music/tracks/get':1} and helper.faults=={'prepare':1,'download':1}
                 if mode=='failed-one':
@@ -183,6 +194,14 @@ def main():
                     long_ranges=[value for path,value in helper.ranges if path.endswith(long_file['file'])]
                     expected_starts=[0,1048576]+list(range(1048576,long_file['bytes'],1048576))
                     assert [int(value.split('=')[1].split('-')[0]) for value in long_ranges]==expected_starts,long_ranges
+                if mode in ['auth-401','auth-403']:
+                    assert helper.faults=={'auth_denied':1},helper.faults
+                    assert ma.items==['0','1','1','2','3'],ma.items
+                    assert sum(path.endswith(manifest['file']) for path,_ in helper.ranges)==1
+                    long_ranges=[value for path,value in helper.ranges if path.endswith(long_file['file'])]
+                    expected_starts=[0,1048576]+list(range(1048576,long_file['bytes'],1048576))
+                    assert [int(value.split('=')[1].split('-')[0]) for value in long_ranges]==expected_starts,long_ranges
+                    print('OFFLINE_AUTH_HTTP_PASS code='+mode[-3:]+' denials=1 completed_file_downloads=1 resume_offset=1048576 restart='+str(mode=='auth-403').lower(),flush=True)
             assert 'player_queues/items' in ma.calls
             assert not any(x in ma.calls for x in ['player_queues/play','player_queues/clear','player_queues/next'])
             print('OFFLINE_QUEUE_READ_ONLY_HTTP_PASS')

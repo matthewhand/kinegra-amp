@@ -21,8 +21,7 @@ func put(path, bytes):
 
 func receipt(store, digest, title="Synthetic song", extension="ogg"):
     var file = "import_" + digest + "." + extension
-    var bytes = load("res://scripts/OfflineMusic.gd").SOURCES
-    var audio = load(bytes[0]).data
+    var audio = load("res://assets/music/track_01.ogg").data
     if extension == "mp3": audio = Marshalls.base64_to_raw("SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//MgxAAAAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVf/zIsQnAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//MgxE8AAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zIMR2AAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/8yDEnQAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//MixMQAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/8yDE2AAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
     put(store.directory.plus_file(file), audio)
     put(store.directory.plus_file(file + ".meta.json"), to_json({"version":1,"file":file,"title":title,"bytes":audio.size(),"sha256":digest}).to_utf8())

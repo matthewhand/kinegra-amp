@@ -38,9 +38,13 @@ func run():
     panel.sendspin_paired=true;panel.sendspin_player_id="own-client"
     app.music_ui.set_playback_context("ma")
     var saver=app.offline_save
-    check(not saver.configure("http://public.invalid","synthetic-source-key-1234567890123456"),"nonprivate_source_rejected")
-    check(saver.configure(OS.get_environment("OFFLINE_SOURCE_URL"),"synthetic-source-key-1234567890123456") and saver.configured(),"explicit_source_saved")
     var mode=OS.get_environment("OFFLINE_MODE")
+    var source_key="synthetic-rotated-key-1234567890123456" if mode=="auth-403-resume" else "synthetic-source-key-1234567890123456"
+    check(not saver.configure("http://public.invalid","synthetic-source-key-1234567890123456"),"nonprivate_source_rejected")
+    check(saver.configure(OS.get_environment("OFFLINE_SOURCE_URL"),source_key) and saver.configured(),"explicit_source_saved")
+    if mode=="auth-403-resume":
+        check(saver.has_pending() and saver.copied==1 and saver.failed==0 and saver.saved_indices.size()==1,"auth_restart_restores_completed_prefix_and_pending_copy")
+        check(saver._length(saver._part_path())==saver.SEGMENT_BYTES,"auth_restart_keeps_completed_download_range")
     if mode=="resume-finish":
         check(saver.has_pending() and saver.copied==1 and saver.saved_indices.size()==1,"restart_restores_completed_prefix_and_pending_copy")
         check(saver._length(saver._part_path())==saver.SEGMENT_BYTES,"restart_keeps_completed_download_range")
@@ -79,7 +83,37 @@ func run():
             check(saver.begin(),"can_resume_immediately_after_stalled_request")
         yield(create_timer(.025),"timeout")
     check(not saver.active,"operation_completes_within_bound")
-    if mode=="large":
+    if mode.begins_with("auth-"):
+        if mode!="auth-403-resume":
+            check(saver.state=="paused" and saver.has_pending() and saver.copied==1 and saver.failed==0 and saver.skipped==0,"auth_denial_pauses_without_failing_occurrence")
+            check(saver.message.begins_with("File-source access denied.") and saver.request==null and saver.retry_timer.is_stopped(),"auth_denial_clears_request_without_scheduling_retry")
+            check(saver._length(saver._part_path())==saver.SEGMENT_BYTES and not File.new().file_exists(saver._part_path()+".segment"),"auth_denial_preserves_only_completed_range")
+            var store=app.offline_music.user_library
+            check(store.slots.size()==1 and store.available(0) and File.new().get_sha256(store.directory.plus_file(store.slots[0].file))==store.slots[0].sha256,"auth_denial_preserves_completed_verified_file")
+            var prefix_hash=File.new().get_sha256(saver._part_path())
+            var prior_outcomes=saver.outcomes.duplicate()
+            var prior_binding=saver.checkpoint_binding
+            yield(create_timer(2.2),"timeout")
+            check(not saver.active and saver.state=="paused" and saver.request==null and saver.retry_timer.is_stopped() and saver.outcomes==prior_outcomes and File.new().get_sha256(saver._part_path())==prefix_hash,"auth_denial_waits_for_explicit_resume")
+            if mode=="auth-401":
+                check(saver.configure(OS.get_environment("OFFLINE_SOURCE_URL"),"synthetic-rotated-key-1234567890123456") and saver.checkpoint_binding==prior_binding,"auth_key_rotation_keeps_source_binding")
+                check(saver.begin(),"auth_explicit_resume_after_key_rotation")
+                deadline=OS.get_ticks_msec()+15000
+                while saver.active and OS.get_ticks_msec()<deadline:yield(create_timer(.025),"timeout")
+        if mode!="auth-403":
+            check(not saver.active and saver.state=="complete" and saver.copied==4 and saver.failed==0 and saver.skipped==0 and not saver.has_pending(),"auth_resume_finishes_all_original_occurrences")
+            check(saver.saved_indices.size()==4 and saver.saved_indices[0]==saver.saved_indices[2] and saver.saved_indices[1]==saver.saved_indices[3] and saver.saved_indices[0]!=saver.saved_indices[1],"auth_resume_preserves_duplicate_order")
+            var store=app.offline_music.user_library
+            var verified=store.slots.size()==2
+            for record in store.slots:
+                var target=store.directory.plus_file(record.file)
+                var saved_receipt=store._json(target+".meta.json",store.MAX_RECEIPT_BYTES)
+                verified=verified and File.new().get_sha256(target)==record.sha256 and typeof(saved_receipt)==TYPE_DICTIONARY and saved_receipt.get("sha256")==record.sha256
+            check(verified,"auth_resume_keeps_two_verified_files_and_receipts")
+            var saved=saver.queue_store.read(saver.saved_queue_path)
+            check(saved.ok and saved.items==saver.saved_indices,"auth_resume_persists_complete_occurrence_order")
+            check(not File.new().file_exists(saver._part_path()) and not File.new().file_exists(saver._part_path()+".segment"),"auth_resume_clears_temporary_downloads")
+    elif mode=="large":
         check(saver.state=="paused" and saver.source_count==1537 and saver.entries.size()==1537 and saver.copied==1,"captures_queue_over_previous_limit")
         var store=app.offline_music.user_library
         var snapshot=store._json(saver.checkpoint_path,saver.MAX_SNAPSHOT_BYTES)
