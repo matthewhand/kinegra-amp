@@ -26,16 +26,33 @@ class FixtureUI:
     extends Reference
     func set_playback_context(_value):pass
     func invalidate_tv_queue():pass
+class FixtureOfflineMusic:
+    extends Reference
+    var user_library={"directory":"user://web_music_fixture_library"}
+    func is_playing():return false
+class FixtureOfflineSave:
+    extends Reference
+    var state="idle"
+    var active=false
+    var message="Synthetic offline status"
+    var copied=0
+    var saved_indices=[]
+    var source_count=0
+    func has_pending():return false
+    func configured():return false
+    func _free_bytes(_directory):return -1
 class FixtureOwner:
     extends Node
     var ma_panel=FixturePanel.new()
     var sendspin_facade=FixtureFacade.new()
-    var offline_music=null
+    var offline_music=FixtureOfflineMusic.new()
+    var offline_save=FixtureOfflineSave.new()
     var local_pcm=null
     var native_transport=null
     var tv_queue_request=null
     var tv_queue_timer=Timer.new()
     var music_ui=FixtureUI.new()
+    var playback_recovery=preload("res://scripts/PlaybackRecovery.gd").new()
     func _ready():
         ma_panel.endpoint_edit.text="http://127.0.0.1:18766"
         ma_panel.lan_trust.pressed=true
@@ -46,7 +63,10 @@ class FixtureOwner:
     func _sendspin_controls():return sendspin_facade.client.status()
     func _queue_read_in_progress():return false
     func _prepare_stream_visuals():pass
-    func _watch_tv_audio():pass
+    func _watch_tv_audio(_require_new_stream=false):pass
+    func _uses_android_sendspin():return false
+    func _arm_playback_recovery():pass
+    func _set_tv_playback_error(_detail):pass
     func web_remote_snapshot():return {"title":"Synthetic remote track","source":"Synthetic fixture","state":"paused"}
     func web_remote_control(_action):return true
 func _init():call_deferred("run")

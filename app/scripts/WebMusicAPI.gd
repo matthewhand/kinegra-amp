@@ -203,7 +203,20 @@ func _players_ready(_players):
 func _catalog_state(state,_detail):
     if active.empty():return
     if state in ["queue_added","play_requested"] and active.get("phase")=="mutation":
+        var expected="play_requested" if active.kind=="play" else "queue_added"
+        if state!=expected:return
         if active.kind=="play":
+            # The acknowledgement belongs to the route that sent the request.
+            # Never enable a replacement Android session after a late reply.
+            if not _binding_current() or active.get("facade")!=app.sendspin_facade or str(app._sendspin_controls().get("client_id",""))!=active.get("client"):
+                _finish(false,{},"Playback changed. Check Queue before retrying.")
+                return
+            if app._uses_android_sendspin() and not app.sendspin_facade.command("permit"):
+                var audio_error="Music Assistant accepted Play, but Android audio is unavailable."
+                app.playback_recovery.cancel()
+                app._set_tv_playback_error(audio_error)
+                _finish(false,{},audio_error)
+                return
             app._arm_playback_recovery()
             app._prepare_stream_visuals()
         if app.tv_queue_timer!=null:app.tv_queue_timer.start(.25)
@@ -218,7 +231,10 @@ func _catalog_state(state,_detail):
             return
         var detail="Result unknown: check Queue before retrying." if active.get("sent",false) else "Music Assistant could not complete this library read after a retry. Check its connection and try again."
         if state in ["auth_expired","permission_denied"]:detail="Music Assistant rejected library access. Reconnect the library on the TV."
-        elif state=="command_failed":detail=_detail
+        elif state=="command_failed":
+            detail=_detail
+            if active.get("sent",false):
+                detail+=" Result unknown: check Queue before retrying."
         if active.kind=="play" and active.get("sent",false):app._set_tv_playback_error(detail)
         _finish(false,{},detail)
 

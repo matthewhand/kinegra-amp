@@ -1,10 +1,14 @@
-# Kinegra Amp 1.0.16 public beta
+# Kinegra Amp 1.0.17 public beta
 
 Play Music Assistant streams and local MP3/Ogg files inside Amp, build a queue, and choose artwork, animated scenes or optional webcam avatars. The opt-in web remote and CLI provide playback and library controls.
 
-This beta fixes slow Pause Saving during a stalled offline download. Amp closes the active request and keeps completed chunks. On SHIELD, a live test resumed a deliberately stalled track at 1 MiB and finished the transfer. The offline copy limit is 8,192 queue entries, and the Offline Library supports up to 4,096 unique files, subject to storage.
+This beta (build 96) adds Music Assistant background playback. **Keep Music Assistant playing in the background** is on by default in Settings. Music continues through Android Home and return. Turn it off to pause playback when you leave; it stays paused when you return until you press Play. Use **Save Setup** to remember this choice after restarting Amp. Amp does not start playback automatically on a cold start.
 
-Download `KinegraAmp-1.0.16.apk` from [Releases](https://github.com/matthewhand/kinegra-amp/releases/tag/v1.0.16). It supports ARM64 and Android 8.0+. Production starts with the web remote disabled, access-key authentication enabled and no autoplay. No music is bundled.
+It also includes the earlier offline-copy improvements: Pause Saving closes a stalled request and keeps completed chunks, and Resume Saving continues from the saved range with the current file-source helper. The offline copy limit is 8,192 queue entries, and the Offline Library supports up to 4,096 unique files, subject to storage.
+
+Download `KinegraAmp-1.0.17.apk` from [Releases](https://github.com/matthewhand/kinegra-amp/releases/tag/v1.0.17). It supports ARM64 and Android 8.0+. Production starts with the web remote disabled, access-key authentication enabled and no autoplay. No music is bundled.
+
+Local-file background playback was added in [later source changes](https://github.com/matthewhand/kinegra-amp/pull/4). The 1.0.17 APK does not contain that change; source on `main` can be newer than the published download.
 
 Compatibility testing has used an original NVIDIA SHIELD with SHIELD Experience 9.x (Android 11), an ultrawide display and one Razer USB webcam. Other hardware and long-session coverage is limited. Webcam tracking requires a separately configured Kinegra Cam pose feed; tracking and gestures remain experimental.
 
