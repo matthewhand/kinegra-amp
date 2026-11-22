@@ -149,8 +149,12 @@ func _restore_checkpoint():
             valid=false
             break
         # Unsupported entries stay skipped even if the progress file is missing.
-        if value.version==2 and row.media.empty():
-            results[i]="skipped"
+        if row.media.empty():
+            if value.version==2:
+                results[i]="skipped"
+            elif results[i]!="skipped":
+                valid=false
+                break
         elif not validator._id(row.media.get("item_id")) or not validator._id(row.media.get("provider")):
             valid=false
             break
