@@ -1,54 +1,50 @@
 # Kinegra Amp
 
-![Kinegra Amp](docs/branding/kinegra-amp-banner.png)
+Kinegra Amp is a music player and visualiser for NVIDIA SHIELD. Play your own MP3 or Ogg files without a server, or connect your Music Assistant library. Use the TV remote to play music, manage the queue and switch between artwork and animated scenes.
 
-**Music and visuals for NVIDIA SHIELD.**
+**[Download the 1.0.19 beta APK](https://github.com/matthewhand/kinegra-amp/releases/download/v1.0.19/KinegraAmp-1.0.19.apk)** · Android 8.0+ · ARM64
 
-Play music from Music Assistant or your own files, build a queue with your TV remote, and switch between album artwork, neon scenes and dancing avatars. Music Assistant playback stays inside Amp.
+[Install or update](docs/UPGRADING.md) · [Release notes and checksums](https://github.com/matthewhand/kinegra-amp/releases/tag/v1.0.19)
 
-![Playback, queues and fullscreen visuals](docs/readme/kinegra-amp-hero.gif)
+## Start playing
 
-## Install
+### Play local files
 
-**[Download 1.0.19 public beta](https://github.com/matthewhand/kinegra-amp/releases/tag/v1.0.19)** · Android 8.0+ · ARM64
+Open **Offline Library → Import from USB / Internal Storage**, choose your MP3 or Ogg files, then select a track and choose **Play**. Amp starts with an empty library. Imports are copied into Amp. [Offline library guide](docs/OFFLINE-LIBRARY.md)
 
-Sideload `KinegraAmp-1.0.19.apk` onto your SHIELD, or install with ADB:
+### Connect Music Assistant
 
-```sh
-adb connect DEVICE_IP:ADB_PORT
-adb install -r KinegraAmp-1.0.19.apk
-```
-
-## Play music
-
-Amp is built around [Music Assistant](https://github.com/music-assistant/server), with local MP3/Ogg playback also supported.
-
-1. Open **Music Assistant → Settings**, enter your server address and library access token, then **Connect library**. Enable **Remember access** to save the connection.
+1. With your [Music Assistant server](https://github.com/music-assistant/server) already running, open **Music Assistant → Settings**. Enter the server address and library access token, then select **Connect library**. Enable **Remember access** to save the connection.
 2. Browse or search **Albums**, **Tracks** or **Playlists**, choose your music and press **Play**. Approve playback pairing in Music Assistant when prompted.
-3. Use **Add to Queue** without interrupting playback, **Queue Page** to add the displayed tracks, or **View Queue** to see what is next.
+3. Use **Add to Queue** to add a selection, **Queue Page** to add the displayed tracks, or **View Queue** to see what is next. Playback stays inside Amp.
 
-Navigate with the remote’s D-pad and OK, or the controller’s D-pad and A. Back/B closes dialogs or exits fullscreen. [Library and queue controls](docs/MA-LIBRARY-REMOTE.md).
+Use the remote’s D-pad and OK, or a controller’s D-pad and A. Back/B closes dialogs or exits fullscreen. [Library and queue controls](docs/MA-LIBRARY-REMOTE.md)
 
-For local music, open **Offline Library → Import from USB / Internal Storage** and choose MP3/Ogg files. **Delete Copy** removes an imported copy from Amp. No music is bundled. [Offline library](docs/OFFLINE-LIBRARY.md).
+## Volume and background playback
 
-## Background playback
+**Settings** opens with **App Volume** selected. Press Left or Right to change Amp’s level. Amp remembers the setting. In [Kinegra Home Split View](https://github.com/matthewhand/kinegra-home), use App Volume to balance Amp against the other pane. The TV volume changes the combined output.
 
 **Keep playing in background** is on by default for Music Assistant and local files. Music continues through Android Home and return. Turn the setting off to pause when you leave. Playback stays paused when you return until you press Play. Use **Save Setup** to remember this choice after restarting Amp.
 
-## Make it yours
+## See the player
 
-- **Settings** opens with **App Volume** selected. Use Left or Right on the remote to adjust Amp from 0% to 100%. In Split View, use this control to balance Amp against the other pane, and the TV remote's volume buttons to adjust the combined output.
-- **Visuals On / Off**, **Scene** and **Fullscreen** switch between artwork and animated scenes. [Artwork and visuals](docs/ARTWORK-AND-FULLSCREEN.md).
-- **Webcam avatars** use a separately configured Kinegra Cam pose feed. [Webcam setup](docs/WEBCAM-GESTURES.md).
-- **Web remote** adds browser playback, library and queue controls. Enable it in Settings; it starts off by default. [Web remote and API](docs/WEB-REMOTE.md) · [CLI](docs/CLI.md).
+![Amp’s desktop preview showing an offline track, the Queue button and the Play, Pause and Next controls](docs/readme/kinegra-amp-preview.png)
+
+This still comes from a Godot/Linux desktop demo made with synthetic music, artwork and track names. The sequence shows local playback, a three-track queue and fullscreen artwork with procedural dancers. [Watch the silent 16-second demo (GIF, about 3 MB)](docs/readme/kinegra-amp-hero.gif) · [How the demo was made](docs/DEMO.md)
+
+## Optional features
+
+- **Visuals On / Off**, **Scene** and **Fullscreen** switch between artwork and animated scenes. [Artwork and visuals](docs/ARTWORK-AND-FULLSCREEN.md)
+- **Webcam avatars** and experimental gestures use a separately configured Kinegra Cam pose feed. [Webcam setup](docs/WEBCAM-GESTURES.md)
+- **Web remote** and **CLI** can browse the library and control playback. The web remote is off by default and requires its access key by default when enabled. [Web remote and API](docs/WEB-REMOTE.md) · [CLI](docs/CLI.md)
 
 ## Beta notes
 
-Tested on an original NVIDIA SHIELD with SHIELD Experience 9.x (Android 11), an ultrawide display and one Razer USB webcam. Other hardware and long-session coverage is limited.
+Device testing has covered an original NVIDIA SHIELD with SHIELD Experience 9.x (Android 11), an ultrawide display and one Razer USB webcam. Other hardware and long sessions have limited coverage. [Compatibility and testing](docs/VALIDATION.md)
 
-Webcam tracking and gestures remain experimental. **Bulk offline queue copying is also experimental:** Amp retries temporary errors, and Resume Saving picks up interrupted copies. [Offline copying](docs/OFFLINE-COPYING.md) · [Compatibility and testing](docs/VALIDATION.md).
+**Save Queue Offline** is experimental and uses a separate file-source helper for your own local-file queues. Amp retries temporary errors. With an older helper, resuming restarts the interrupted track and retains completed files. [Offline copying](docs/OFFLINE-COPYING.md)
 
-[Build from source](docs/BUILDING.md) · [Contribute](docs/DEVELOPMENT.md) · [Privacy](docs/PRIVACY.md) · [Demo details](docs/DEMO.md)
+[Build from source](docs/BUILDING.md) · [Contribute](docs/DEVELOPMENT.md) · [Privacy](docs/PRIVACY.md)
 
 ## License
 

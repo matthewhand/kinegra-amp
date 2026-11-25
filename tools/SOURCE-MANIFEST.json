@@ -16,7 +16,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "34942f66fa699779c040d3f2d1b30a123dfad0007c26c9fd638aba59186e45b0"
+      "sha256": "11be9e2e288eca912d2ac3ba51e0c5428ef29d61a226db67b66c4c68eb3cef0f"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -1296,7 +1296,7 @@
     },
     "docs/DEMO.md": {
       "mode": "100644",
-      "sha256": "c79313491738306421c78ffd10278dddc2b9bf69ac05eee67914350791fd79dd"
+      "sha256": "88a6f61a42d20ad913598160b1e2b282d585f8c4f04c7a005abe660a28a563c7"
     },
     "docs/DEVELOPMENT.md": {
       "mode": "100644",
@@ -1320,7 +1320,7 @@
     },
     "docs/RELEASE.md": {
       "mode": "100644",
-      "sha256": "99850fc921e9b1c1f3e354c38ca3647cfd2f158efb62174aa73f26fc595edf99"
+      "sha256": "e6f9d77d783be19c0336aa276cefa4fd7795f1fb827bb94ae7844923b53444e4"
     },
     "docs/SECURE-TOKEN-LIFECYCLE.md": {
       "mode": "100644",
@@ -1332,7 +1332,7 @@
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
-      "sha256": "b6748f47f038ab9c5a36d913b3ec7c992705433b3b75b3f56158f3bd8edf9753"
+      "sha256": "a693babf573e29e957a5cabc1b01d5ac0c6e798959ea0c5a20d5421cd334a058"
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
@@ -1357,6 +1357,10 @@
     "docs/readme/kinegra-amp-hero.gif": {
       "mode": "100644",
       "sha256": "fdc4d77d95aeee7bdf6c5c1b4a627098324950408e6706e951beeb4798c787d1"
+    },
+    "docs/readme/kinegra-amp-preview.png": {
+      "mode": "100644",
+      "sha256": "2709cd583f87b3e31bcb612b3ee88c94568443bfa3b9f195aafb3b4215457aee"
     },
     "native/GODOT-AUDIO-CLEANUP.md": {
       "mode": "100644",
