@@ -21,3 +21,11 @@ Use the SHIELD’s entry from `adb devices` for `DEVICE_SERIAL`. Open **Kinegra 
 Install over your existing Amp with the same signing identity and leave its app data intact to retain imported music, settings and pairing. If Android reports a signing conflict, keep the existing installation and use an APK signed with the same key.
 
 The package ID is `org.local.tegramilkdrop`. For self-built APKs, see [Build from source](BUILDING.md).
+
+## Rollback and recovery
+
+Keep the previous signed APK, its checksum and the release source revision for verification, but **do not assume a lower version code can be installed over a newer build**. Android may reject downgrades. A matching signing certificate is necessary for a normal in-place update, but is not sufficient to guarantee that an older app can read newer stored data.
+
+If installation reports a signature mismatch, version downgrade or data migration failure, stop; do **not** uninstall Amp or clear its data to force the installation. That can destroy imported music, preferences and pairing. Preserve the current installation and collect only redacted version/error information. Prefer a tested corrective update signed with the same certificate and a higher version code.
+
+**A data-preserving downgrade from a newer installed version to an older public release has not been demonstrated.** Android backup is disabled in release builds, so installing the old APK is not an application-data backup or recovery procedure. A separate, independently verified migration or recovery plan is required before promising full rollback.

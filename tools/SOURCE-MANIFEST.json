@@ -1,6 +1,6 @@
 {
   "application": "Kinegra Amp",
-  "code": 99,
+  "code": 100,
   "files": {
     ".gitattributes": {
       "mode": "100644",
@@ -588,7 +588,7 @@
     },
     "app/scripts/OfflineQueueSave.gd": {
       "mode": "100644",
-      "sha256": "c5c619fbd9328a968ee0a4f8b7f3a56d7eb308e20f67cf8cf0bfb19528df8033"
+      "sha256": "1f6461496ed07e209fa8af9dfd07741df7a74bb3181cc0a94666029b90c81de5"
     },
     "app/scripts/OriginalHorizon.gd": {
       "mode": "100644",
@@ -869,6 +869,10 @@
     "app/tests/test_kinegra_amp_branding.gd": {
       "mode": "100644",
       "sha256": "c5a809f6bf26a5148ab6a4ec3a2761f5a57e641efeddd77d20dec586c5a0da90"
+    },
+    "app/tests/test_legacy_v1_checkpoint_security.gd": {
+      "mode": "100644",
+      "sha256": "ca9e474e5a7ca70774cac0046a174a499c3039a90906ca66145f5dcfeb04eb22"
     },
     "app/tests/test_library_marker_boundary.gd": {
       "mode": "100644",
@@ -1308,7 +1312,7 @@
     },
     "docs/OFFLINE-COPYING.md": {
       "mode": "100644",
-      "sha256": "765a9af43a64c8694ac6a7bbe1eba1578f2ebcfd10ff9d5addb4578ac53671ea"
+      "sha256": "daec05906eef96f58f40dff7f59780bf6fe0c2a15d80e662299bfb1f5f40b518"
     },
     "docs/OFFLINE-LIBRARY.md": {
       "mode": "100644",
@@ -1316,7 +1320,7 @@
     },
     "docs/PRIVACY.md": {
       "mode": "100644",
-      "sha256": "46369f5ef20cc112fa3a8efc821aa4eea8f5fd9b4b64b360523c01cb8fb4fab7"
+      "sha256": "73da608e4f9cd6dd1f82cd103c4236dfefe823ac3306e97c02a801de0b39d7c2"
     },
     "docs/RELEASE.md": {
       "mode": "100644",
@@ -1332,7 +1336,7 @@
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
-      "sha256": "a693babf573e29e957a5cabc1b01d5ac0c6e798959ea0c5a20d5421cd334a058"
+      "sha256": "a7ef1180df7839a1521d91654a835b176673123d6fcbab3dd7fbd23b8b4d0412"
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
@@ -2070,6 +2074,6 @@
   "project": "Kinegra Amp",
   "schema": 1,
   "scope": "Current Kinegra Amp source, build tools and regression tests. Generated outputs, personal media, credentials and signing material are excluded.",
-  "version": "1.0.18",
-  "version_code": 99
+  "version": "1.0.19",
+  "version_code": 100
 }
