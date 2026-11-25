@@ -1,10 +1,12 @@
 # Demonstration media
 
-The README animation is a silent desktop preview of the current Kinegra Amp source, including the updated one-line header. The released 1.0.10 APK is unchanged. The preview is rendered with Godot on Linux. It shows local playback, the current branding, queue controls, visualisers and fullscreen artwork. It is not an Android-device capture or a streaming, camera or performance benchmark.
+The [silent demo](readme/kinegra-amp-hero.gif) was rendered in Godot on Linux from 1.0.10-era source and published in [commit `5e45a0d`](https://github.com/matthewhand/kinegra-amp/commit/5e45a0d2dca16d716f67b37ba7ebcb82d405403e). The README still is frame 8 of that animation. For Android-device and streaming coverage, see [Testing and compatibility](VALIDATION.md).
+
+The animation starts on the local player with playback controls and procedural dancers. It opens the three-track queue, switches to fullscreen artwork with remote shortcuts, then shows artwork without the animated scene.
 
 The preview fixture generates its own tones and geometric cover art and uses fictional track labels. Dancer animation is procedural; no camera, account, household, Music Assistant server or private music library is accessed. The fixture uses isolated user data and a Dummy audio driver. Its temporary samples are not part of the Android release.
 
-Original hero media and artwork use the project MIT licence. [Artwork provenance](branding/README.md).
+Original hero media and artwork use the project MIT licence. [Kinegra Amp branding artwork](branding/kinegra-amp-banner.png) · [Artwork provenance](branding/README.md)
 
 ## Reproduce the animation
 
