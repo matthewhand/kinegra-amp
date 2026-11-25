@@ -16,7 +16,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "6b14d7b719d1cd7cc3da33f933820a5f2fe948a33f451ad2ae7d6002aaedbb1f"
+      "sha256": "34942f66fa699779c040d3f2d1b30a123dfad0007c26c9fd638aba59186e45b0"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -416,7 +416,7 @@
     },
     "app/export_presets.cfg": {
       "mode": "100644",
-      "sha256": "15f0e3ee2b5a9827c82e373f48ff8d81dc87207c002701225482fc42d12a25f9"
+      "sha256": "1ec8ac6a912a1224cd7e94cb5f42f098b35c570957725bc51f04243b7e8c7901"
     },
     "app/native/TegraCodec.gdnlib": {
       "mode": "100644",
@@ -428,7 +428,7 @@
     },
     "app/project.godot": {
       "mode": "100644",
-      "sha256": "bc1befe89f92758522a41d75abe3009d1607c5d1c1235082c1a0e7619173430c"
+      "sha256": "087e00a0a5a7fcdc3fb4d6ab0871ff43d66153ffe2d28ed05ca4577df4b76e94"
     },
     "app/scripts/AdaptiveVisuals.gd": {
       "mode": "100644",
@@ -1320,7 +1320,7 @@
     },
     "docs/RELEASE.md": {
       "mode": "100644",
-      "sha256": "a9cc333379d0632fe016708c5f19eccaea1a33ab3458ff64694bbb7706479053"
+      "sha256": "99850fc921e9b1c1f3e354c38ca3647cfd2f158efb62174aa73f26fc595edf99"
     },
     "docs/SECURE-TOKEN-LIFECYCLE.md": {
       "mode": "100644",
@@ -1332,7 +1332,7 @@
     },
     "docs/UPGRADING.md": {
       "mode": "100644",
-      "sha256": "7cc42450f8d358e6f2c7aa6c74764f2512f9de1681893e1e32989145d380d3e3"
+      "sha256": "b6748f47f038ab9c5a36d913b3ec7c992705433b3b75b3f56158f3bd8edf9753"
     },
     "docs/VALIDATION.md": {
       "mode": "100644",
