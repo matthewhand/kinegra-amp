@@ -1326,8 +1326,7 @@ func _advanced():
     hide()
     app.page_scroller.show()
     app.page_scroller.scroll_vertical = 0
-    if app.device_refresh_button != null:
-        app.device_refresh_button.grab_focus()
+    app.app_volume_slider.grab_focus()
 
 func show_stage():
     if queue_drawer != null: queue_drawer.hide()

@@ -13,6 +13,16 @@ func run():
     check(app.app_volume_slider!=null and not app.offline_music.is_playing(),"settings_control_without_autoplay")
     var master_gain=AudioServer.get_bus_volume_db(0)
     var master_mute=AudioServer.is_bus_mute(0)
+    app.music_ui.settings_button.emit_signal("pressed")
+    check(app.app_volume_slider.has_focus(),"settings_opens_with_volume_focused")
+    var dpad=InputEventKey.new()
+    dpad.scancode=KEY_LEFT
+    dpad.pressed=true
+    Input.parse_input_event(dpad)
+    yield(self,"idle_frame")
+    dpad.pressed=false
+    Input.parse_input_event(dpad)
+    check(app.app_volume_percent==95,"left_on_settings_entry_lowers_only_amp")
     app.set_app_volume(50);app._flush_app_volume()
     check(app.volume_store.read(path).found and app.music_ui.volume_tag.visible,"reduced_gain_is_saved_and_visible")
     app._restore_app_volume()
