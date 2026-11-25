@@ -13,7 +13,7 @@ func run():
     check(text.find("Hardware revision: Not reported")>=0 and text.find("Remote: Not reported")>=0,"unknown_values_are_honest")
     check(app._device_info_text("", "", "1", []).find("None reported")>=0,"no_controller_fallback")
     app.music_ui._advanced()
-    check(app.device_refresh_button.has_focus() and app.device_info_label.text.find("Kinegra Amp "+str(ProjectSettings.get_setting("application/config/version")))>=0,"about_visible_from_settings")
+    check(app.device_refresh_button.is_visible_in_tree() and app.device_info_label.text.find("Kinegra Amp "+str(ProjectSettings.get_setting("application/config/version")))>=0,"about_visible_from_settings")
     check(app.SUPPORT_PROFILE=="https://github.com/matthewhand","support_profile")
     print("ABOUT_FAILURES=",failed.size())
     quit(0 if failed.empty() else 1)

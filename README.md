@@ -39,6 +39,7 @@ Local-file background playback is included in [newer source changes](https://git
 
 ## Make it yours
 
+- **Settings → App Volume** adjusts Amp from 0% to 100%. Use Left or Right on the remote. In Split View, use this control to balance Amp against the other pane, and the TV remote's volume buttons to adjust the combined output.
 - **Visuals On / Off**, **Scene** and **Fullscreen** switch between artwork and animated scenes. [Artwork and visuals](docs/ARTWORK-AND-FULLSCREEN.md).
 - **Webcam avatars** use a separately configured Kinegra Cam pose feed. [Webcam setup](docs/WEBCAM-GESTURES.md).
 - **Web remote** adds browser playback, library and queue controls. Enable it in Settings; it starts off by default. [Web remote and API](docs/WEB-REMOTE.md) · [CLI](docs/CLI.md).

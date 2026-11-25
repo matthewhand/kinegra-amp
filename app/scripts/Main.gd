@@ -527,8 +527,6 @@ func _build_ui():
 	header.add_child(stack)
 	_button(stack, "BACK TO MUSIC VISUALIZER", "_show_music_stage")
 	_label(stack, "ADVANCED SETTINGS  •  MUSIC ASSISTANT FIRST")
-	_build_web_remote_settings(stack)
-	_build_offline_source_settings(stack)
 	app_volume_label=_label(stack, "")
 	app_volume_slider=HSlider.new()
 	app_volume_slider.min_value=0
@@ -540,6 +538,8 @@ func _build_ui():
 	stack.add_child(app_volume_slider)
 	app_volume_slider.connect("value_changed",self,"set_app_volume")
 	_sync_app_volume_label()
+	_build_web_remote_settings(stack)
+	_build_offline_source_settings(stack)
 	title_label = _label(stack, "  No music loaded")
 	state_label = _label(stack, "  Music Assistant available; Home Assistant optional")
 	var command_row = GridContainer.new()

@@ -16,7 +16,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "75424b35006458c56772b1575be6440c2b9ae3fe38ba3fc0f06288902b58957f"
+      "sha256": "6b14d7b719d1cd7cc3da33f933820a5f2fe948a33f451ad2ae7d6002aaedbb1f"
     },
     "android_secure_storage/README.md": {
       "mode": "100644",
@@ -548,7 +548,7 @@
     },
     "app/scripts/Main.gd": {
       "mode": "100644",
-      "sha256": "7ed1cd8949f9214a749550c183863b44173ade482341ad934a016b0dea0c9011"
+      "sha256": "08a6432b1a098b0c9995c7b2115e88baf10293c7c9328b8179366546a73b05f5"
     },
     "app/scripts/ModalFocus.gd": {
       "mode": "100644",
@@ -556,7 +556,7 @@
     },
     "app/scripts/MusicFirstUI.gd": {
       "mode": "100644",
-      "sha256": "2b942ecbcf68812ff0862a5946ec38582d6781ab08ec4b6f47be69912da59232"
+      "sha256": "476938bf53d8656d90fbe96e410f70197d0bd82c8138f22a0cc7bb69455273e6"
     },
     "app/scripts/MusicUiMemory.gd": {
       "mode": "100644",
@@ -732,7 +732,7 @@
     },
     "app/tests/test_about_diagnostics.gd": {
       "mode": "100644",
-      "sha256": "9d60a614cdab95c7847b527c7dc78f62fbf18420bec3d0c0feb2d74c02b065fb"
+      "sha256": "8ade57cdab117af2b8b8de3a5b74a77cb607af9ace43a3456510b3b70de0363f"
     },
     "app/tests/test_adaptive_background.gd": {
       "mode": "100644",
@@ -1232,7 +1232,7 @@
     },
     "app/tests/test_volume_persistence.gd": {
       "mode": "100644",
-      "sha256": "a8316bedf0467b55bfd6b2ad360ab56fbbc40f687cf817ff74b0e4d5f70daf5b"
+      "sha256": "e413c5e715a5bd5c02b8e7eb1d61b13c8d554fd6afe3dc0276c898992ffec799"
     },
     "app/tests/test_wav.gd": {
       "mode": "100644",
